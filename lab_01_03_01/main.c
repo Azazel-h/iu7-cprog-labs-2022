@@ -20,9 +20,8 @@ void calculate_v_t(float first_v, float second_v, float first_t, float second_t,
     float water_density = 997, first_m, second_m;
     first_m = mass_calculation(first_v, water_density);
     second_m = mass_calculation(second_v, water_density);
-
     *result_v = first_v + second_v;
-    *result_t = (first_t * first_t + second_m * second_t) / (first_m + second_m);
+    *result_t = (first_m * first_t + second_m * second_t) / (first_m + second_m);
 }
 
 float mass_calculation(float v, float density)

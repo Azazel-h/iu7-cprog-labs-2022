@@ -2,6 +2,7 @@
 #include <math.h>
 
 float calculate_s(float a, float b, float fi);
+float degree_to_radian(float degree);
 
 int main(void)
 {
@@ -13,5 +14,10 @@ int main(void)
 
 float calculate_s(float a, float b, float fi)
 {
-    return (fabs(a - b) * sinf(fi) * (a + b)) / 2;
+    return fabs((a * a - b * b) * tan(degree_to_radian(fi))) / 4;
+}
+
+float degree_to_radian(float degree)
+{
+    return degree * (M_PI / 180.0);
 }
