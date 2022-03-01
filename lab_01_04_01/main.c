@@ -8,7 +8,7 @@ int main(void)
     printf("Введите номеру квартиры девятиэтажного дома: ");
     scanf("%d", &room_num);
     calculate(room_num, &floor_num, &entrance_num);
-    printf("Подъезд %d, Этаж %d", entrance_num, floor_num);
+    printf("Подъезд - %d \nЭтаж - %d", entrance_num, floor_num);
 }
 
 void calculate(int room_num, int *floor_num, int *entrance_num)

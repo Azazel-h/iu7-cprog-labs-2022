@@ -12,10 +12,10 @@ int main(void)
     scanf("%f%f", &second_v, &second_t);
 
     calculate_v_t(first_v, second_v, first_t, second_t, &result_v, &result_t);
-    printf("Итоговые значения V = %f  T = %f", result_v, result_t);
+    printf("Итоговые значения \nV = %f \nT = %f", result_v, result_t);
 }
 
-void calculate_v_t(float first_v, float second_v, float first_t, float second_t, float* result_v, float *result_t)
+void calculate_v_t(float first_v, float second_v, float first_t, float second_t, float *result_v, float *result_t)
 {
     float water_density = 997, first_m, second_m;
     first_m = mass_calculation(first_v, water_density);
