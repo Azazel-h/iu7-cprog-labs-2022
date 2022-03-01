@@ -1,7 +1,3 @@
-//
-// Created by Azazel on 28.02.2022.
-//
-
 #include <stdio.h>
 #include <math.h>
 
@@ -17,6 +13,5 @@ int main(void)
 
 float calculate_s(float a, float b, float fi)
 {
-
-    return a * b * sinf(fi);
-};
+    return (fabs(a - b) * tan(fi) * (a + b)) / 4;
+}

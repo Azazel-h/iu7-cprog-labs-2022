@@ -1,7 +1,3 @@
-//
-// Created by Azazel on 28.02.2022.
-//
-
 #include <stdio.h>
 
 int main(void)
