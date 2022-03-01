@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void calculate_v_t(float first_V, float second_v, float first_t, float second_t, float* result_v, float* result_t);
+void calculate_v_t(float first_v, float second_v, float first_t, float second_t, float *result_v, float *result_t);
 float mass_calculation(float v, float density);
 
 int main(void)
@@ -15,7 +15,7 @@ int main(void)
     printf("Итоговые значения V = %f  T = %f", result_v, result_t);
 }
 
-void calculate_v_t(float first_v, float second_v, float first_t, float second_t, float* result_v, float* result_t)
+void calculate_v_t(float first_v, float second_v, float first_t, float second_t, float* result_v, float *result_t)
 {
     float water_density = 997, first_m, second_m;
     first_m = mass_calculation(first_v, water_density);
