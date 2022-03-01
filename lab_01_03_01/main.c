@@ -1,31 +1,31 @@
 #include <stdio.h>
 
-void calculate_V_T(float first_V, float second_V, float first_T, float second_T, float* result_V, float* result_T);
-float mass_calculation(float V, float density);
+void calculate_v_t(float first_V, float second_v, float first_t, float second_t, float* result_v, float* result_t);
+float mass_calculation(float v, float density);
 
 int main(void)
 {
-    float first_V, second_V, first_T, second_T, result_V, result_T;
+    float first_v, second_v, first_t, second_t, result_v, result_t;
     printf("Введите V1, T1: ");
-    scanf("%f%f", &first_V, &first_T);
+    scanf("%f%f", &first_v, &first_t);
     printf("Введите V2, T2: ");
-    scanf("%f%f", &second_V, &second_T);
+    scanf("%f%f", &second_v, &second_t);
 
-    calculate_V_T(first_V, second_V, first_T, second_T, &result_V, &result_T);
-    printf("Итоговые значения V = %f  T = %f", result_V, result_T);
+    calculate_v_t(first_v, second_v, first_t, second_t, &result_v, &result_t);
+    printf("Итоговые значения V = %f  T = %f", result_v, result_t);
 }
 
-void calculate_V_T(float first_V, float second_V, float first_T, float second_T, float* result_V, float* result_T)
+void calculate_v_t(float first_v, float second_v, float first_t, float second_t, float* result_v, float* result_t)
 {
-    float water_density = 997, first_M, second_M;
-    first_M = mass_calculation(first_V, water_density);
-    second_M = mass_calculation(second_V, water_density);
+    float water_density = 997, first_m, second_m;
+    first_m = mass_calculation(first_v, water_density);
+    second_m = mass_calculation(second_v, water_density);
 
-    *result_V = first_V + second_V;
-    *result_T = (first_M * first_T + second_M * second_T) / (first_M + second_M);
+    *result_v = first_v + second_v;
+    *result_t = (first_t * first_t + second_m * second_t) / (first_m + second_m);
 }
 
-float mass_calculation(float V, float density)
+float mass_calculation(float v, float density)
 {
-    return V * density;
+    return v * density;
 }

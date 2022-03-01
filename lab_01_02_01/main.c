@@ -13,5 +13,5 @@ int main(void)
 
 float calculate_s(float a, float b, float fi)
 {
-    return (fabs(a - b) * tan(fi) * (a + b)) / 4;
+    return (fabs(a - b) * sinf(fi) * (a + b)) / 2;
 }
