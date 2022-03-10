@@ -21,7 +21,7 @@ void print_number(int number)
 
     while (rank > 0)
     {
-        printf("Ваше натуральное число это - %d", number / rank);
+        printf("%d", number / rank);
         number %= rank;
         rank /= 10;
     }
