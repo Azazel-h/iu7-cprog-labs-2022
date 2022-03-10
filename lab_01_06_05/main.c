@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#define EPS 1e-5
+#define EPS 1e-7
 
 float det(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 int point_check(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
@@ -12,12 +12,10 @@ int main(void)
     float xr, yr, xs, ys;
     int rc1, rc2;
 
-    printf("Введите координаты точек первого отрезка: ");
     rc1 = scanf("%f%f%f%f", &xp, &yp, &xq, &yq);
     if (rc1 != 4)
         return -100;
 
-    printf("Введите координаты точек второго отрезка: ");
     rc2 = scanf("%f%f%f%f", &xr, &yr, &xs, &ys);
     if (rc2 != 4)
         return -100;
@@ -26,16 +24,16 @@ int main(void)
     if (fabs(determinant) <= EPS)
     {
         if (point_check(xp, yp, xq, yq, xr, yr, xs, ys))
-            printf("%d", 1);
+            printf("1");
         else
-            printf("%d", 0);
+            printf("0");
     }
     else
     {
         if (cramers_rule(xp, yp, xq, yq, xr, yr, xs, ys, determinant))
-            printf("%d", 1);
+            printf("1");
         else
-            printf("%d", 0);
+            printf("0");
     }
     return 0;
 }
@@ -58,11 +56,10 @@ int cramers_rule(float x1, float y1, float x2, float y2, float x3, float y3, flo
     b = (x1 - x2) * (y4 - y2) - (x4 - x2) * (y1 - y2);
     u_a = a / det;
     u_b = b / det;
-    if (u_a >= EPS && u_a <= EPS + 1 && u_b >= EPS && u_b <= EPS + 1)
+    if (u_a + EPS >= 0 && u_a - EPS <= 1 && u_b + EPS >= 0 && u_b - EPS <= 1)
         return 1;
     else
         return 0;
 }
-
 
 
