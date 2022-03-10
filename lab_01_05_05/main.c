@@ -8,7 +8,7 @@ int main(void)
 {
     int number, rc;
     rc = scanf("%d", &number);
-    if (number <= 0 || rc != 1)
+    if (rc != 1 || number <= 0)
         return -100;
     print_number(number);
 }
