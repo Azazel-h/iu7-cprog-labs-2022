@@ -7,6 +7,7 @@ int power(int number, int power);
 int main(void)
 {
     int number, rc;
+    printf("Введите натуральное число: ");
     rc = scanf("%d", &number);
     if (rc != 1 || number <= 0)
         return -100;
@@ -20,7 +21,7 @@ void print_number(int number)
 
     while (rank > 0)
     {
-        printf("%d", number / rank);
+        printf("Ваше натуральное число это - %d", number / rank);
         number %= rank;
         rank /= 10;
     }
