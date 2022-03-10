@@ -1,22 +1,22 @@
 #include <stdio.h>
 
-void print_number(long long number);
-int count_digits(long long number);
-long long power(long long number, int power);
+void print_number(int number);
+int count_digits(int number);
+int power(int number, int power);
 
 int main(void)
 {
-    long long number, rc;
-    rc = scanf("%lld", &number);
-    if (rc != 1 || number <= 0)
+    int number, rc;
+    rc = scanf("%d", &number);
+    if (number <= 0 || rc != 1)
         return -100;
     print_number(number);
 }
 
-void print_number(long long number)
+void print_number(int number)
 {
     int digits_num = count_digits(number);
-    long long rank = power(10, digits_num - 1);
+    int rank = power(10, digits_num - 1);
 
     while (rank > 0)
     {
@@ -26,7 +26,7 @@ void print_number(long long number)
     }
 }
 
-int count_digits(long long number)
+int count_digits(int number)
 {
     int digits_counter = 0;
     while (number > 0)
@@ -37,9 +37,9 @@ int count_digits(long long number)
     return digits_counter;
 }
 
-long long power(long long number, int power)
+int power(int number, int power)
 {
-    long long powered_number = number;
+    int powered_number = number;
     if (power > 0)
     {
         for (int i = 0; i < power; ++i) {
