@@ -47,8 +47,8 @@ float det(float x1, float y1, float x2, float y2, float x3, float y3, float x4, 
 
 int point_check(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
 {
-    return (x1 * y2 - x2 * y1) * (x4 - x3) - (x3 * y4 - x4 * y3) * (x2 - x1) == 0 &&
-        (x1 * y2 - x2 * y1) * (y4 - y3) - (x3 * y4 - x4 * y3) * (y2 - y1) == 0;
+    return fabs((x1 * y2 - x2 * y1) * (x4 - x3) - (x3 * y4 - x4 * y3) * (x2 - x1)) <= EPS &&
+        fabs((x1 * y2 - x2 * y1) * (y4 - y3) - (x3 * y4 - x4 * y3) * (y2 - y1)) <= EPS;
 }
 
 int cramers_rule(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float det)
