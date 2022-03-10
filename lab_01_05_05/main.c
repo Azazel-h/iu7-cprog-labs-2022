@@ -42,7 +42,8 @@ int power(int number, int power)
     int powered_number = number;
     if (power > 0)
     {
-        for (int i = 0; i < power; ++i) {
+        for (int i = 0; i < power; ++i)
+        {
             powered_number *= number;
         }
     }
