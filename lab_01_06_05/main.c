@@ -11,14 +11,14 @@ int main(void)
 {
     int px, py, qx, qy;
     int rx, ry, sx, sy;
-    int rc1, rc2;
+    int check_first_inp, check_second_inp;
 
-    rc1 = scanf("%d%d%d%d", &px, &py, &qx, &qy);
-    if (rc1 != 4 || px == py == qx == qy)
+    check_first_inp = scanf("%d%d%d%d", &px, &py, &qx, &qy);
+    if (check_first_inp != 4 || px == py == qx == qy)
         return -100;
 
-    rc2 = scanf("%d%d%d%d", &rx, &ry, &sx, &sy);
-    if (rc2 != 4 || rx == ry == sx == sy)
+    check_second_inp = scanf("%d%d%d%d", &rx, &ry, &sx, &sy);
+    if (check_second_inp != 4 || rx == ry == sx == sy)
         return -100;
 
     printf("%d", intersect_main(px, py, qx, qy, rx, ry, sx, sy));
