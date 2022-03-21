@@ -10,10 +10,11 @@ int main(void)
 {
     float x, eps;
     printf("Введите x, eps");
-    int check_first_inp = scanf("%f%f", &x, &eps);
+    int check_first_inp;
+    check_first_inp = scanf("%f%f", &x, &eps);
     if (check_first_inp != 2 || fabsf(x) >= 1)
     {
-        return -1;
+        return -100;
     }
     float s_x = calculate_s_x(x, eps), f_x = calculate_f_x(x);
     printf("%f%f%f%f", s_x, f_x, calculate_absolute(f_x, s_x), calculate_relative(f_x, s_x));
