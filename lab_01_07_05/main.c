@@ -10,13 +10,13 @@ int main(void)
 {
     float x, eps;
     printf("Введите x, eps");
-    check_first_inp = scanf("%f%f", &x, &eps);
+    int check_first_inp = scanf("%f%f", &x, &eps);
     if (check_first_inp != 2 || fabsf(x) >= 1)
     {
         return -1;
     }
-    float s_x = calculate_s_x(), f_x = calculate_f_x();
-    printf("%f%f%f%f", s_x, f_x, calculate_absolute(), calculate_relative();
+    float s_x = calculate_s_x(x, eps), f_x = calculate_f_x(x);
+    printf("%f%f%f%f", s_x, f_x, calculate_absolute(f_x, s_x), calculate_relative(f_x, s_x));
     return 0;
 }
 
@@ -46,14 +46,19 @@ float calculate_s_x(float x, float eps)
     int counter_numerator = 1;
     int counter_denominator = 2;
 
-    while (fabsf(new) > eps)
-    {
-        new = numerator * pow(x, power) / denominator;
-        sum += new;
+    float new = numerator * pow(x, power) / denominator;
 
+    while (fabsf(eps - new) < 0)
+    {
         power += 2;
-        numerator *= (counter_numerator + 2);
-        denominator *= (counter_denominator + 2);
+        counter_numerator += 2;
+
+        counter_denominator += 2;
+        numerator *= counter_numerator;
+        denominator *= counter_denominator;
+        new = numerator * pow(x, power) / denominator;
+
+        sum += new;
     }
 
     return sum;
