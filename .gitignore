@@ -6,3 +6,4 @@ CMakeLists.txt
 *.o
 *.pch
 *.gch
+real_out.txt
