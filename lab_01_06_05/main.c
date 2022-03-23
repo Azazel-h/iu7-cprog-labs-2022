@@ -13,10 +13,12 @@ int main(void)
     int rx, ry, sx, sy;
     int rc1, rc2;
 
+    printf("Введите координаты первого отрезка: ");
     rc1 = scanf("%d%d%d%d", &px, &py, &qx, &qy);
     if (rc1 != 4 || px == py == qx == qy)
         return -100;
 
+    printf("Введите координаты второго отрезка: ");
     rc2 = scanf("%d%d%d%d", &rx, &ry, &sx, &sy);
     if (rc2 != 4 || rx == ry == sx == sy)
         return -100;
