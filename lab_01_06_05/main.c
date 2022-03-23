@@ -49,9 +49,9 @@ int intersect_sub(int a, int b, int c, int d)
 int intersect_main(int ax, int ay, int bx, int by, int cx, int cy, int dx, int dy)
 {
     return intersect_sub(ax, bx, cx, dx)
-           && intersect_sub(ay, by, cy, dy)
-           && area(ax, ay, bx, by, cx, cy) * area(ax, ay, bx, by, dx, dy) <= 0
-           && area(cx, cy, dx, dy, ax, ay) * area(cx, cy, dx, dy, bx, by) <= 0;
+        && intersect_sub(ay, by, cy, dy)
+        && area(ax, ay, bx, by, cx, cy) * area(ax, ay, bx, by, dx, dy) <= 0
+        && area(cx, cy, dx, dy, ax, ay) * area(cx, cy, dx, dy, bx, by) <= 0;
 }
 
 
