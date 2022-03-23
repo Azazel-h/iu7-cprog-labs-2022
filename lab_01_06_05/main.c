@@ -13,12 +13,15 @@ int main(void)
 
     printf("Введите координаты первого отрезка: ");
     check_first_inp = scanf("%lf%lf%lf%lf", &px, &py, &qx, &qy);
-    if (check_first_inp != 4 || (fabs(px - qx) < EPS && fabs(py - qy) < EPS))
+    if (check_first_inp != 4)
         return -100;
 
     printf("Введите координаты второго отрезка: ");
     check_second_inp = scanf("%lf%lf%lf%lf", &rx, &ry, &sx, &sy);
-    if (check_second_inp != 4 || (fabs(px - qx) < EPS && fabs(py - qy) < EPS))
+    if (check_second_inp != 4)
+        return -100;
+
+    if ((fabs(px - qx) < EPS && fabs(py - qy) < EPS) || (fabs(rx - sx) < EPS && fabs(ry - sy) < EPS))
         return -100;
 
     printf("%d", intersect_main(px, py, qx, qy, rx, ry, sx, sy));
