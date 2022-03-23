@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#define EPS 0.000001
+#define EPS 0.00001
 
 int intersect_main(double ax, double ay, double bx, double by, double cx, double cy, double dx, double dy);
 double v_create(double ax, double ay, double bx, double by);
