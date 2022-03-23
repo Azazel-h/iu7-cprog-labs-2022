@@ -20,7 +20,7 @@ int main(void)
 
     printf("Введите координаты второго отрезка: ");
     check_second_inp = scanf("%d%d%d%d", &rx, &ry, &sx, &sy);
-    if (check_second_inp != 4 || (rx == ry && sx == sy))
+    if (check_second_inp != 4 || (rx == sx && ry == sy))
         return -100;
 
     printf("%d", intersect_main(px, py, qx, qy, rx, ry, sx, sy));
