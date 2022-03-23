@@ -1,10 +1,9 @@
 #!/bin/bash
 
 file_in=$1
-file_out=$2
 file_args=$3
 
-if [[ (! -f "$file_in") || (! -f "$file_out") ]]; then
+if [[ (! -f "$file_in") ]]; then
   exit 1
 fi
 

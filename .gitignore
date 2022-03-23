@@ -7,3 +7,4 @@ CMakeLists.txt
 *.pch
 *.gch
 real_out.txt
+.DS_Store
