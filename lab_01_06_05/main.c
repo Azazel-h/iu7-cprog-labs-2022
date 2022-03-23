@@ -15,12 +15,12 @@ int main(void)
 
     printf("Введите координаты первого отрезка: ");
     check_first_inp = scanf("%d%d%d%d", &px, &py, &qx, &qy);
-    if (check_first_inp != 4 || px == py == qx == qy)
+    if (check_first_inp != 4 || (px == qx && py == qy))
         return -100;
 
     printf("Введите координаты второго отрезка: ");
     check_second_inp = scanf("%d%d%d%d", &rx, &ry, &sx, &sy);
-    if (check_second_inp != 4 || rx == ry == sx == sy)
+    if (check_second_inp != 4 || (rx == ry && sx == sy))
         return -100;
 
     printf("%d", intersect_main(px, py, qx, qy, rx, ry, sx, sy));
