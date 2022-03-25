@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <math.h>
-#define EPS 1E-5
 
 int intersect_main(int ax, int ay, int bx, int by, int cx, int cy, int dx, int dy);
 int v_create(int ax, int ay, int bx, int by);
@@ -30,13 +28,11 @@ int main(void)
 
 int v_create(int ax, int ay, int bx, int by)
 {
-    return ax * ay - bx * by;
+    return ax * by - bx * ay;
 }
 
 int intersect_main(int ax, int ay, int bx, int by, int cx, int cy, int dx, int dy)
 {
-    if ((ax == cx && ay == cy) || (bx == dx && by == dy) || (ax == dx && ay == dy) || (bx == cx && by == cy))
-        return 1;
     int first_vector = v_create(dx - cx, dy - cy, ax - cx, ay - cy);
     int second_vector = v_create(dx - cx, dy - cy, bx - cx, by - cy);
     int third_vector = v_create(bx - ax, by - ay, cx - ax, cy - ay);
@@ -46,6 +42,4 @@ int intersect_main(int ax, int ay, int bx, int by, int cx, int cy, int dx, int d
     else
         return 0;
 }
-
-
 
