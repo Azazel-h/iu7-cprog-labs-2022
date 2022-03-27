@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void print_binary(unsigned int n);
+void print_binary(u_int32_t n);
 u_int32_t bit_rol(u_int32_t x, int n);
 
 int main(void)
@@ -19,7 +19,7 @@ int main(void)
     return 0;
 }
 
-void print_binary(unsigned int n)
+void print_binary(u_int32_t n)
 {
     if (n > 1)
         print_binary(n / 2);
