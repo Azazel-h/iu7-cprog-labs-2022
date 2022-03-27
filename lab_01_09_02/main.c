@@ -17,9 +17,10 @@ int main(void)
     {
         num_of_x++;
         sum += calculate_new(x, num_of_x);
-        scanf("%lf", &x);
+        check_input = scanf("%lf", &x);
+        if (check_input != 1)
+            return -100;
     }
-
     printf("%lf", calculate_g_x(sum, num_of_x));
     return 0;
 }
@@ -31,5 +32,5 @@ double calculate_new(double x, int n)
 
 double calculate_g_x(double sum, int n)
 {
-    return (1 / n) * sum;
+    return (1.0f / n) * sum;
 }
