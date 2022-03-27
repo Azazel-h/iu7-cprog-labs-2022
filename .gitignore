@@ -6,5 +6,8 @@ CMakeLists.txt
 *.o
 *.pch
 *.gch
+*.gcov
+*.gcda
+*.gcno
 real_out.txt
 .DS_Store
