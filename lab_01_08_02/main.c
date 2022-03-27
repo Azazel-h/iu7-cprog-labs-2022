@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#define INPUT_ERROR_CODE -100
 
 void print_binary(uint32_t n);
 uint32_t bit_rol(uint32_t x, int n);
@@ -12,7 +13,7 @@ int main(void)
     if (check_input != 2 || n < 0)
     {
         printf("Error: Wrong Input");
-        return -100;
+        return INPUT_ERROR_CODE;
     }
     x = bit_rol(x, n);
     printf("Result: ");

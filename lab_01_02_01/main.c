@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#define TO_RADIANS (M_PI / 180.0)
 
 float calculate_s(float a, float b, float fi);
 float degree_to_radian(float degree);
@@ -19,5 +20,5 @@ float calculate_s(float a, float b, float fi)
 
 float degree_to_radian(float degree)
 {
-    return degree * (M_PI / 180.0);
+    return degree * TO_RADIANS;
 }

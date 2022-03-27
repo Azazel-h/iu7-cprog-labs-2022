@@ -1,4 +1,6 @@
 #include <stdio.h>
+#define INPUT_ERROR_CODE -100
+#define POWER_ERROR -101
 
 void print_number(int number);
 int count_digits(int number);
@@ -10,7 +12,8 @@ int main(void)
     printf("Введите натуральное число: ");
     rc = scanf("%d", &number);
     if (rc != 1 || number <= 0)
-        return -100;
+        return INPUT_ERROR_CODE;
+    printf("Результат: ");
     print_number(number);
 }
 
@@ -42,16 +45,10 @@ int power(int number, int power)
 {
     int powered_number = number;
     if (power > 0)
-    {
         for (int i = 0; i < power; ++i)
-        {
             powered_number *= number;
-        }
-    }
     else
-    {
-        return 1;
-    }
+        return POWER_ERROR;
     return number;
 }
 

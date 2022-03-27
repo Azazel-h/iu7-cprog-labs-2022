@@ -1,4 +1,5 @@
 #include <stdio.h>
+#define INPUT_ERROR_CODE -100
 
 int intersect_main(int ax, int ay, int bx, int by, int cx, int cy, int dx, int dy);
 int v_create(int ax, int ay, int bx, int by);
@@ -12,16 +13,17 @@ int main(void)
     printf("Введите координаты первого отрезка: ");
     check_first_inp = scanf("%d%d%d%d", &px, &py, &qx, &qy);
     if (check_first_inp != 4)
-        return -100;
+        return INPUT_ERROR_CODE;
 
     printf("Введите координаты второго отрезка: ");
     check_second_inp = scanf("%d%d%d%d", &rx, &ry, &sx, &sy);
     if (check_second_inp != 4)
-        return -100;
+        return INPUT_ERROR_CODE;
 
     if ((px == qx && py == qy) || (rx == sx && ry == sy))
-        return -100;
+        return INPUT_ERROR_CODE;
 
+    printf("Результат: ");
     printf("%d", intersect_main(px, py, qx, qy, rx, ry, sx, sy));
     return 0;
 }

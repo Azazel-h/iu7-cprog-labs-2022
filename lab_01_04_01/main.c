@@ -1,4 +1,7 @@
 #include <stdio.h>
+#define NUMBER_OF_ROOMS 4
+#define NUMBER_OF_FLOORS 9
+#define NUMBER_OF_ALL_ROOMS 36
 
 void calculate(int room_num, int *floor_num, int *entrance_num);
 
@@ -13,7 +16,6 @@ int main(void)
 
 void calculate(int room_num, int *floor_num, int *entrance_num)
 {
-    int number_of_rooms = 4, number_of_floors = 9, number_of_all_rooms = (number_of_rooms * number_of_floors);
-    *entrance_num = (room_num - 1) / number_of_all_rooms + 1;
-    *floor_num = 1 + ((room_num - 1) % number_of_all_rooms) / number_of_rooms;
+    *entrance_num = (room_num - 1) / NUMBER_OF_ALL_ROOMS + 1;
+    *floor_num = 1 + ((room_num - 1) % NUMBER_OF_ALL_ROOMS) / NUMBER_OF_ROOMS;
 }
