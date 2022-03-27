@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdint.h>
 
-void print_binary(u_int32_t n);
-u_int32_t bit_rol(u_int32_t x, int n);
+void print_binary(uint32_t n);
+uint32_t bit_rol(uint32_t x, int n);
 
 int main(void)
 {
-    u_int32_t x;
+    uint32_t x;
     int n, check_input;
     check_input = scanf("%u %d", &x, &n);
     if (check_input != 2 || n < 0)
@@ -19,14 +20,14 @@ int main(void)
     return 0;
 }
 
-void print_binary(u_int32_t n)
+void print_binary(uint32_t n)
 {
     if (n > 1)
         print_binary(n / 2);
     printf("%d", n % 2);
 }
 
-u_int32_t bit_rol(u_int32_t x, int n)
+uint32_t bit_rol(uint32_t x, int n)
 {
     return x << n | x >> (32 - n);
 }
