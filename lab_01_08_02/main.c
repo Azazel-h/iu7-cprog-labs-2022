@@ -9,22 +9,21 @@ void print_binary(unsigned int n)
 
 int main(void)
 {
-    int signed_x, n;
-    int check_input;
-    check_input = scanf("%d%d", &signed_x, &n);
-    if (check_input != 2 || signed_x < 0)
+    unsigned x;
+    int n, check_input;
+    check_input = scanf("%d%d", &x, &n);
+    if (check_input != 2 || n < 0)
     {
         printf("Error: Wrong Input");
         return -100;
     }
-    unsigned int unsigned_x = signed_x;
 
     for (int i = 0; i < n; ++i)
     {
-        unsigned_x <<= 1;
+        x <<= 1;
     }
     printf("Result: ");
-    print_binary(unsigned_x);
+    print_binary(x);
     return 0;
 }
 
