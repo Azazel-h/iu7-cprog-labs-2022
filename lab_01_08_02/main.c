@@ -9,7 +9,7 @@ int main(void)
     uint32_t x;
     int n, check_input;
     check_input = scanf("%u %d", &x, &n);
-    if (check_input != 2 || n < 0)
+    if (check_input != 2)
     {
         printf("Error: Wrong Input");
         return -100;
