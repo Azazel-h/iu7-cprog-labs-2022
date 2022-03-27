@@ -8,8 +8,8 @@ int main(void)
 {
     uint32_t x;
     int n, check_input;
-    check_input = scanf("%u %d", &x, &n);
-    if (check_input != 2)
+    check_input = scanf("%u%d", &x, &n);
+    if (check_input != 2 || n < 0)
     {
         printf("Error: Wrong Input");
         return -100;
@@ -22,9 +22,13 @@ int main(void)
 
 void print_binary(uint32_t n)
 {
-    if (n > 1)
-        print_binary(n / 2);
-    printf("%d", n % 2);
+    for (int c = 31; c >= 0; --c)
+    {
+        if ((n >> c) & 1)
+            printf("1");
+        else
+            printf("0");
+    }
 }
 
 uint32_t bit_rol(uint32_t x, int n)
