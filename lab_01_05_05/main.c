@@ -1,6 +1,5 @@
 #include <stdio.h>
 #define INPUT_ERROR_CODE -100
-#define POWER_ERROR -101
 
 void print_number(int number);
 int count_digits(int number);
@@ -47,8 +46,6 @@ int power(int number, int power)
     if (power > 0)
         for (int i = 0; i < power; ++i)
             powered_number *= number;
-    else
-        return POWER_ERROR;
     return number;
 }
 

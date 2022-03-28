@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #define INPUT_ERROR_CODE -100
+#define OK_STATUS_CODE 0
 
 double calculate_new(double x, int n);
 double calculate_g_x(double sum, int n);
@@ -9,6 +10,7 @@ int main(void)
 {
     double sum = 0, x;
     int num_of_x = 0, check_input;
+    int status_code = OK_STATUS_CODE;
 
     printf("Введите член последовательности: ");
     check_input = scanf("%lf", &x);
@@ -22,10 +24,11 @@ int main(void)
         printf("Введите член последовательности: ");
         check_input = scanf("%lf", &x);
         if (check_input != 1)
-            return INPUT_ERROR_CODE;
+            status_code = INPUT_ERROR_CODE;
     }
-    printf("Результат g(x): %lf", calculate_g_x(sum, num_of_x));
-    return 0;
+    if (status_code == OK_STATUS_CODE)
+        printf("Результат g(x): %lf", calculate_g_x(sum, num_of_x));
+    return status_code;
 }
 
 double calculate_new(double x, int n)
