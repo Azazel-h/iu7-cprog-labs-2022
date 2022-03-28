@@ -25,8 +25,10 @@ int main(void)
         printf("Введите член последовательности: ");
         check_input = scanf("%lf", &x);
         if (check_input != 1)
+        {
             status_code = INPUT_ERROR_CODE;
             break;
+        }
     }
     if (status_code == OK_STATUS_CODE)
         printf("Результат g(x): %lf", calculate_g_x(sum, num_of_x));
