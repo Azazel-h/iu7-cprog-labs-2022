@@ -23,8 +23,11 @@ int main(void)
     if (check_first_inp != 4 || check_second_inp != 4 || (px == qx && py == qy) || (rx == sx && ry == sy))
         status_code = INPUT_ERROR_CODE;
 
-    printf("Результат: ");
-    printf("%d", intersect_main(px, py, qx, qy, rx, ry, sx, sy));
+    if (status_code == OK_STATUS_CODE)
+    {
+        printf("Результат: ");
+        printf("%d", intersect_main(px, py, qx, qy, rx, ry, sx, sy));
+    }
     return status_code;
 }
 

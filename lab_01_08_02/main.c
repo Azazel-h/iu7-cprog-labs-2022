@@ -19,7 +19,8 @@ int main(void)
         status_code = INPUT_ERROR_CODE;
     }
 
-    if (status_code == OK_STATUS_CODE) {
+    if (status_code == OK_STATUS_CODE)
+    {
         x = bit_rol(x, n);
         printf("Result: ");
         print_binary(x);

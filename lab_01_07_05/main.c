@@ -19,12 +19,15 @@ int main(void)
     check_inp = scanf("%lf%lf", &x, &eps);
 
     if (check_inp != 2 || fabs(x) >= 1 || fabs(eps) > 1 || eps < 0)
-        status_code INPUT_ERROR_CODE;
+        status_code = INPUT_ERROR_CODE;
 
-    double s_x = calculate_s_x(x, eps), f_x = calculate_f_x(x);
+    if (status_code == OK_STATUS_CODE)
+    {
+        double s_x = calculate_s_x(x, eps), f_x = calculate_f_x(x);
 
-    printf("Результат s(x), f(x), AbsoluteError, RelativeError: %f %f %f %f", s_x, f_x, calculate_absolute(f_x, s_x),
-    calculate_relative(f_x, s_x));
+        printf("Результат s(x), f(x), AbsoluteError, RelativeError: %f %f %f %f", s_x, f_x,
+        calculate_absolute(f_x, s_x), calculate_relative(f_x, s_x));
+    }
     return status_code;
 }
 
