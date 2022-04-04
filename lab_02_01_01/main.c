@@ -11,7 +11,7 @@ int main(void)
     int status_code = OK, check_input, n;
 
     check_input = scanf("%d", &n);
-    if (check_input != 1)
+    if (check_input != 1 || n < 1 || n > 10)
         status_code = INPUT_ERROR;
 
     for (int i = 0; i < n; ++i)
