@@ -3,27 +3,32 @@
 #define OK 0
 #define INPUT_ERROR -100
 
-int find_product(int *arr);
+int find_product(int *arr, int n);
 
 int main(void)
 {
-    int status_code = OK, check_input;
     int arr[STANDARD_SIZE];
-    for (int i = 0; i < STANDARD_SIZE; ++i)
+    int status_code = OK, check_input, n;
+
+    check_input = scanf("%d", &n);
+    if (check_input != 1)
+        status_code = INPUT_ERROR;
+
+    for (int i = 0; i < n; ++i)
     {
         check_input = scanf("%d", arr + i);
         if (check_input != 1)
             status_code = INPUT_ERROR;
     }
     if (status_code == OK)
-        printf("%d", find_product(arr));
+        printf("%d", find_product(arr, n));
     return status_code;
 }
 
-int find_product(int *arr)
+int find_product(int *arr, int n)
 {
     int product = 1;
-    for (int i = 0; i < STANDARD_SIZE; ++i)
+    for (int i = 0; i < n; ++i)
     {
         if (arr[i] % 2 != 0)
             product *= arr[i];
