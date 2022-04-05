@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <stddef.h>
-#include <stdint.h>
+#include <stdlib.h>
 
 #define STANDARD_SIZE 10
 #define OK 0
