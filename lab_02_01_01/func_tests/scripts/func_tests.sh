@@ -31,7 +31,6 @@ num=1
 echo "----NEGATIVE-----"
 while [[ -f "../data/neg_$(printf "%02d" $num)_in.txt" ]]; do
   file_in="../data/neg_$(printf "%02d" $num)_in.txt"
-  file_out="../data/neg_$(printf "%02d" $num)_out.txt"
   file_args="../data/neg_$(printf "%02d" $num)_args.txt"
   args=""
 
