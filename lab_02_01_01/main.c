@@ -14,7 +14,7 @@ int main(void)
     int status_code = OK, check_input;
     size_t n;
 
-    check_input = scanf("%ld", &n);
+    check_input = scanf("%zu", &n);
     if (check_input != 1 || n < 1 || n > 10)
         status_code = INPUT_ERROR;
 
