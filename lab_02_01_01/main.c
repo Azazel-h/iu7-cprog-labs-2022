@@ -15,9 +15,8 @@ int main(void)
     size_t n;
 
     check_input = scanf("%zu", &n);
-    if (check_input != 1 || (n < 1 || n > 10)) {
+    if (check_input != 1 || (n < 1 || n > 10))
         status_code = INPUT_ERROR;
-    }
 
     if (status_code == OK && read_array(arr, n) == OK)
         status_code = find_product(arr, n, &product);
