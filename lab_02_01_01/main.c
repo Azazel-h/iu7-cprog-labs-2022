@@ -19,8 +19,6 @@ int main(void)
 
     if (status_code == OK && read_array(arr, n) == OK)
         status_code = find_product(arr, n, &product);
-    else
-        status_code = INPUT_ERROR;
 
     if (status_code == OK)
         printf("%d", product);
