@@ -39,17 +39,13 @@ int read_array(int *arr, int n)
 
 int find_product(int *arr, int n, int *product)
 {
-    int is_odd = 0, status_code = OK;
+    int status_code = OK;
     for (int i = 0; i < n; ++i)
     {
         if (arr[i] % 2 != 0)
         {
             *product *= arr[i];
-            if (!is_odd)
-                is_odd = 1;
         }
     }
-    if (!is_odd)
-        status_code = INPUT_ERROR;
     return status_code;
 }
