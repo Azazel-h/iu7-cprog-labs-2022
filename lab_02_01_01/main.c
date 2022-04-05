@@ -10,16 +10,15 @@ int find_product(int *arr, size_t n, int *product);
 
 int main(void)
 {
-    int arr[STANDARD_SIZE], product = 1;
+    int arr[STANDARD_SIZE], product = 1, n;
     int status_code = OK, check_input;
-    size_t n;
 
-    check_input = scanf("%zu", &n);
+    check_input = scanf("%d", &n);
     if (check_input != 1 || (n < 1 || n > 10))
         status_code = INPUT_ERROR;
 
-    if (status_code == OK && read_array(arr, n) == OK)
-        status_code = find_product(arr, n, &product);
+    if (status_code == OK && read_array(arr, (size_t) n) == OK)
+        status_code = find_product(arr, (size_t) n, &product);
 
     if (status_code == OK)
         printf("%d", product);
