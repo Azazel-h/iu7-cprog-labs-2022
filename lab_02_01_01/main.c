@@ -34,7 +34,6 @@ int read_array(int *arr, int n)
         if (check_input != 1)
             status_code = INPUT_ERROR;
     }
-
     return status_code;
 }
 
@@ -46,11 +45,11 @@ int find_product(int *arr, int n, int *product)
         if (arr[i] % 2 != 0)
         {
             *product *= arr[i];
-            is_odd = 1;
+            if (!is_odd)
+                is_odd = 1;
         }
     }
-    if (is_odd != 1)
+    if (!is_odd)
         status_code = INPUT_ERROR;
-
     return status_code;
 }
