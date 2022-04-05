@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stddef.h>
+#include <stdint.h>
+
 #define STANDARD_SIZE 10
 #define OK 0
 #define INPUT_ERROR -100
@@ -45,7 +47,8 @@ int find_product(int *arr, size_t n, int *product)
     int is_odd = 0, status_code = OK;
     for (size_t i = 0; i < n; ++i)
     {
-        if (arr[i] % 2) {
+        if (arr[i] % 2)
+        {
             *product *= arr[i];
             if (!is_odd)
                 is_odd = 1;
