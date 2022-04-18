@@ -5,8 +5,8 @@
 #define OK 0
 #define INPUT_ERROR -100
 
-void read_array(int *arr, size_t n, int *status_code);
-void find_product(int *arr, size_t n, int *product, int *status_code);
+int read_array(int *arr, size_t n);
+int find_product(int *arr, size_t n, int *product);
 
 int main(void)
 {
@@ -17,32 +17,33 @@ int main(void)
     if (check_input != 1 || (n < 1 || n > 10))
         status_code = INPUT_ERROR;
     else
-        read_array(arr, (size_t) n, &status_code);
+        status_code = read_array(arr, (size_t) n);
         if (status_code == OK)
-            find_product(arr, (size_t) n, &product, &status_code);
+            status_code = find_product(arr, (size_t) n, &product);
 
     if (status_code == OK)
         printf("%d", product);
     return status_code;
 }
 
-void read_array(int *arr, size_t n, int *status_code)
+int read_array(int *arr, size_t n)
 {
-    int check_input;
+    int check_input, status_code = OK;
     for (size_t i = 0; i < n; ++i)
     {
         check_input = scanf("%d", arr + i);
         if (check_input != 1)
         {
-            *status_code = INPUT_ERROR;
+            status_code = INPUT_ERROR;
             break;
         }
     }
+    return status_code;
 }
 
-void find_product(int *arr, size_t n, int *product, int *status_code)
+int find_product(int *arr, size_t n, int *product)
 {
-    int is_odd = 0;
+    int is_odd = 0, status_code = OK;
     for (size_t i = 0; i < n; ++i)
     {
         if (arr[i] % 2)
@@ -53,6 +54,7 @@ void find_product(int *arr, size_t n, int *product, int *status_code)
         }
     }
     if (!is_odd)
-        *status_code = INPUT_ERROR;
+        status_code = INPUT_ERROR;
+    return status_code;
 }
 

@@ -18,9 +18,15 @@ while [[ -f "../data/pos_$(printf "%02d" $num)_in.txt" ]]; do
   status_code=$?
 
   if [[ $status_code == 0 ]]; then
-    printf "SUCCESS | Test №%s\n" $num
-  else
-    printf "FAILED  | Test №%s\n" $num
+    printf "SUCCESS | Test №%s | MEMORY OK\n" $num
+  elif [[ $status_code == 1 ]]; then
+    printf "SUCCESS | Test №%s | MEMORY ERROR\n" $num
+    fails=$((fails + 1))
+  elif [[ $status_code == 2 ]]; then
+    printf "FAILED  | Test №%s | MEMORY OK\n" $num
+    fails=$((fails + 1))
+  elif [[ $status_code == 3 ]]; then
+    printf "FAILED  | Test №%s | MEMORY ERROR\n" $num
     fails=$((fails + 1))
   fi
 
@@ -41,10 +47,16 @@ while [[ -f "../data/neg_$(printf "%02d" $num)_in.txt" ]]; do
   ./neg_case.sh "$file_in" "$args"
   status_code=$?
 
-  if [[ $status_code != 0 ]]; then
-    printf "SUCCESS | Test №%s\n" $num
-  else
-    printf "FAILED  | Test №%s\n" $num
+  if [[ $status_code == 2 ]]; then
+    printf "SUCCESS | Test №%s | MEMORY OK\n" $num
+  elif [[ $status_code == 3 ]]; then
+    printf "SUCCESS | Test №%s | MEMORY ERROR\n" $num
+    fails=$((fails + 1))
+  elif [[ $status_code == 1 ]]; then
+    printf "FAILED  | Test №%s | MEMORY OK\n" $num
+    fails=$((fails + 1))
+  elif [[ $status_code == 2 ]]; then
+    printf "FAILED  | Test №%s | MEMORY ERROR\n" $num
     fails=$((fails + 1))
   fi
 
