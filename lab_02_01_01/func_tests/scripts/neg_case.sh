@@ -15,20 +15,20 @@ if [[ -n "$USE_VALGRIND" ]]; then
         memory_error=1
     fi
 else
-    (../../main.o "$_args" > "real_out.txt") < "$file_in"
+    (../../app.exe "$_args" > "real_out.txt") < "$file_in"
 fi
 
 status_code=$?
-if  [[ $status_code == 0 ]]; then
+if [[ $status_code == 0 ]]; then
+    if [[ $memory_error == 0 ]]; then
+        exit 0
+    else
+        exit 1
+    fi
+else
     if [[ $memory_error == 0 ]]; then
         exit 2
     else
         exit 3
-    fi
-else
-    if [[ $memory_error == 1 ]]; then
-        exit 0
-    else
-        exit 1
     fi
 fi

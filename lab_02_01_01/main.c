@@ -1,60 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define STANDARD_SIZE 10
+#define N 10
 #define OK 0
 #define INPUT_ERROR -100
+#define SIZE_ERROR -200
+#define SIZE_INPUT_ERROR -300
+#define INVALID_ERROR -400
 
-int read_array(int *arr, size_t n);
-int find_product(int *arr, size_t n, int *product);
-
-int main(void)
+typedef struct
 {
-    int arr[STANDARD_SIZE], product = 1, n;
-    int status_code = OK, check_input;
+    size_t len;
+    int nums[N];
+} array;
 
-    check_input = scanf("%d", &n);
-    if (check_input != 1 || (n < 1 || n > 10))
-        status_code = INPUT_ERROR;
-    else
-        status_code = read_array(arr, (size_t) n);
-        if (status_code == OK)
-            status_code = find_product(arr, (size_t) n, &product);
+int read_array(array *arr);
+int is_valid(array *arr);
+int find_product(array *arr);
 
-    if (status_code == OK)
-        printf("%d", product);
+int main()
+{
+    int status_code = OK;
+    array arr;
+    if (!((status_code = read_array(&arr)) || (status_code = is_valid(&arr))))
+        printf("%d\n", find_product(&arr));
     return status_code;
 }
 
-int read_array(int *arr, size_t n)
+int read_array(array *arr)
 {
-    int check_input, status_code = OK;
-    for (size_t i = 0; i < n; ++i)
+    int status_code = OK;
+    if (scanf("%lu", &arr->len) != 1)
+        status_code = SIZE_INPUT_ERROR;
+    else if (1 < arr->len || arr->len > N)
+        status_code = SIZE_ERROR;
+    else
     {
-        check_input = scanf("%d", arr + i);
-        if (check_input != 1)
+        for (size_t i = 0; i < arr->len; ++i)
         {
-            status_code = INPUT_ERROR;
-            break;
+            if (scanf("%d", arr->nums + i) != 1)
+            {
+                status_code = INPUT_ERROR;
+                i = arr->len;
+            }
         }
     }
     return status_code;
 }
 
-int find_product(int *arr, size_t n, int *product)
+int is_valid(array *arr)
 {
-    int is_odd = 0, status_code = OK;
-    for (size_t i = 0; i < n; ++i)
+    int status_code = INVALID_ERROR;
+    for (size_t i = 0; i < arr->len; ++i)
+        if (!(arr->nums[i] % 2))
+            status_code = OK;
+    return status_code;
+}
+
+int find_product(array *arr)
+{
+    int is_odd = 0, product = 1;
+    for (size_t i = 0; i < arr->len; ++i)
     {
-        if (arr[i] % 2)
+        if (arr->nums[i] % 2)
         {
-            *product *= arr[i];
+            product *= arr->nums[i];
             if (!is_odd)
                 is_odd = 1;
         }
     }
-    if (!is_odd)
-        status_code = INPUT_ERROR;
-    return status_code;
+    return product;
 }
 
