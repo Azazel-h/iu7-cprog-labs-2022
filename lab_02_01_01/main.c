@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 #define N 10
 #define OK 0
-#define INPUT_ERROR -100
-#define SIZE_ERROR -200
-#define SIZE_INPUT_ERROR -300
-#define INVALID_ERROR -400
+#define INPUT_ERROR -11
+#define SIZE_ERROR -12
+#define SIZE_INPUT_ERROR -13
+#define INVALID_ERROR -14
 
 typedef struct
 {
@@ -30,9 +31,9 @@ int main()
 int read_array(array *arr)
 {
     int status_code = OK;
-    if (scanf("%lu", &arr->len) != 1)
+    if (scanf("%zu", &(arr->len)) != 1)
         status_code = SIZE_INPUT_ERROR;
-    else if (1 < arr->len || arr->len > N)
+    else if (arr->len < 1 || arr->len > N)
         status_code = SIZE_ERROR;
     else
     {
@@ -52,7 +53,7 @@ int is_valid(array *arr)
 {
     int status_code = INVALID_ERROR;
     for (size_t i = 0; i < arr->len; ++i)
-        if (!(arr->nums[i] % 2))
+        if (*(arr->nums + i) % 2)
             status_code = OK;
     return status_code;
 }
@@ -62,7 +63,7 @@ int find_product(array *arr)
     int is_odd = 0, product = 1;
     for (size_t i = 0; i < arr->len; ++i)
     {
-        if (arr->nums[i] % 2)
+        if (*(arr->nums + i) % 2)
         {
             product *= arr->nums[i];
             if (!is_odd)
