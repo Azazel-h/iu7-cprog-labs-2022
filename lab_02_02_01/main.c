@@ -20,7 +20,7 @@ typedef struct
 } array_t;
 
 int read_array(array_t *arr);
-int print_array(array_t *arr);
+void print_array(array_t *arr);
 int is_prime(const int *n);
 int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const int *n));
 
@@ -29,7 +29,7 @@ int main()
     int status_code = OK;
     array_t arr, prime_arr = { .len = 0 };
     if (!((status_code = read_array(&arr)) || (status_code = form_new_array(&arr, &prime_arr, is_prime))))
-        status_code = print_array(&prime_arr);
+        print_array(&prime_arr);
     return status_code;
 }
 
@@ -55,14 +55,12 @@ int read_array(array_t *arr)
 }
 
 
-int print_array(array_t *arr)
+void print_array(array_t *arr)
 {
-    int status_code = OK;
     for (size_t i = 0; i < arr->len; ++i)
     {
         printf("%d ", *(arr->nums + i));
     }
-    return status_code;
 }
 
 

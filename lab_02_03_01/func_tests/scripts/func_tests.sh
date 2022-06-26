@@ -52,10 +52,10 @@ while [[ -f "../data/neg_$(printf "%02d" $num)_in.txt" ]]; do
   elif [[ $status_code == 3 ]]; then
     printf "SUCCESS | Test №%s | MEMORY ERROR\n" $num
     fails=$((fails + 1))
-  elif [[ $status_code == 1 ]]; then
+  elif [[ $status_code == 0 ]]; then
     printf "FAILED  | Test №%s | MEMORY OK\n" $num
     fails=$((fails + 1))
-  elif [[ $status_code == 2 ]]; then
+  elif [[ $status_code == 1 ]]; then
     printf "FAILED  | Test №%s | MEMORY ERROR\n" $num
     fails=$((fails + 1))
   fi
