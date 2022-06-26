@@ -42,9 +42,9 @@ int main()
 
 void swap(int *const first, int *const second)
 {
-    int _temp = *first;
+    int temp_ = *first;
     *first = *second;
-    *second = _temp;
+    *second = temp_;
 }
 
 
@@ -81,10 +81,10 @@ void print_array(array_t *arr)
 
 int can_paste_after(const int *const n)
 {
-    int _can = FALSE;
+    int can_ = FALSE;
     if (*n % 3 == 0)
-        _can = TRUE;
-    return _can;
+        can_ = TRUE;
+    return can_;
 }
 
 
@@ -98,17 +98,17 @@ void paste_in_array(array_t *arr, const int *const n)
 int form_new_fib_array(array_t *main_arr, array_t *new_array, int (*check)(const int *n))
 {
     int status_code = OK;
-    int _fib_0 = 0, _fib_1 = 1, _fib_sum;
+    int fib_0_ = 0, fib_1_ = 1, fib_sum_;
 
     for (size_t i = 0; i < main_arr->len; ++i)
     {
         paste_in_array(new_array, (main_arr->nums + i));
         if (check((main_arr->nums + i)))
         {
-            paste_in_array(new_array, &_fib_0);
-            _fib_sum = _fib_0 + _fib_1;
-            swap(&_fib_0, &_fib_1);
-            _fib_1 = _fib_sum;
+            paste_in_array(new_array, &fib_0_);
+            fib_sum_ = fib_0_ + fib_1_;
+            swap(&fib_0_, &fib_1_);
+            fib_1_ = fib_sum_;
         }
     }
     if (new_array->len == 0)
