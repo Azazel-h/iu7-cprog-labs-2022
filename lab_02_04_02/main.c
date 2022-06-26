@@ -31,7 +31,7 @@ void swap(int *const first, int *const second);
 int main()
 {
     int status_code = OK;
-    array_t arr = {.len = 0};
+    array_t arr = { .len = 0 };
     if (((status_code = read_array(&arr)) == OK || status_code == INPUT_OVERFLOW))
     {
         selection_sort(&arr);
@@ -55,18 +55,21 @@ int read_array(array_t *arr)
     while (arr->len < N && scanf("%d", arr->nums + arr->len) == 1)
         arr->len++;
 
+    if (arr->len == 0)
+        status_code = SIZE_ERROR;
     if (arr->len >= N)
         status_code = INPUT_OVERFLOW;
+
     return status_code;
 }
 
 
 void selection_sort(array_t *arr)
 {
-    for (size_t i = 0; i < arr->len - 1; i++)
+    for (size_t i = 0; i < arr->len - 1; ++i)
     {
         size_t min_index = i;
-        for (size_t j = i + 1; j < arr->len; j++)
+        for (size_t j = i + 1; j < arr->len; ++j)
             if (*(arr->nums + j) < *(arr->nums + min_index))
                 min_index = j;
         if (min_index != i)
@@ -77,11 +80,9 @@ void selection_sort(array_t *arr)
 
 int print_array(array_t *arr)
 {
-    int status_code = OK;
     for (size_t i = 0; i < arr->len; ++i)
     {
         printf("%d ", *(arr->nums + i));
     }
-    return status_code;
 }
 
