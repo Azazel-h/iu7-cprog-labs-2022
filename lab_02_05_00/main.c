@@ -23,7 +23,7 @@ void calculate_result(array_t *arr, int *max);
 
 int main()
 {
-    int status_code = OK, result = 0;
+    int status_code = OK, result;
     array_t arr = { .start = arr.nums, .end = arr.nums };
     if ((status_code = read_array(&arr)) == OK)
     {
@@ -59,16 +59,16 @@ int read_array(array_t *arr)
 }
 
 
-void calculate_result(array_t *arr, int *const max)
+void calculate_result(array_t *arr, int *max)
 {
     *max = *arr->start;
-    for (int *temp_start_ = arr->start, *temp_end_ = arr->end; temp_start_ < arr->start + (arr->end - arr->start + 1) / 2; ++temp_start_)
+    int *mid_pointer_ = arr->start + (arr->end - arr->start + 1) / 2;
+    for (int *temp_start_ = arr->start, *temp_end_ = arr->end - 1; temp_start_ < mid_pointer_; ++temp_start_, --temp_end_)
     {
-        int sum = *temp_start_ + *--temp_end_;
+        int sum = *temp_start_ + *temp_end_;
         if (sum > *max)
         {
             *max = sum;
         }
     }
 }
-

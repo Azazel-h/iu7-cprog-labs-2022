@@ -52,13 +52,16 @@ void swap(int *const first, int *const second)
 int read_array(array_t *arr)
 {
     int status_code = OK;
-    while (arr->len < N && scanf("%d", arr->nums + arr->len) == 1)
+    while (arr->len <= N && scanf("%d", arr->nums + arr->len) == 1)
         arr->len++;
 
     if (arr->len == 0)
         status_code = SIZE_ERROR;
-    if (arr->len >= N)
+    if (arr->len > N)
+    {
         status_code = INPUT_OVERFLOW;
+        arr->len = N;
+    }
 
     return status_code;
 }
