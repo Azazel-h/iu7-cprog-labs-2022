@@ -21,10 +21,10 @@ typedef struct
 } array_t;
 
 int read_array(array_t *arr);
-int print_array(array_t *arr);
 int is_prime(const int *n);
 int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const int *n));
 
+void print_array(array_t *arr);
 void selection_sort(array_t *arr);
 void swap(int *const first, int *const second);
 
@@ -78,11 +78,10 @@ void selection_sort(array_t *arr)
 }
 
 
-int print_array(array_t *arr)
+void print_array(array_t *arr)
 {
     for (size_t i = 0; i < arr->len; ++i)
     {
         printf("%d ", *(arr->nums + i));
     }
 }
-

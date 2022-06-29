@@ -4,13 +4,9 @@
 
 #define N 10
 #define OK 0
-#define FALSE 0
-#define TRUE 1
 #define INPUT_ERROR -11
-#define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
-#define INVALID_ERROR -15
 
 
 typedef struct
@@ -69,7 +65,6 @@ void calculate_result(array_t *arr, int *const max)
     for (int *temp_start_= arr->start, *temp_end_ = arr->end; temp_start_ < arr->start + (arr->end - arr->start + 1) / 2; ++temp_start_)
     {
         int sum = *temp_start_ + *--temp_end_;
-        // printf("%d + %d = %d\n", *temp_start_, *temp_end_, sum);
         if (sum > *max)
         {
             *max = sum;
