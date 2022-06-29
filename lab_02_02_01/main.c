@@ -21,8 +21,8 @@ typedef struct
 
 int read_array(array_t *arr);
 void print_array(array_t *arr);
-int is_prime(const int *n);
-int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const int *n));
+int is_prime(const int n);
+int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const int n));
 
 int main()
 {
@@ -64,24 +64,24 @@ void print_array(array_t *arr)
 }
 
 
-int is_prime(const int *n)
+int is_prime(const int n)
 {
     int is_prime = TRUE;
-    int end = (int) sqrt(*n) + 1;
+    int end = (int) sqrt(n) + 1;
     for (int i = 2; i < end; ++i)
-        if (*n % i == 0)
+        if (n % i == 0)
             is_prime = FALSE;
-    if (*n == 1 || *n == 0)
+    if (n < 2)
         is_prime = FALSE;
     return is_prime;
 }
 
-int form_new_array(array_t *main_arr, array_t *new_array, int (*check)(const int *n))
+int form_new_array(array_t *main_arr, array_t *new_array, int (*check)(const int n))
 {
     int status_code = OK;
     for (size_t i = 0; i < main_arr->len; ++i)
     {
-        if (check((main_arr->nums + i)))
+        if (check(*(main_arr->nums + i)))
         {
             *(new_array->nums + new_array->len) = *(main_arr->nums + i);
             new_array->len++;

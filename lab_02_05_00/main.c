@@ -62,7 +62,7 @@ int read_array(array_t *arr)
 void calculate_result(array_t *arr, int *const max)
 {
     *max = *arr->start;
-    for (int *temp_start_= arr->start, *temp_end_ = arr->end; temp_start_ < arr->start + (arr->end - arr->start + 1) / 2; ++temp_start_)
+    for (int *temp_start_ = arr->start, *temp_end_ = arr->end; temp_start_ < arr->start + (arr->end - arr->start + 1) / 2; ++temp_start_)
     {
         int sum = *temp_start_ + *--temp_end_;
         if (sum > *max)
