@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stddef.h>
-#include <math.h>
+
 
 #define N 10
 #define MAX_N 20
@@ -14,6 +13,7 @@
 #define SIZE_INPUT_ERROR -14
 #define INVALID_ERROR -15
 
+
 typedef struct
 {
     size_t len;
@@ -25,6 +25,7 @@ int read_array(array_t *arr);
 void print_array(array_t *arr);
 int can_paste_after(const int *const n);
 int form_new_fib_array(array_t *main_arr, array_t*new_array, int (*check)(const int *n));
+
 
 void swap(int *const first, int *const second);
 void paste_in_array(array_t *arr, const int *const n);

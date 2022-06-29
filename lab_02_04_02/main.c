@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stddef.h>
-#include <math.h>
+
 
 #define N 10
 #define OK 0
@@ -14,20 +13,24 @@
 #define INVALID_ERROR -15
 #define INPUT_OVERFLOW 100
 
+
 typedef struct
 {
     size_t len;
     int nums[N];
 } array_t;
 
+
 int read_array(array_t *arr);
 int is_prime(const int *n);
 int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const int *n));
+
 
 void print_array(array_t *arr);
 void selection_sort(array_t *arr);
 void swap(int *const first, int *const second);
 void get_errors(int status_code);
+
 
 int main()
 {

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stddef.h>
 
 #define N 10
@@ -98,4 +97,3 @@ void get_errors(int status_code)
             break;
     }
 }
-
