@@ -5,13 +5,13 @@
 #define N 10
 #define OK 0
 #define INPUT_ERROR -11
-#define SIZE_ERROR -13
-#define SIZE_INPUT_ERROR -14
+#define SIZE_ERROR -12
+#define SIZE_INPUT_ERROR -13
 
 
 typedef struct
 {
-    int nums[N];
+    int *nums;
     int *start;
     int *end;
 } array_t;
@@ -23,12 +23,12 @@ void calculate_result(array_t *arr, int *max);
 
 int main()
 {
-    int status_code = OK, result;
-    array_t arr = { .start = arr.nums, .end = arr.nums };
+    int status_code = OK, result, nums[N];
+    array_t arr = { .nums = nums, .start = arr.nums, .end = arr.nums };
     if ((status_code = read_array(&arr)) == OK)
     {
         calculate_result(&arr, &result);
-        printf("%d\n", result);
+        printf("%d", result);
     }
     return status_code;
 }
