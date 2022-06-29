@@ -1,10 +1,13 @@
-*.idea
-.DS_Store
+.idea
+cmake-build-debug
 CMakeLists.txt
 *.exe
 *.out
 *.o
 *.pch
 *.gch
-
-cmake-build-debug/
+*.gcov
+*.gcda
+*.gcno
+real_out.txt
+.DS_Store
