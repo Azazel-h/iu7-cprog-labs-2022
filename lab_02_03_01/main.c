@@ -28,13 +28,16 @@ int form_new_fib_array(array_t *main_arr, array_t*new_array, int (*check)(const 
 
 void swap(int *const first, int *const second);
 void paste_in_array(array_t *arr, const int *const n);
+void get_errors(int status_code);
 
 
 int main()
 {
     int status_code = OK;
     array_t arr, fib_arr = { .len = 0 };
-    if (!((status_code = read_array(&arr)) || (status_code = form_new_fib_array(&arr, &fib_arr, can_paste_after))))
+    if ((status_code = read_array(&arr)) || (status_code = form_new_fib_array(&arr, &fib_arr, can_paste_after)))
+        get_errors(status_code);
+    else
         print_array(&fib_arr);
     return status_code;
 }
@@ -115,4 +118,27 @@ int form_new_fib_array(array_t *main_arr, array_t *new_array, int (*check)(const
         status_code = INPUT_ERROR;
 
     return status_code;
+}
+
+
+void get_errors(int status_code)
+{
+    switch (status_code)
+    {
+        case INPUT_ERROR:
+            printf("ERROR: Bad input\n");
+            break;
+        case SIZE_ERROR:
+            printf("ERROR: Bad array size\n");
+            break;
+        case SIZE_INPUT_ERROR:
+            printf("ERROR: Bad input size\n");
+            break;
+        case INVALID_ERROR:
+            printf("ERROR: No one valid element\n");
+            break;
+        default:
+            printf("ERROR: Unknown error\n");
+            break;
+    }
 }

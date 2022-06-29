@@ -24,11 +24,15 @@ void print_array(array_t *arr);
 int is_prime(const int n);
 int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const int n));
 
+void get_errors(int status_code);
+
 int main()
 {
     int status_code = OK;
     array_t arr, prime_arr = { .len = 0 };
-    if (!((status_code = read_array(&arr)) || (status_code = form_new_array(&arr, &prime_arr, is_prime))))
+    if ((status_code = read_array(&arr)) || (status_code = form_new_array(&arr, &prime_arr, is_prime)))
+        get_errors(status_code);
+    else
         print_array(&prime_arr);
     return status_code;
 }
@@ -91,4 +95,26 @@ int form_new_array(array_t *main_arr, array_t *new_array, int (*check)(const int
         status_code = INPUT_ERROR;
 
     return status_code;
+}
+
+void get_errors(int status_code)
+{
+    switch (status_code)
+    {
+        case INPUT_ERROR:
+            printf("ERROR: Bad input\n");
+            break;
+        case SIZE_ERROR:
+            printf("ERROR: Bad array size\n");
+            break;
+        case SIZE_INPUT_ERROR:
+            printf("ERROR: Bad input size\n");
+            break;
+        case INVALID_ERROR:
+            printf("ERROR: No one valid element\n");
+            break;
+        default:
+            printf("ERROR: Unknown error\n");
+            break;
+    }
 }

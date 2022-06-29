@@ -27,6 +27,7 @@ int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const i
 void print_array(array_t *arr);
 void selection_sort(array_t *arr);
 void swap(int *const first, int *const second);
+void get_errors(int status_code);
 
 int main()
 {
@@ -37,6 +38,8 @@ int main()
         selection_sort(&arr);
         print_array(&arr);
     }
+    else
+        get_errors(status_code);
     return status_code;
 }
 
@@ -86,5 +89,28 @@ void print_array(array_t *arr)
     for (size_t i = 0; i < arr->len; ++i)
     {
         printf("%d ", *(arr->nums + i));
+    }
+}
+
+
+void get_errors(int status_code)
+{
+    switch (status_code)
+    {
+        case INPUT_ERROR:
+            printf("ERROR: Bad input\n");
+            break;
+        case SIZE_ERROR:
+            printf("ERROR: Bad array size\n");
+            break;
+        case SIZE_INPUT_ERROR:
+            printf("ERROR: Bad input size\n");
+            break;
+        case INVALID_ERROR:
+            printf("ERROR: No one valid element\n");
+            break;
+        default:
+            printf("ERROR: Unknown error\n");
+            break;
     }
 }

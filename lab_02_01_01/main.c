@@ -19,11 +19,15 @@ int read_array(array *arr);
 int is_valid(array *arr);
 int find_product(array *arr);
 
+void get_errors(int status_code);
+
 int main()
 {
     int status_code = OK;
     array arr;
-    if (!((status_code = read_array(&arr)) || (status_code = is_valid(&arr))))
+    if ((status_code = read_array(&arr)) || (status_code = is_valid(&arr)))
+        get_errors(status_code);
+    else
         printf("%d\n", find_product(&arr));
     return status_code;
 }
@@ -71,5 +75,27 @@ int find_product(array *arr)
         }
     }
     return product;
+}
+
+void get_errors(int status_code)
+{
+    switch (status_code)
+    {
+        case INPUT_ERROR:
+            printf("ERROR: Bad input\n");
+            break;
+        case SIZE_ERROR:
+            printf("ERROR: Bad array size\n");
+            break;
+        case SIZE_INPUT_ERROR:
+            printf("ERROR: Bad input size\n");
+            break;
+        case INVALID_ERROR:
+            printf("ERROR: No one valid element\n");
+            break;
+        default:
+            printf("ERROR: Unknown error\n");
+            break;
+    }
 }
 
