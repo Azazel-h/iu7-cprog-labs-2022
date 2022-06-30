@@ -7,6 +7,7 @@
 #define N 10
 #define OK 0
 #define INPUT_ERROR -11
+#define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
 
@@ -29,6 +30,7 @@ typedef struct
 int read_array(array_t *arr);
 int read_matrix(matrix_t *matrix);
 int sum_of_digits(int number);
+int refactor_matrix(matrix_t *matrix);
 
 
 void print_array(array_t *arr);
@@ -37,18 +39,16 @@ void get_errors(int status_code);
 void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column);
 void delete_row(matrix_t *matrix, size_t row_to_delete);
 void delete_column(matrix_t *matrix, size_t column_to_delete);
-void refactor_matrix(matrix_t *matrix);
 
 
 int main()
 {
     int status_code = OK;
     matrix_t matrix;
-    if ((status_code = read_matrix(&matrix)))
+    if ((status_code = read_matrix(&matrix)) || (status_code = refactor_matrix(&matrix)))
         get_errors(status_code);
     else
     {
-        refactor_matrix(&matrix);
         print_matrix(&matrix);
     }
     return status_code;
@@ -148,12 +148,16 @@ void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column)
 }
 
 
-void refactor_matrix(matrix_t *matrix)
+int refactor_matrix(matrix_t *matrix)
 {
+    int status_code = OK;
     size_t min_row = 0, min_column = 0;
     find_first_sod_min(matrix, &min_row, &min_column);
     delete_column(matrix, min_column);
     delete_row(matrix, min_row);
+    if (!(matrix->rows_count || matrix->columns_count))
+        status_code = OUTPUT_ERROR;
+    return status_code;
 }
 
 
@@ -185,6 +189,9 @@ void get_errors(int status_code)
             break;
         case SIZE_ERROR:
             printf("ERROR: Bad matrix size\n");
+            break;
+        case OUTPUT_ERROR:
+            printf("ERROR: Bad output size\n");
             break;
         case SIZE_INPUT_ERROR:
             printf("ERROR: Bad input size\n");
