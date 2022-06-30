@@ -35,8 +35,8 @@ void print_array(array_t *arr);
 void print_matrix(matrix_t *matrix);
 void get_errors(int status_code);
 void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column);
-void delete_row(matrix_t *matrix, int row_to_delete);
-void delete_column(matrix_t *matrix, int column_to_delete);
+void delete_row(matrix_t *matrix, size_t row_to_delete);
+void delete_column(matrix_t *matrix, size_t column_to_delete);
 void refactor_matrix(matrix_t *matrix);
 
 
@@ -95,7 +95,8 @@ int sum_of_digits(int number)
 {
     int sum = 0;
     number = abs(number);
-    while (number % 10 != 0)
+
+    while (number > 0)
     {
         sum += number % 10;
         number /= 10;
@@ -104,7 +105,7 @@ int sum_of_digits(int number)
 }
 
 
-void delete_row(matrix_t *matrix, int row_to_delete)
+void delete_row(matrix_t *matrix, size_t row_to_delete)
 {
     for (size_t i = row_to_delete; i < matrix->rows_count - 1; ++i)
         *(matrix->rows + i) = *(matrix->rows + i + 1);
@@ -112,17 +113,17 @@ void delete_row(matrix_t *matrix, int row_to_delete)
 }
 
 
-void delete_column(matrix_t *matrix, int column_to_delete)
+void delete_column(matrix_t *matrix, size_t column_to_delete)
 {
     array_t *current_row_nums;
-    for (size_t m = 0; m < matrix->rows_count; ++m)
+    for (size_t n = 0; n < matrix->rows_count; ++n)
     {
-        for (size_t n = column_to_delete; n < matrix->columns_count - 1; ++n)
+        for (size_t m = column_to_delete; m < matrix->columns_count - 1; ++m)
         {
-            current_row_nums = matrix->rows + m;
-            *(current_row_nums->nums + n) = *(current_row_nums->nums + n + 1);
+            current_row_nums = matrix->rows + n;
+            *(current_row_nums->nums + m) = *(current_row_nums->nums + m + 1);
         }
-        (matrix->rows + m)->len--;
+        (matrix->rows + n)->len--;
     }
     matrix->columns_count--;
 }
@@ -131,17 +132,19 @@ void delete_column(matrix_t *matrix, int column_to_delete)
 void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column)
 {
     int min = sum_of_digits(*((matrix->rows)->nums));
-    for (size_t m = 0; m < matrix->rows_count; ++m)
-        for (size_t n = 0; n < matrix->columns_count - 1; ++n)
+    for (size_t n = 0; n < matrix->rows_count; ++n)
+    {
+        for (size_t m = 0; m < matrix->columns_count; ++m)
         {
-            int current_sum = sum_of_digits(*((matrix->rows + m)->nums + n));
+            int current_sum = sum_of_digits(*((matrix->rows + n)->nums + m));
             if (current_sum < min)
             {
                 min = current_sum;
-                *row = m;
-                *column = n;
+                *row = n;
+                *column = m;
             }
         }
+    }
 }
 
 

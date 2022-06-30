@@ -60,9 +60,9 @@ int read_matrix(matrix_t *matrix)
         status_code = SIZE_ERROR;
     else
     {
-        for (size_t m = 0; m < matrix->rows_count; ++m)
+        for (size_t n = 0; n < matrix->rows_count; ++n)
         {
-            array_t *current_row = matrix->rows + m;
+            array_t *current_row = matrix->rows + n;
             current_row->len = matrix->columns_count;
             if ((status_code = read_array(current_row)))
                 break;

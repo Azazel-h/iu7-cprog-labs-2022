@@ -8,10 +8,9 @@ if [[ (! -f "$file_in") || (! -f "$file_out") ]]; then
 fi
 
 output="$(grep -Eo "(-?)([0-9]+)(\.[0-9]+)?" "$file_in")"
-expected_output=$(< "$file_out")
+new_output="$(grep -Eo "(-?)([0-9]+)(\.[0-9]+)?" "$file_out")"
 
-
-if [[ "$output" == "$expected_output" ]]; then
+if [[ "$output" == "$new_output" ]]; then
   exit 0
 else
   exit 1
