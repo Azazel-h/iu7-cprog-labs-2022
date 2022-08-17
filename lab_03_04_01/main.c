@@ -29,13 +29,14 @@ typedef struct
 
 int read_array(array_t *arr);
 int read_matrix(matrix_t *matrix);
-int compare_two_arrays_by_max(array_t *first, array_t *second);
 
-void matrix_bubble_sort(matrix_t *matrix, int (*compare)(array_t *, array_t *));
+
 void print_array(array_t *arr);
 void print_matrix(matrix_t *matrix);
 void get_errors(int status_code);
-void swap(array_t *first, array_t *second);
+void task_swap_process(matrix_t *main_matrix);
+void swap_elements(int *first, int *second);
+void swap_elements_in_range_btw_arrays(size_t start, size_t end, array_t *first, array_t *second);
 
 
 int main()
@@ -46,21 +47,10 @@ int main()
         get_errors(status_code);
     else
     {
-        matrix_bubble_sort(&matrix, compare_two_arrays_by_max);
+        task_swap_process(&matrix);
         print_matrix(&matrix);
     }
     return status_code;
-}
-
-
-void matrix_bubble_sort(matrix_t *matrix, int (*compare)(array_t *, array_t *))
-{
-    for (size_t n = 0; n < matrix->rows_count; ++n)
-        for (size_t m = 0; m < matrix->rows_count - n - 1; ++m)
-        {
-            if (!compare(matrix->rows + m, matrix->rows + m + 1))
-                swap(matrix->rows + m, matrix->rows + m + 1);
-        }
 }
 
 
@@ -100,6 +90,35 @@ int read_array(array_t *arr)
 }
 
 
+void task_swap_process(matrix_t *main_matrix)
+{
+    for (size_t i = 0; i < main_matrix->rows_count / 2; ++i)
+    {
+        array_t *first = main_matrix->rows + i;
+        array_t *second = main_matrix->rows + main_matrix->rows_count - i - 1;
+
+        swap_elements_in_range_btw_arrays(i, main_matrix->columns_count - i, first, second);
+    }
+}
+
+
+void swap_elements_in_range_btw_arrays(size_t start, size_t end, array_t *first, array_t *second)
+{
+    for (size_t i = start; i < end; ++i)
+    {
+        swap_elements(first->nums + i, second->nums + i);
+    }
+}
+
+
+void swap_elements(int *first, int *second)
+{
+    int temp_ = *second;
+    *second = *first;
+    *first = temp_;
+}
+
+
 void print_array(array_t *arr)
 {
     for (size_t i = 0; i < arr->len; ++i)
@@ -117,40 +136,6 @@ void print_matrix(matrix_t *matrix)
         print_array(matrix->rows + m);
     }
 }
-
-
-void swap(array_t *first, array_t *second)
-{
-    array_t temp_ = *second;
-    *second = *first;
-    *first = temp_;
-}
-
-
-int max(array_t *arr)
-{
-    int max_n = *arr->nums, new;
-    for (size_t i = 0; i < arr->len; ++i)
-    {
-        new = *(arr->nums + i);
-        if (new > max_n)
-            max_n = new;
-    }
-    return max_n;
-}
-
-
-int compare_two_arrays_by_max(array_t *first, array_t *second)
-{
-    int first_max = max(first);
-    int second_max = max(second);
-    int is_greater = false;
-
-    if (first_max > second_max)
-        is_greater = true;
-    return is_greater;
-}
-
 
 
 void get_errors(int status_code)
