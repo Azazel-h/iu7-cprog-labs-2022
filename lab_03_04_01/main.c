@@ -36,7 +36,7 @@ void print_matrix(matrix_t *matrix);
 void get_errors(int status_code);
 void task_swap_process(matrix_t *main_matrix);
 void swap_elements(int *first, int *second);
-void swap_elements_in_range_btw_arrays(size_t start, size_t end, array_t *first, array_t *second);
+void swap_elements_in_range(size_t start, size_t end, array_t *first, array_t *second);
 
 
 int main()
@@ -59,7 +59,9 @@ int read_matrix(matrix_t *matrix)
     int status_code = OK;
     if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 2 || matrix->rows_count > N) || (matrix->columns_count < 2 || matrix->columns_count > N))
+    else if ((matrix->rows_count < 2 || matrix->rows_count > N) ||
+        (matrix->columns_count < 2 || matrix->columns_count > N) ||
+        (matrix->rows_count != matrix->columns_count))
         status_code = SIZE_ERROR;
     else
     {
@@ -97,12 +99,12 @@ void task_swap_process(matrix_t *main_matrix)
         array_t *first = main_matrix->rows + i;
         array_t *second = main_matrix->rows + main_matrix->rows_count - i - 1;
 
-        swap_elements_in_range_btw_arrays(i, main_matrix->columns_count - i, first, second);
+        swap_elements_in_range(i, main_matrix->columns_count - i, first, second);
     }
 }
 
 
-void swap_elements_in_range_btw_arrays(size_t start, size_t end, array_t *first, array_t *second)
+void swap_elements_in_range(size_t start, size_t end, array_t *first, array_t *second)
 {
     for (size_t i = start; i < end; ++i)
     {
