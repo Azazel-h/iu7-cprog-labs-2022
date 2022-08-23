@@ -29,26 +29,27 @@ typedef struct
 
 int read_array(array_t *arr);
 int read_matrix(matrix_t *matrix);
-int sum_of_digits(int number);
-int refactor_matrix(matrix_t *matrix);
-
+int count_num_sum(int num);
+int get_task_nums(matrix_t *main_matrix, array_t *res_nums);
 
 void print_array(array_t *arr);
 void print_matrix(matrix_t *matrix);
 void get_errors(int status_code);
-void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column);
-void delete_row(matrix_t *matrix, size_t row_to_delete);
-void delete_column(matrix_t *matrix, size_t column_to_delete);
+void rotl_three(array_t *arr);
+void set_task_nums(matrix_t *main_matrix, array_t *res_nums);
 
 
 int main()
 {
     int status_code = OK;
     matrix_t matrix;
-    if ((status_code = read_matrix(&matrix)) || (status_code = refactor_matrix(&matrix)))
+    array_t result_nums = { .len = 0 };
+    if ((status_code = read_matrix(&matrix)) || (status_code = get_task_nums(&matrix, &result_nums)))
         get_errors(status_code);
     else
     {
+        rotl_three(&result_nums);
+        set_task_nums(&matrix, &result_nums);
         print_matrix(&matrix);
     }
     return status_code;
@@ -91,73 +92,71 @@ int read_array(array_t *arr)
 }
 
 
-int sum_of_digits(int number)
+int count_num_sum(int num)
 {
     int sum = 0;
-    number = abs(number);
-
-    while (number > 0)
+    num = abs(num);
+    while (num > 0)
     {
-        sum += number % 10;
-        number /= 10;
+        sum += abs(num) % 10;
+        num /= 10;
     }
     return sum;
 }
 
 
-void delete_row(matrix_t *matrix, size_t row_to_delete)
+int get_task_nums(matrix_t *main_matrix, array_t *res_nums)
 {
-    for (size_t i = row_to_delete; i < matrix->rows_count - 1; ++i)
-        *(matrix->rows + i) = *(matrix->rows + i + 1);
-    matrix->rows_count--;
-}
-
-
-void delete_column(matrix_t *matrix, size_t column_to_delete)
-{
-    array_t *current_row_nums;
-    for (size_t n = 0; n < matrix->rows_count; ++n)
+    int status_code = INPUT_ERROR;
+    for (size_t m = 0; m < main_matrix->rows_count; ++m)
     {
-        for (size_t m = column_to_delete; m < matrix->columns_count - 1; ++m)
+        for (size_t n = 0; n < main_matrix->columns_count; ++n)
         {
-            current_row_nums = matrix->rows + n;
-            *(current_row_nums->nums + m) = *(current_row_nums->nums + m + 1);
-        }
-        (matrix->rows + n)->len--;
-    }
-    matrix->columns_count--;
-}
-
-
-void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column)
-{
-    int min = sum_of_digits(*((matrix->rows)->nums));
-    for (size_t n = 0; n < matrix->rows_count; ++n)
-    {
-        for (size_t m = 0; m < matrix->columns_count; ++m)
-        {
-            int current_sum = sum_of_digits(*((matrix->rows + n)->nums + m));
-            if (current_sum < min)
+            int new = *((main_matrix->rows + m)->nums + n);
+            if (count_num_sum(new) > 10)
             {
-                min = current_sum;
-                *row = n;
-                *column = m;
+                *(res_nums->nums + res_nums->len) = new;
+                res_nums->len++;
+                status_code = OK;
+            }
+        }
+    }
+    return status_code;
+}
+
+
+void set_task_nums(matrix_t *main_matrix, array_t *res_nums)
+{
+    size_t counter = 0;
+    for (size_t m = 0; m < main_matrix->rows_count; ++m)
+    {
+        for (size_t n = 0; n < main_matrix->columns_count; ++n)
+        {
+            int new = *((main_matrix->rows + m)->nums + n);
+            if (count_num_sum(new) > 10)
+            {
+                *((main_matrix->rows + m)->nums + n) = *(res_nums->nums + counter);
+                counter++;
             }
         }
     }
 }
 
 
-int refactor_matrix(matrix_t *matrix)
+void rotl_three(array_t *arr)
 {
-    int status_code = OK;
-    size_t min_row = 0, min_column = 0;
-    find_first_sod_min(matrix, &min_row, &min_column);
-    delete_column(matrix, min_column);
-    delete_row(matrix, min_row);
-    if (!(matrix->rows_count || matrix->columns_count))
-        status_code = OUTPUT_ERROR;
-    return status_code;
+    if (arr->len > 3)
+    {
+        int t_first = *(arr->nums), t_second = *(arr->nums + 1), t_third = *(arr->nums + 2);
+        for (size_t i = 3; i < arr->len; ++i)
+        {
+            *(arr->nums + i - 3) = *(arr->nums + i);
+        }
+        *(arr->nums + arr->len - 3) = t_first;
+        *(arr->nums + arr->len - 2) = t_second;
+        *(arr->nums + arr->len - 1) = t_third;
+    }
+
 }
 
 

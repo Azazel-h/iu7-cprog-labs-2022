@@ -69,7 +69,7 @@ int read_matrix(matrix_t *matrix)
     int status_code = OK;
     if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 2 || matrix->rows_count > N) || (matrix->columns_count < 2 || matrix->columns_count > N))
+    else if ((matrix->rows_count < 1 || matrix->rows_count > N) || (matrix->columns_count < 1 || matrix->columns_count > N))
         status_code = SIZE_ERROR;
     else
     {
