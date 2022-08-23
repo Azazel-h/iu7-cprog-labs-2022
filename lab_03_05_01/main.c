@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-#define N 10
+#define N 100
 #define OK 0
 #define INPUT_ERROR -11
 #define OUTPUT_ERROR -12
