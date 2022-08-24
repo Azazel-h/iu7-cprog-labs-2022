@@ -4,7 +4,9 @@
 #include <stdlib.h>
 
 
-#define N 100
+#define N 101
+#define MAX_MATRIX_SIZE 10
+#define ROTL_STEP 3
 #define OK 0
 #define INPUT_ERROR -11
 #define OUTPUT_ERROR -12
@@ -35,7 +37,7 @@ int get_task_nums(matrix_t *main_matrix, array_t *res_nums);
 void print_array(array_t *arr);
 void print_matrix(matrix_t *matrix);
 void get_errors(int status_code);
-void rotl_three(array_t *arr);
+void rotl(array_t *arr, size_t k);
 void set_task_nums(matrix_t *main_matrix, array_t *res_nums);
 
 
@@ -48,7 +50,7 @@ int main()
         get_errors(status_code);
     else
     {
-        rotl_three(&result_nums);
+        rotl(&result_nums, ROTL_STEP);
         set_task_nums(&matrix, &result_nums);
         print_matrix(&matrix);
     }
@@ -61,7 +63,7 @@ int read_matrix(matrix_t *matrix)
     int status_code = OK;
     if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 1 || matrix->rows_count > N) || (matrix->columns_count < 1 || matrix->columns_count > N))
+    else if ((matrix->rows_count < 1 || matrix->rows_count > MAX_MATRIX_SIZE) || (matrix->columns_count < 1 || matrix->columns_count > MAX_MATRIX_SIZE))
         status_code = SIZE_ERROR;
     else
     {
@@ -142,21 +144,28 @@ void set_task_nums(matrix_t *main_matrix, array_t *res_nums)
     }
 }
 
-
-void rotl_three(array_t *arr)
+void reverse_arr(array_t *arr, size_t start, size_t end)
 {
-    if (arr->len > 3)
+    int tmp;
+    while (start < end)
     {
-        int t_first = *(arr->nums), t_second = *(arr->nums + 1), t_third = *(arr->nums + 2);
-        for (size_t i = 3; i < arr->len; ++i)
-        {
-            *(arr->nums + i - 3) = *(arr->nums + i);
-        }
-        *(arr->nums + arr->len - 3) = t_first;
-        *(arr->nums + arr->len - 2) = t_second;
-        *(arr->nums + arr->len - 1) = t_third;
+        tmp = *(arr->nums + start);
+        *(arr->nums + start) = *(arr->nums + end);
+        *(arr->nums + end) = tmp;
+        start++;
+        end--;
     }
+}
 
+
+void rotl(array_t *arr, size_t k)
+{
+    if (arr->len >= k)
+    {
+        reverse_arr(arr, 0, arr->len - 1);
+        reverse_arr(arr, 0, arr->len - k - 1);
+        reverse_arr(arr, arr->len - k, arr->len - 1);
+    }
 }
 
 
