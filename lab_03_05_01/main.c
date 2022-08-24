@@ -4,8 +4,7 @@
 #include <stdlib.h>
 
 
-#define N 101
-#define MAX_MATRIX_SIZE 10
+#define N 10
 #define ROTL_STEP 3
 #define OK 0
 #define INPUT_ERROR -11
@@ -17,7 +16,7 @@
 typedef struct
 {
     size_t len;
-    int nums[N];
+    int nums[N * N + 1];
 } array_t;
 
 
@@ -63,7 +62,7 @@ int read_matrix(matrix_t *matrix)
     int status_code = OK;
     if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 1 || matrix->rows_count > MAX_MATRIX_SIZE) || (matrix->columns_count < 1 || matrix->columns_count > MAX_MATRIX_SIZE))
+    else if ((matrix->rows_count < 1 || matrix->rows_count > N) || (matrix->columns_count < 1 || matrix->columns_count > N))
         status_code = SIZE_ERROR;
     else
     {
@@ -100,7 +99,7 @@ int count_num_sum(int num)
     num = abs(num);
     while (num > 0)
     {
-        sum += abs(num) % 10;
+        sum += num % 10;
         num /= 10;
     }
     return sum;
@@ -160,7 +159,7 @@ void reverse_arr(array_t *arr, size_t start, size_t end)
 
 void rotl(array_t *arr, size_t k)
 {
-    if (arr->len >= k)
+    if (arr->len > k)
     {
         reverse_arr(arr, 0, arr->len - 1);
         reverse_arr(arr, 0, arr->len - k - 1);
