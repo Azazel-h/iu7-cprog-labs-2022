@@ -63,20 +63,25 @@ int read_matrix(matrix_t *matrix)
             (matrix->rows + m)->len = matrix->columns_count;
 
         int matrix_n = matrix->columns_count;
-        for (int m = 0; m < matrix_n; m++) {
-            for (int i = m; i < matrix_n; i++) {
+        for (int m = 0; m < matrix_n; m++)
+        {
+            for (int i = m; i < matrix_n; i++)
+            {
                 if (scanf("%d", (matrix->rows + m)->nums + i) != 1)
                     return INPUT_ERROR;
             }
-            for (int i = m + 1; i < matrix_n; i++) {
+            for (int i = m + 1; i < matrix_n; i++)
+            {
                 if (scanf("%d", (matrix->rows + i)->nums + (matrix_n - 1)) != 1)
                     return INPUT_ERROR;
             }
-            for (int i = matrix_n - 2; i >= m; i--) {
+            for (int i = matrix_n - 2; i >= m; i--)
+            {
                 if (scanf("%d", (matrix->rows + matrix_n - 1)->nums + i) != 1)
                     return INPUT_ERROR;
             }
-            for (int i = matrix_n - 2; i >= m + 1; i--) {
+            for (int i = matrix_n - 2; i >= m + 1; i--)
+            {
                 if (scanf("%d", (matrix->rows + i)->nums + m) != 1)
                     return INPUT_ERROR;
             }
