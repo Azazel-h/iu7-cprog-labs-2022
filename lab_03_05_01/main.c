@@ -165,6 +165,12 @@ void rotl(array_t *arr, size_t k)
         reverse_arr(arr, 0, arr->len - k - 1);
         reverse_arr(arr, arr->len - k, arr->len - 1);
     }
+    else if (arr->len == 2)
+    {
+        int temp = *(arr->nums);
+        *(arr->nums) = *(arr->nums + 1);
+        *(arr->nums + 1) = temp;
+    }
 }
 
 
