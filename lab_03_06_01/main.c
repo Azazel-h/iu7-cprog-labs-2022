@@ -52,16 +52,15 @@ int main()
 int read_matrix(matrix_t *matrix)
 {
     int status_code = OK;
-    size_t matrix_n;
-    if (scanf("%zu", &matrix_n) != 1)
+    if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if (matrix_n < 1 || matrix_n > N)
+    else if ((matrix->rows_count < 1 || matrix->rows_count > N) ||
+             (matrix->columns_count < 1 || matrix->columns_count > N) ||
+             (matrix->rows_count != matrix->columns_count))
         status_code = SIZE_ERROR;
+
     else
     {
-        matrix->rows_count = matrix_n;
-        matrix->columns_count = matrix_n;
-
         for (size_t m = 0; m < matrix->rows_count; ++m)
             (matrix->rows + m)->len = matrix->columns_count;
 
