@@ -15,7 +15,7 @@
 typedef struct
 {
     size_t len;
-    long long nums[N];
+    int nums[N];
 } array_t;
 
 
@@ -76,28 +76,26 @@ int read_by_spiral(matrix_t *matrix)
     int status_code = OK;
     int s_row_index = 0, s_column_index = 0;
     int e_row_index = matrix->rows_count, e_column_index = matrix->columns_count;
+    int value = 1;
+
     while (s_row_index < e_row_index && s_column_index < e_column_index)
     {
         for (int i = s_column_index; i < e_column_index; ++i)
-            if (scanf("%lld", (matrix->rows + s_row_index)->nums + i) != 1)
-                return INPUT_ERROR;
+            *((matrix->rows + s_row_index)->nums + i) = value++;
         s_row_index++;
         for (int i = s_row_index; i < e_row_index; ++i)
-            if (scanf("%lld", (matrix->rows+ i)->nums + (e_column_index - 1)) != 1)
-                return INPUT_ERROR;
+            *((matrix->rows + i)->nums + (e_column_index - 1)) = value++;
         e_column_index--;
         if (s_row_index < e_row_index)
         {
-            for (int i = e_column_index-1; i >= s_column_index; --i)
-                if (scanf("%lld", (matrix->rows + (e_row_index-1))->nums + i) != 1)
-                    return INPUT_ERROR;
+            for (int i = e_column_index - 1; i >= s_column_index; --i)
+                *((matrix->rows + (e_row_index - 1))->nums + i) = value++;
             e_row_index--;
         }
         if (s_column_index < e_column_index)
         {
-            for (int i = e_row_index-1; i >= s_row_index; --i)
-                if (scanf("%lld", (matrix->rows + i)->nums + s_column_index) != 1)
-                    return INPUT_ERROR;
+            for (int i = e_row_index - 1; i >= s_row_index; --i)
+                *((matrix->rows + i)->nums + s_column_index) = value++;
             s_column_index++;
         }
     }
