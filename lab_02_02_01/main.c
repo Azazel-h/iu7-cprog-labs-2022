@@ -10,7 +10,7 @@
 #define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
-#define NO_NECESSARY_ELEMENTS_ERROR -15
+#define NO_SUITABLE_ELEMENTS_ERROR -15
 #define INVALID_ERROR -16
 
 typedef struct
@@ -98,7 +98,7 @@ int form_new_array(array_t *main_arr, array_t *new_array, int (*check)(const int
         }
     }
     if (new_array->len == 0)
-        status_code = NO_NECESSARY_ELEMENTS_ERROR;
+        status_code = NO_SUITABLE_ELEMENTS_ERROR;
 
     return status_code;
 }
@@ -119,7 +119,7 @@ void get_errors(int status_code)
         case INVALID_ERROR:
             printf("ERROR: No one valid element\n");
             break;
-        case NO_NECESSARY_ELEMENTS_ERROR:
+        case NO_SUITABLE_ELEMENTS_ERROR:
             printf("ERROR: No necessary elements\n");
             break;
         default:

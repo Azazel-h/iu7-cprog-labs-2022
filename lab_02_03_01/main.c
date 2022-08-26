@@ -7,11 +7,10 @@
 #define MAX_N 21
 #define OK 0
 #define INPUT_ERROR -11
-#define OUTPUT_ERROR -12
-#define SIZE_ERROR -13
-#define SIZE_INPUT_ERROR -14
-#define INVALID_ERROR -15
-#define NO_NECESSARY_ELEMENTS_ERROR -16
+#define SIZE_ERROR -12
+#define SIZE_INPUT_ERROR -13
+#define INVALID_ERROR -14
+#define NO_SUITABLE_ELEMENTS_ERROR -15
 
 
 typedef struct
@@ -137,7 +136,7 @@ void get_errors(int status_code)
         case INVALID_ERROR:
             printf("ERROR: No one valid element\n");
             break;
-        case NO_NECESSARY_ELEMENTS_ERROR:
+        case NO_SUITABLE_ELEMENTS_ERROR:
             printf("ERROR: No necessary elements\n");
             break;
         default:
