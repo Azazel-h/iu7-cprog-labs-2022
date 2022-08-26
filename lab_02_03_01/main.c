@@ -4,7 +4,7 @@
 
 
 #define N 10
-#define MAX_N 20
+#define MAX_N 21
 #define OK 0
 #define INPUT_ERROR -11
 #define OUTPUT_ERROR -12
@@ -24,8 +24,7 @@ typedef struct
 int read_array(array_t *arr);
 void print_array(array_t *arr);
 int can_paste_after(const int *const n);
-int form_fib_array(array_t *main_arr, int (*check)(const int *n));
-
+void form_fib_array(array_t *main_arr, int (*check)(const int *n));
 
 void swap(int *const first, int *const second);
 void paste_in_array(array_t *arr, const int *const n, size_t index);
@@ -101,9 +100,8 @@ void paste_in_array(array_t *arr, const int *const n, size_t index)
 }
 
 
-int form_fib_array(array_t *main_arr, int (*check)(const int *n))
+void form_fib_array(array_t *main_arr, int (*check)(const int *n))
 {
-    int status_code = NO_NECESSARY_ELEMENTS_ERROR;
     int fib_0_ = 0, fib_1_ = 1, fib_sum_;
 
     size_t i = 0;
@@ -111,7 +109,6 @@ int form_fib_array(array_t *main_arr, int (*check)(const int *n))
     {
         if (check((main_arr->nums + i)))
         {
-            status_code = OK;
             paste_in_array(main_arr, &fib_0_, i + 1);
             i++;
             fib_sum_ = fib_0_ + fib_1_;
@@ -121,7 +118,6 @@ int form_fib_array(array_t *main_arr, int (*check)(const int *n))
         i++;
     }
 
-    return status_code;
 }
 
 
