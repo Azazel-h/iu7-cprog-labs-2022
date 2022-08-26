@@ -34,10 +34,13 @@ int main()
 {
     int status_code = OK;
     array_t arr;
-    if ((status_code = read_array(&arr)) || (status_code = form_fib_array(&arr, can_paste_after)))
+    if ((status_code = read_array(&arr)))
         get_errors(status_code);
     else
+    {
+        form_fib_array(&arr, can_paste_after);
         print_array(&arr);
+    }
     return status_code;
 }
 
@@ -106,7 +109,7 @@ void form_fib_array(array_t *main_arr, int (*check)(const int *n))
     size_t i = 0;
     while (i < main_arr->len)
     {
-        if (check((main_arr->nums + i)))
+        if (check(main_arr->nums + i))
         {
             paste_in_array(main_arr, &fib_0_, i + 1);
             i++;
@@ -116,7 +119,6 @@ void form_fib_array(array_t *main_arr, int (*check)(const int *n))
         }
         i++;
     }
-
 }
 
 

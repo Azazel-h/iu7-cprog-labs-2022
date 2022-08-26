@@ -64,7 +64,7 @@ int read_array(array_t *arr)
 int calculate_result(array_t *arr)
 {
     int *temp_start_ = arr->start, *temp_end_ = arr->end - 1, max = *arr->start + *(arr->end - 1), sum;
-    while (temp_start_ <= temp_end_ )
+    while (temp_start_ <= temp_end_)
     {
         sum = *temp_start_ + *temp_end_;
         if (sum > max)
