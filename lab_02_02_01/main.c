@@ -72,14 +72,14 @@ int is_prime(const int n)
 {
     int is_prime = true;
 
-    int end = (int) sqrt(abs(n)) + 1;
+    int end = (int) sqrt(n) + 1;
     for (int i = 2; i < end; ++i)
         if (n % i == 0)
         {
             is_prime = false;
             break;
         }
-    if (abs(n) < 2)
+    if (n < 2)
         is_prime = false;
     return is_prime;
 }
