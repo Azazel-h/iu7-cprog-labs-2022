@@ -24,8 +24,8 @@ typedef struct
 int read_array(array_t *arr);
 void print_array(array_t *arr);
 int can_paste_after(const int *const n);
-void form_fib_array(array_t *main_arr, int (*check)(const int *n));
 
+void form_fib_array(array_t *main_arr, int (*check)(const int *n));
 void swap(int *const first, int *const second);
 void paste_in_array(array_t *arr, const int *const n, size_t index);
 void get_errors(int status_code);
