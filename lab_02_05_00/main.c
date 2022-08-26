@@ -63,9 +63,8 @@ int read_array(array_t *arr)
 
 int calculate_result(array_t *arr)
 {
-    int *temp_start_ = arr->start, *temp_end_ = arr->end - 1, max = *arr->start;
-    int *mid_pointer_ = arr->start + (arr->end - arr->start + 1) / 2, sum;
-    while (temp_start_ < mid_pointer_)
+    int *temp_start_ = arr->start, *temp_end_ = arr->end - 1, max = *arr->start + *(arr->end - 1), sum;
+    while (temp_start_ < temp_end_)
     {
         sum = *temp_start_ + *temp_end_;
         if (sum > max)

@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 
 #define N 10
 #define MAX_N 20
 #define OK 0
-#define FALSE 0
-#define TRUE 1
 #define INPUT_ERROR -11
 #define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
 #define INVALID_ERROR -15
+#define NO_NECESSARY_ELEMENTS_ERROR -16
 
 
 typedef struct
@@ -24,22 +24,22 @@ typedef struct
 int read_array(array_t *arr);
 void print_array(array_t *arr);
 int can_paste_after(const int *const n);
-int form_new_fib_array(array_t *main_arr, array_t*new_array, int (*check)(const int *n));
+int form_fib_array(array_t *main_arr, int (*check)(const int *n));
 
 
 void swap(int *const first, int *const second);
-void paste_in_array(array_t *arr, const int *const n);
+void paste_in_array(array_t *arr, const int *const n, size_t index);
 void get_errors(int status_code);
 
 
 int main()
 {
     int status_code = OK;
-    array_t arr, fib_arr = { .len = 0 };
-    if ((status_code = read_array(&arr)) || (status_code = form_new_fib_array(&arr, &fib_arr, can_paste_after)))
+    array_t arr;
+    if ((status_code = read_array(&arr)) || (status_code = form_fib_array(&arr, can_paste_after)))
         get_errors(status_code);
     else
-        print_array(&fib_arr);
+        print_array(&arr);
     return status_code;
 }
 
@@ -66,7 +66,7 @@ int read_array(array_t*arr)
             if (scanf("%d", arr->nums + i) != 1)
             {
                 status_code = INPUT_ERROR;
-                i = arr->len;
+                break;
             }
         }
     }
@@ -85,38 +85,41 @@ void print_array(array_t *arr)
 
 int can_paste_after(const int *const n)
 {
-    int can_ = FALSE;
+    int can_ = false;
     if (*n % 3 == 0)
-        can_ = TRUE;
+        can_ = true;
     return can_;
 }
 
 
-void paste_in_array(array_t *arr, const int *const n)
+void paste_in_array(array_t *arr, const int *const n, size_t index)
 {
-    *(arr->nums + arr->len) = *n;
     arr->len++;
+    for (size_t i = arr->len - 1; i > index; --i)
+        *(arr->nums + i) = *(arr->nums + i - 1);
+    *(arr->nums + index) = *n;
 }
 
 
-int form_new_fib_array(array_t *main_arr, array_t *new_array, int (*check)(const int *n))
+int form_fib_array(array_t *main_arr, int (*check)(const int *n))
 {
-    int status_code = OK;
+    int status_code = NO_NECESSARY_ELEMENTS_ERROR;
     int fib_0_ = 0, fib_1_ = 1, fib_sum_;
 
-    for (size_t i = 0; i < main_arr->len; ++i)
+    size_t i = 0;
+    while (i < main_arr->len)
     {
-        paste_in_array(new_array, (main_arr->nums + i));
         if (check((main_arr->nums + i)))
         {
-            paste_in_array(new_array, &fib_0_);
+            status_code = OK;
+            paste_in_array(main_arr, &fib_0_, i + 1);
+            i++;
             fib_sum_ = fib_0_ + fib_1_;
             swap(&fib_0_, &fib_1_);
             fib_1_ = fib_sum_;
         }
+        i++;
     }
-    if (new_array->len == 0)
-        status_code = INPUT_ERROR;
 
     return status_code;
 }
@@ -137,6 +140,9 @@ void get_errors(int status_code)
             break;
         case INVALID_ERROR:
             printf("ERROR: No one valid element\n");
+            break;
+        case NO_NECESSARY_ELEMENTS_ERROR:
+            printf("ERROR: No necessary elements\n");
             break;
         default:
             printf("ERROR: Unknown error\n");

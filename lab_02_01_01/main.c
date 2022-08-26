@@ -16,18 +16,21 @@ typedef struct
 
 int read_array(array *arr);
 int is_valid(array *arr);
-int find_product(array *arr);
+int find_product(array *arr, int *product);
 
 void get_errors(int status_code);
 
 int main()
 {
-    int status_code = OK;
+    int status_code = OK, product;
     array arr;
     if ((status_code = read_array(&arr)) || (status_code = is_valid(&arr)))
         get_errors(status_code);
     else
-        printf("%d\n", find_product(&arr));
+    {
+        find_product(&arr, &product);
+        printf("%d\n", product);
+    }
     return status_code;
 }
 
@@ -45,7 +48,7 @@ int read_array(array *arr)
             if (scanf("%d", arr->nums + i) != 1)
             {
                 status_code = INPUT_ERROR;
-                i = arr->len;
+                break;
             }
         }
     }
@@ -61,19 +64,19 @@ int is_valid(array *arr)
     return status_code;
 }
 
-int find_product(array *arr)
+int find_product(array *arr, int *product)
 {
-    int is_odd = 0, product = 1;
+    int status_code = INPUT_ERROR;
+    *product = 1;
     for (size_t i = 0; i < arr->len; ++i)
     {
         if (*(arr->nums + i) % 2)
         {
-            product *= arr->nums[i];
-            if (!is_odd)
-                is_odd = 1;
+            *product *= *(arr->nums + i);
+            status_code = OK;
         }
     }
-    return product;
+    return status_code;
 }
 
 void get_errors(int status_code)

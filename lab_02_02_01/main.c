@@ -1,16 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stddef.h>
+#include <stdbool.h>
 #include <math.h>
 
 #define N 10
 #define OK 0
-#define FALSE 0
-#define TRUE 1
 #define INPUT_ERROR -11
 #define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
-#define INVALID_ERROR -15
+#define NO_NECESSARY_ELEMENTS_ERROR -15
+#define INVALID_ERROR -16
 
 typedef struct
 {
@@ -28,7 +29,7 @@ void get_errors(int status_code);
 int main()
 {
     int status_code = OK;
-    array_t arr, prime_arr = { .len = 0 };
+    array_t arr, prime_arr;
     if ((status_code = read_array(&arr)) || (status_code = form_new_array(&arr, &prime_arr, is_prime)))
         get_errors(status_code);
     else
@@ -50,7 +51,7 @@ int read_array(array_t *arr)
             if (scanf("%d", arr->nums + i) != 1)
             {
                 status_code = INPUT_ERROR;
-                i = arr->len;
+                break;
             }
         }
     }
@@ -69,19 +70,25 @@ void print_array(array_t *arr)
 
 int is_prime(const int n)
 {
-    int is_prime = TRUE;
-    int end = (int) sqrt(n) + 1;
+    int is_prime = true;
+
+    int end = (int) sqrt(abs(n)) + 1;
     for (int i = 2; i < end; ++i)
         if (n % i == 0)
-            is_prime = FALSE;
-    if (n < 2)
-        is_prime = FALSE;
+        {
+            is_prime = false;
+            break;
+        }
+    if (abs(n) < 2)
+        is_prime = false;
     return is_prime;
 }
 
 int form_new_array(array_t *main_arr, array_t *new_array, int (*check)(const int n))
 {
     int status_code = OK;
+    new_array->len = 0;
+
     for (size_t i = 0; i < main_arr->len; ++i)
     {
         if (check(*(main_arr->nums + i)))
@@ -91,7 +98,7 @@ int form_new_array(array_t *main_arr, array_t *new_array, int (*check)(const int
         }
     }
     if (new_array->len == 0)
-        status_code = INPUT_ERROR;
+        status_code = NO_NECESSARY_ELEMENTS_ERROR;
 
     return status_code;
 }
@@ -111,6 +118,9 @@ void get_errors(int status_code)
             break;
         case INVALID_ERROR:
             printf("ERROR: No one valid element\n");
+            break;
+        case NO_NECESSARY_ELEMENTS_ERROR:
+            printf("ERROR: No necessary elements\n");
             break;
         default:
             printf("ERROR: Unknown error\n");
