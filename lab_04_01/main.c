@@ -5,11 +5,11 @@
 
 #define OK 0
 
-char *my_strpbrk(const char *__s, const char *__charset);
-size_t my_strspn(const char *__s, const char *__charset);
-size_t my_strcspn(const char *__s, const char *__charset);
-char *my_strchr(const char *__s, int __c);
-char *my_strrchr(const char *__s, int __c);
+char *my_strpbrk(const char *s, const char *charset);
+size_t my_strspn(const char *s, const char *charset);
+size_t my_strcspn(const char *s, const char *charset);
+char *my_strchr(const char *s, int c);
+char *my_strrchr(const char *s, int c);
 
 
 int main()
@@ -49,32 +49,32 @@ int main()
 }
 
 
-char *my_strpbrk(const char *__s, const char *__charset)
+char *my_strpbrk(const char *s, const char *charset)
 {
-    while (*__s != '\0')
+    while (*s != '\0')
     {
-        for (const char *ch = __charset; *ch != '\0'; ch++)
+        for (const char *ch = charset; *ch != '\0'; ch++)
         {
-            if (*__s == *ch)
+            if (*s == *ch)
             {
-                return (char *) (__s);
+                return (char *) (s);
             }
         }
-        __s++;
+        s++;
     }
     return NULL;
 }
 
 
-size_t my_strspn(const char *__s, const char *__charset)
+size_t my_strspn(const char *s, const char *charset)
 {
     size_t len = 0;
-    while (*__s != '\0')
+    while (*s != '\0')
     {
-        _Bool should_stop = true;
-        for (const char *ch = __charset; *ch != '\0'; ch++)
+        int should_stop = true;
+        for (const char *ch = charset; *ch != '\0'; ch++)
         {
-            if (*__s == *ch)
+            if (*s == *ch)
             {
                 len++;
                 should_stop = false;
@@ -83,67 +83,55 @@ size_t my_strspn(const char *__s, const char *__charset)
         }
         if (should_stop)
             break;
-        __s++;
+        s++;
     }
     return len;
 }
 
 
-size_t my_strcspn(const char *__s, const char *__charset)
+size_t my_strcspn(const char *s, const char *charset)
 {
     size_t len = 0;
-    while (*__s != '\0')
+    while (*s != '\0')
     {
-        for (const char *ch = __charset; *ch != '\0'; ch++)
+        for (const char *ch = charset; *ch != '\0'; ch++)
         {
-            if (*__s == *ch)
+            if (*s == *ch)
             {
                 return len;
             }
         }
         len++;
-        __s++;
+        s++;
     }
     return len;
 }
 
 
-char *my_strchr(const char *__s, int __c)
+char *my_strchr(const char *s, int c)
 {
     do
     {
-        if (*__s == __c)
-            return (char *) __s;
+        if (*s == c)
+            return (char *) s;
     }
-    while (*__s++ != '\0');
+    while (*s++ != '\0');
 
     return NULL;
 }
 
 
-char *my_strrchr(const char *__s, int __c)
+char *my_strrchr(const char *s, int c)
 {
-
     char *result = NULL;
 
     do
     {
-        if (*__s == __c)
-            result = (char *) __s;
+        if (*s == c)
+            result = (char *) s;
     }
-    while (*__s++ != '\0');
+    while (*s++ != '\0');
 
     return result;
-}
-
-
-void get_errors(int status_code)
-{
-    switch (status_code)
-    {
-        default:
-            printf("ERROR: Unknown error\n");
-            break;
-    }
 }
 
