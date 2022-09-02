@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <math.h>
 
+
 #define N 10
 #define OK 0
 #define INPUT_ERROR -11
@@ -12,11 +13,13 @@
 #define NO_SUITABLE_ELEMENTS_ERROR -14
 #define INVALID_ERROR -15
 
+
 typedef struct
 {
     size_t len;
     int nums[N];
 } array_t;
+
 
 int read_array(array_t *arr);
 void print_array(array_t *arr);

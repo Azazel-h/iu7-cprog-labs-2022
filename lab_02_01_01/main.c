@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stddef.h>
 
+
 #define N 10
 #define OK 0
 #define INPUT_ERROR -11
@@ -9,11 +10,13 @@
 #define INVALID_ERROR -14
 #define NO_SUITABLE_ELEMENTS_ERROR -15
 
+
 typedef struct
 {
     size_t len;
     int nums[N];
 } array;
+
 
 int read_array(array *arr);
 int is_valid(array *arr);

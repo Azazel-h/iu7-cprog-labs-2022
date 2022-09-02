@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stddef.h>
 
+
 #define N 10
 #define OK 0
 #define INPUT_ERROR -11
 #define SIZE_ERROR -12
 #define SIZE_INPUT_ERROR -13
+
 
 typedef struct
 {
