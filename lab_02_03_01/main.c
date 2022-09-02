@@ -25,7 +25,6 @@ bool can_paste_after(int *n);
 
 void print_array(array_t *arr);
 void form_fib_array(array_t *main_arr, bool (*check)(int *n));
-void swap(int *first, int *second);
 void paste_in_array(array_t *arr, int *n, size_t index);
 void get_errors(int status_code);
 
@@ -42,14 +41,6 @@ int main()
         print_array(&arr);
     }
     return status_code;
-}
-
-
-void swap(int *first, int *second)
-{
-    int temp_ = *first;
-    *first = *second;
-    *second = temp_;
 }
 
 
@@ -104,19 +95,19 @@ void paste_in_array(array_t *arr, int *n, size_t index)
 
 void form_fib_array(array_t *main_arr, bool (*check)(int *n))
 {
-    int fib_0_ = 0, fib_1_ = 1, fib_sum_;
+    int fib_0 = 0, fib_1 = 1, fib_sum;
 
     size_t i = 0;
     while (i < main_arr->len)
     {
         if (check(main_arr->nums + i))
         {
-            paste_in_array(main_arr, &fib_0_, i + 1);
+            paste_in_array(main_arr, &fib_0, i + 1);
             i++;
 
-            fib_sum_ = fib_0_ + fib_1_;
-            swap(&fib_0_, &fib_1_);
-            fib_1_ = fib_sum_;
+            fib_sum = fib_0 + fib_1;
+            fib_0 = fib_1;
+            fib_1 = fib_sum;
         }
         i++;
     }
