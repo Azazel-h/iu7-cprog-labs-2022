@@ -4,10 +4,7 @@
 
 #define N 10
 #define OK 0
-#define FALSE 0
-#define TRUE 1
 #define INPUT_ERROR -11
-#define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
 #define INVALID_ERROR -15
@@ -22,20 +19,17 @@ typedef struct
 
 
 int read_array(array_t *arr);
-int is_prime(const int *n);
-int form_new_array(array_t *main_arr, array_t *new_array_t, int (*check)(const int *n));
-
 
 void print_array(array_t *arr);
 void selection_sort(array_t *arr);
-void swap(int *const first, int *const second);
+void swap(int *first, int *second);
 void get_errors(int status_code);
 
 
 int main()
 {
     int status_code = OK;
-    array_t arr = { .len = 0 };
+    array_t arr;
     if (((status_code = read_array(&arr)) == OK || status_code == INPUT_OVERFLOW))
     {
         selection_sort(&arr);
@@ -47,7 +41,7 @@ int main()
 }
 
 
-void swap(int *const first, int *const second)
+void swap(int *first, int *second)
 {
     int temp_ = *first;
     *first = *second;
@@ -58,6 +52,8 @@ void swap(int *const first, int *const second)
 int read_array(array_t *arr)
 {
     int status_code = OK;
+    arr->len = 0;
+
     while (arr->len <= N && scanf("%d", arr->nums + arr->len) == 1)
         arr->len++;
 
@@ -79,7 +75,7 @@ void selection_sort(array_t *arr)
     {
         size_t min_index = i;
         for (size_t j = i + 1; j < arr->len; ++j)
-            if (*(arr->nums + j) < *(arr->nums + min_index))
+            if (arr->nums[j] < arr->nums[min_index])
                 min_index = j;
         if (min_index != i)
             swap(arr->nums + i, arr->nums + min_index);
@@ -91,7 +87,7 @@ void print_array(array_t *arr)
 {
     for (size_t i = 0; i < arr->len; ++i)
     {
-        printf("%d ", *(arr->nums + i));
+        printf("%d ", arr->nums[i]);
     }
 }
 

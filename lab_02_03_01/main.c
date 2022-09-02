@@ -21,12 +21,12 @@ typedef struct
 
 
 int read_array(array_t *arr);
-void print_array(array_t *arr);
-int can_paste_after(const int *const n);
+bool can_paste_after(int *n);
 
-void form_fib_array(array_t *main_arr, int (*check)(const int *n));
-void swap(int *const first, int *const second);
-void paste_in_array(array_t *arr, const int *const n, size_t index);
+void print_array(array_t *arr);
+void form_fib_array(array_t *main_arr, bool (*check)(int *n));
+void swap(int *first, int *second);
+void paste_in_array(array_t *arr, int *n, size_t index);
 void get_errors(int status_code);
 
 
@@ -45,7 +45,7 @@ int main()
 }
 
 
-void swap(int *const first, int *const second)
+void swap(int *first, int *second)
 {
     int temp_ = *first;
     *first = *second;
@@ -79,30 +79,30 @@ void print_array(array_t *arr)
 {
     for (size_t i = 0; i < arr->len; ++i)
     {
-        printf("%d ", *(arr->nums + i));
+        printf("%d ", arr->nums[i]);
     }
 }
 
 
-int can_paste_after(const int *const n)
+bool can_paste_after(int *n)
 {
-    int can_ = false;
+    bool can_ = false;
     if (*n % 3 == 0)
         can_ = true;
     return can_;
 }
 
 
-void paste_in_array(array_t *arr, const int *const n, size_t index)
+void paste_in_array(array_t *arr, int *n, size_t index)
 {
     arr->len++;
     for (size_t i = arr->len - 1; i > index; --i)
-        *(arr->nums + i) = *(arr->nums + i - 1);
-    *(arr->nums + index) = *n;
+        arr->nums[i] = arr->nums[i - 1];
+    arr->nums[index] = *n;
 }
 
 
-void form_fib_array(array_t *main_arr, int (*check)(const int *n))
+void form_fib_array(array_t *main_arr, bool (*check)(int *n))
 {
     int fib_0_ = 0, fib_1_ = 1, fib_sum_;
 
@@ -113,6 +113,7 @@ void form_fib_array(array_t *main_arr, int (*check)(const int *n))
         {
             paste_in_array(main_arr, &fib_0_, i + 1);
             i++;
+
             fib_sum_ = fib_0_ + fib_1_;
             swap(&fib_0_, &fib_1_);
             fib_1_ = fib_sum_;

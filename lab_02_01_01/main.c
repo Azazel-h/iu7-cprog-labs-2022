@@ -7,6 +7,7 @@
 #define SIZE_ERROR -12
 #define SIZE_INPUT_ERROR -13
 #define INVALID_ERROR -14
+#define NO_SUITABLE_ELEMENTS_ERROR -15
 
 typedef struct
 {
@@ -59,20 +60,23 @@ int is_valid(array *arr)
 {
     int status_code = INVALID_ERROR;
     for (size_t i = 0; i < arr->len; ++i)
-        if (*(arr->nums + i) % 2)
+        if (arr->nums[i] % 2)
+        {
             status_code = OK;
+            break;
+        }
     return status_code;
 }
 
 int find_product(array *arr, int *product)
 {
-    int status_code = INPUT_ERROR;
+    int status_code = NO_SUITABLE_ELEMENTS_ERROR;
     *product = 1;
     for (size_t i = 0; i < arr->len; ++i)
     {
-        if (*(arr->nums + i) % 2)
+        if (arr->nums[i] % 2)
         {
-            *product *= *(arr->nums + i);
+            *product *= arr->nums[i];
             status_code = OK;
         }
     }
@@ -94,6 +98,9 @@ void get_errors(int status_code)
             break;
         case INVALID_ERROR:
             printf("ERROR: No one valid element\n");
+            break;
+        case NO_SUITABLE_ELEMENTS_ERROR:
+            printf("ERROR: No necessary elements\n");
             break;
         default:
             printf("ERROR: Unknown error\n");
