@@ -16,7 +16,7 @@ if [[ -n "$USE_VALGRIND" ]]; then
         memory_error=1
     fi
 else
-    (../../main.o "$_args" > "real_out.txt") < "$file_in"
+    (../../app.exe "$_args" > "real_out.txt") < "$file_in"
 fi
 
 ./comparator.sh "real_out.txt" "$file_out"
