@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-
 #define N 10
 #define ROTL_STEP 3
 #define OK 0
@@ -13,82 +12,60 @@
 #define SIZE_INPUT_ERROR -14
 
 
-typedef struct
-{
-    size_t len;
-    int nums[N * N + 1];
-} array_t;
-
-
-typedef struct
-{
-    size_t rows_count;
-    size_t columns_count;
-    array_t rows[N];
-} matrix_t;
-
-
-int read_array(array_t *arr);
-int read_matrix(matrix_t *matrix);
+int read_matrix(int matrix[][N], size_t *n, size_t *m);
 int count_num_sum(int num);
-int get_task_nums(matrix_t *main_matrix, array_t *res_nums);
+int get_task_nums(int main_matrix[][N], size_t n, size_t m, int *res_nums, size_t *res_len);
 
-void print_array(array_t *arr);
-void print_matrix(matrix_t *matrix);
+void print_matrix(int matrix[][N], size_t n, size_t m);
+void reverse_arr(int *arr, size_t start, size_t end);
+void rotl(int *arr, size_t len, size_t k);
+void set_task_nums(int main_matrix[][N], size_t n, size_t m, int *res_nums);
 void get_errors(int status_code);
-void rotl(array_t *arr, size_t k);
-void set_task_nums(matrix_t *main_matrix, array_t *res_nums);
 
 
 int main()
 {
     int status_code = OK;
-    matrix_t matrix;
-    array_t result_nums = { .len = 0 };
-    if ((status_code = read_matrix(&matrix)) || (status_code = get_task_nums(&matrix, &result_nums)))
+    int matrix[N][N];
+    size_t n, m;
+
+    int result_nums[N * N];
+    size_t result_len = 0;
+
+    if ((status_code = read_matrix(matrix, &n, &m)) || (status_code = get_task_nums(matrix, n, m, result_nums, &result_len)))
         get_errors(status_code);
     else
     {
-        rotl(&result_nums, ROTL_STEP);
-        set_task_nums(&matrix, &result_nums);
-        print_matrix(&matrix);
+        rotl(result_nums, result_len, ROTL_STEP);
+        set_task_nums(matrix, n, m, result_nums);
+        print_matrix(matrix, n, m);
     }
     return status_code;
 }
 
 
-int read_matrix(matrix_t *matrix)
+int read_matrix(int matrix[][N], size_t *n, size_t *m)
 {
     int status_code = OK;
-    if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
+    if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 1 || matrix->rows_count > N) || (matrix->columns_count < 1 || matrix->columns_count > N))
+    else if ((*n < 1 || *n > N) || (*m < 1 || *m > N))
         status_code = SIZE_ERROR;
     else
     {
-        for (size_t m = 0; m < matrix->rows_count; ++m)
+        for (size_t i = 0; i < *n; ++i)
         {
-            array_t *current_row = matrix->rows + m;
-            current_row->len = matrix->columns_count;
-            if ((status_code = read_array(current_row)))
-                break;
+            for (size_t j = 0; j < *m; ++j)
+            {
+                if (scanf("%d", &matrix[i][j]) != 1)
+                {
+                    status_code = INPUT_ERROR;
+                    break;
+                }
+            }
         }
     }
-    return status_code;
-}
 
-
-int read_array(array_t *arr)
-{
-    int status_code = OK;
-    for (size_t i = 0; i < arr->len; ++i)
-    {
-        if (scanf("%d", arr->nums + i) != 1)
-        {
-            status_code = INPUT_ERROR;
-            break;
-        }
-    }
     return status_code;
 }
 
@@ -106,89 +83,89 @@ int count_num_sum(int num)
 }
 
 
-int get_task_nums(matrix_t *main_matrix, array_t *res_nums)
+int get_task_nums(int main_matrix[][N], size_t n, size_t m, int *res_nums, size_t *res_len)
 {
     int status_code = INPUT_ERROR;
-    for (size_t m = 0; m < main_matrix->rows_count; ++m)
+    int new;
+
+    for (size_t i = 0; i < n; ++i)
     {
-        for (size_t n = 0; n < main_matrix->columns_count; ++n)
+        for (size_t j = 0; j < m; ++j)
         {
-            int new = *((main_matrix->rows + m)->nums + n);
+            new = main_matrix[i][j];
             if (count_num_sum(new) > 10)
             {
-                *(res_nums->nums + res_nums->len) = new;
-                res_nums->len++;
+                res_nums[*res_len] = new;
+                (*res_len)++;
                 status_code = OK;
             }
         }
     }
+
     return status_code;
 }
 
 
-void set_task_nums(matrix_t *main_matrix, array_t *res_nums)
+void set_task_nums(int main_matrix[][N], size_t n, size_t m, int *res_nums)
 {
     size_t counter = 0;
-    for (size_t m = 0; m < main_matrix->rows_count; ++m)
+    int new;
+
+    for (size_t i = 0; i < n; ++i)
     {
-        for (size_t n = 0; n < main_matrix->columns_count; ++n)
+        for (size_t j = 0; j < m; ++j)
         {
-            int new = *((main_matrix->rows + m)->nums + n);
+            new = main_matrix[i][j];
             if (count_num_sum(new) > 10)
             {
-                *((main_matrix->rows + m)->nums + n) = *(res_nums->nums + counter);
+                main_matrix[i][j] = res_nums[counter];
                 counter++;
             }
         }
     }
 }
 
-void reverse_arr(array_t *arr, size_t start, size_t end)
+
+void reverse_arr(int *arr, size_t start, size_t end)
 {
     int tmp;
     while (start < end)
     {
-        tmp = *(arr->nums + start);
-        *(arr->nums + start) = *(arr->nums + end);
-        *(arr->nums + end) = tmp;
+        tmp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = tmp;
         start++;
         end--;
     }
 }
 
 
-void rotl(array_t *arr, size_t k)
+void rotl(int *arr, size_t len, size_t k)
 {
-    if (arr->len > k)
+    if (len > k)
     {
-        reverse_arr(arr, 0, arr->len - 1);
-        reverse_arr(arr, 0, arr->len - k - 1);
-        reverse_arr(arr, arr->len - k, arr->len - 1);
+        reverse_arr(arr, 0, len - 1);
+        reverse_arr(arr, 0, len - k - 1);
+        reverse_arr(arr, len - k, len - 1);
     }
-    else if (arr->len == 2)
+    else if (len == 2)
     {
-        int temp = *(arr->nums);
-        *(arr->nums) = *(arr->nums + 1);
-        *(arr->nums + 1) = temp;
+        int temp = arr[0];
+        arr[0] = arr[1];
+        arr[1] = temp;
     }
 }
 
 
-void print_array(array_t *arr)
+void print_matrix(int matrix[][N], size_t n, size_t m)
 {
-    for (size_t i = 0; i < arr->len; ++i)
+    for (size_t i = 0; i < n; ++i)
     {
-        printf("%d ", *(arr->nums + i));
-    }
-    printf("\n");
-}
-
-
-void print_matrix(matrix_t *matrix)
-{
-    for (size_t m = 0; m < matrix->rows_count; ++m)
-    {
-        print_array(matrix->rows + m);
+        for (size_t j = 0; j < m; ++j)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
     }
 }
 

@@ -12,79 +12,52 @@
 #define SIZE_INPUT_ERROR -14
 
 
-typedef struct
-{
-    size_t len;
-    int nums[N];
-} array_t;
-
-
-typedef struct
-{
-    size_t rows_count;
-    size_t columns_count;
-    array_t rows[N];
-} matrix_t;
-
-
-int read_array(array_t *arr);
-int read_matrix(matrix_t *matrix);
+int read_matrix(int matrix[][N], size_t *n, size_t *m);
 int sum_of_digits(int number);
-int refactor_matrix(matrix_t *matrix);
+int refactor_matrix(int matrix[][N], size_t *n, size_t *m);
 
-
-void print_array(array_t *arr);
-void print_matrix(matrix_t *matrix);
+void print_matrix(int matrix[][N], size_t n, size_t m);
+void find_first_sod_min(int matrix[][N], size_t n, size_t m, size_t *sod_row, size_t *sod_column);
+void delete_row(int matrix[][N], size_t *n, size_t m, size_t row_to_delete);
+void delete_column(int matrix[][N], size_t n, size_t *m, size_t column_to_delete);
 void get_errors(int status_code);
-void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column);
-void delete_row(matrix_t *matrix, size_t row_to_delete);
-void delete_column(matrix_t *matrix, size_t column_to_delete);
 
 
 int main()
 {
     int status_code = OK;
-    matrix_t matrix;
-    if ((status_code = read_matrix(&matrix)) || (status_code = refactor_matrix(&matrix)))
+    int matrix[N][N];
+    size_t n, m;
+
+    if ((status_code = read_matrix(matrix, &n, &m)) || (status_code = refactor_matrix(matrix, &n, &m)))
         get_errors(status_code);
     else
     {
-        print_matrix(&matrix);
+        print_matrix(matrix, n, m);
     }
     return status_code;
 }
 
 
-int read_matrix(matrix_t *matrix)
+int read_matrix(int matrix[][N], size_t *n, size_t *m)
 {
     int status_code = OK;
-    if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
+    if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 2 || matrix->rows_count > N) || (matrix->columns_count < 2 || matrix->columns_count > N))
+    else if ((*n < 1 || *n > N) || (*m < 1 || *m > N))
         status_code = SIZE_ERROR;
     else
     {
-        for (size_t m = 0; m < matrix->rows_count; ++m)
+        for (size_t i = 0; i < *n; ++i)
         {
-            array_t *current_row = matrix->rows + m;
-            current_row->len = matrix->columns_count;
-            if ((status_code = read_array(current_row)))
-                break;
-        }
-    }
-    return status_code;
-}
-
-
-int read_array(array_t *arr)
-{
-    int status_code = OK;
-    for (size_t i = 0; i < arr->len; ++i)
-    {
-        if (scanf("%d", arr->nums + i) != 1)
-        {
-            status_code = INPUT_ERROR;
-            break;
+            for (size_t j = 0; j < *m; ++j)
+            {
+                if (scanf("%d", &matrix[i][j]) != 1)
+                {
+                    status_code = INPUT_ERROR;
+                    break;
+                }
+            }
         }
     }
     return status_code;
@@ -105,77 +78,69 @@ int sum_of_digits(int number)
 }
 
 
-void delete_row(matrix_t *matrix, size_t row_to_delete)
+void delete_row(int matrix[][N], size_t *n, size_t m, size_t row_to_delete)
 {
-    for (size_t i = row_to_delete; i < matrix->rows_count - 1; ++i)
-        *(matrix->rows + i) = *(matrix->rows + i + 1);
-    matrix->rows_count--;
+    for (size_t i = row_to_delete; i < *n - 1; ++i)
+        for (size_t j = 0; j < m; ++j)
+            matrix[i][j] = matrix[i + 1][j];
+    (*n)--;
 }
 
 
-void delete_column(matrix_t *matrix, size_t column_to_delete)
+void delete_column(int matrix[][N], size_t n, size_t *m, size_t column_to_delete)
 {
-    array_t *current_row_nums;
-    for (size_t n = 0; n < matrix->rows_count; ++n)
+    for (size_t i = 0; i < n; ++i)
     {
-        for (size_t m = column_to_delete; m < matrix->columns_count - 1; ++m)
+        for (size_t j = column_to_delete; j < *m - 1; ++j)
         {
-            current_row_nums = matrix->rows + n;
-            *(current_row_nums->nums + m) = *(current_row_nums->nums + m + 1);
+            matrix[i][j] = matrix[i][j + 1];
         }
-        (matrix->rows + n)->len--;
     }
-    matrix->columns_count--;
+    (*m)--;
 }
 
 
-void find_first_sod_min(matrix_t *matrix, size_t *row, size_t *column)
+void find_first_sod_min(int matrix[][N], size_t n, size_t m, size_t *sod_row, size_t *sod_column)
 {
-    int min = sum_of_digits(*((matrix->rows)->nums));
-    for (size_t n = 0; n < matrix->rows_count; ++n)
+    int min = sum_of_digits(matrix[0][0]);
+    for (size_t i = 0; i < n; ++i)
     {
-        for (size_t m = 0; m < matrix->columns_count; ++m)
+        for (size_t j = 0; j < m; ++j)
         {
-            int current_sum = sum_of_digits(*((matrix->rows + n)->nums + m));
+            int current_sum = sum_of_digits(matrix[i][j]);
             if (current_sum < min)
             {
                 min = current_sum;
-                *row = n;
-                *column = m;
+                *sod_row = i;
+                *sod_column = j;
             }
         }
     }
 }
 
 
-int refactor_matrix(matrix_t *matrix)
+int refactor_matrix(int matrix[][N], size_t *n, size_t *m)
 {
     int status_code = OK;
     size_t min_row = 0, min_column = 0;
-    find_first_sod_min(matrix, &min_row, &min_column);
-    delete_column(matrix, min_column);
-    delete_row(matrix, min_row);
-    if (!(matrix->rows_count || matrix->columns_count))
+    find_first_sod_min(matrix, *n, *m, &min_row, &min_column);
+    delete_column(matrix, *n, m, min_column);
+    delete_row(matrix, n, *m, min_row);
+    if (!(*n || *m))
         status_code = OUTPUT_ERROR;
     return status_code;
 }
 
 
-void print_array(array_t *arr)
+void print_matrix(int matrix[][N], size_t n, size_t m)
 {
-    for (size_t i = 0; i < arr->len; ++i)
+    for (size_t i = 0; i < n; ++i)
     {
-        printf("%d ", *(arr->nums + i));
-    }
-    printf("\n");
-}
-
-
-void print_matrix(matrix_t *matrix)
-{
-    for (size_t m = 0; m < matrix->rows_count; ++m)
-    {
-        print_array(matrix->rows + m);
+        for (size_t j = 0; j < m; ++j)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
     }
 }
 

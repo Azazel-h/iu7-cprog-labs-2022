@@ -9,90 +9,62 @@
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
 
+int read_matrix(int matrix[][N], size_t *n, size_t *m);
+int is_symmetrical(int main_matrix[][N], size_t len, size_t index);
 
-typedef struct
-{
-    size_t len;
-    int nums[N];
-} array_t;
-
-
-typedef struct
-{
-    size_t rows_count;
-    size_t columns_count;
-    array_t rows[N];
-} matrix_t;
-
-
-int read_array(array_t *arr);
-int read_matrix(matrix_t *matrix);
-int is_symmetrical(array_t *arr);
-
-
-void form_result_array_from_matrix(array_t *result_arr, matrix_t *main_matrix, int (*check)(array_t *));
-void print_array(array_t *arr);
+void form_result_array_from_matrix(int *result_arr, size_t len, int main_matrix[][N], int (*check)(int [][N], size_t, size_t));
+void print_array(int *arr, size_t len);
 void get_errors(int status_code);
 
 
 int main()
 {
     int status_code = OK;
-    matrix_t matrix;
-    if ((status_code = read_matrix(&matrix)))
+    int matrix[N][N];
+    size_t n, m;
+    if ((status_code = read_matrix(matrix, &n, &m)))
         get_errors(status_code);
     else
     {
-        array_t result_arr = { .len = matrix.rows_count };
-        form_result_array_from_matrix(&result_arr, &matrix, is_symmetrical);
-        print_array(&result_arr);
+        int result_arr[N];
+        form_result_array_from_matrix(result_arr, n, matrix, is_symmetrical);
+        print_array(result_arr, n);
     }
     return status_code;
 }
 
 
-int read_matrix(matrix_t *matrix)
+int read_matrix(int matrix[][N], size_t *n, size_t *m)
 {
     int status_code = OK;
-    if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
+    if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 1 || matrix->rows_count > N) || (matrix->columns_count < 1 || matrix->columns_count > N))
+    else if ((*n < 1 || *n > N) || (*m < 1 || *m > N))
         status_code = SIZE_ERROR;
     else
     {
-        for (size_t n = 0; n < matrix->rows_count; ++n)
+        for (size_t i = 0; i < *n; ++i)
         {
-            array_t *current_row = matrix->rows + n;
-            current_row->len = matrix->columns_count;
-            if ((status_code = read_array(current_row)))
-                break;
+            for (size_t j = 0; j < *m; ++j)
+            {
+                if (scanf("%d", &matrix[i][j]) != 1)
+                {
+                    status_code = INPUT_ERROR;
+                    break;
+                }
+            }
         }
     }
     return status_code;
 }
 
 
-int read_array(array_t *arr)
-{
-    int status_code = OK;
-    for (size_t i = 0; i < arr->len; ++i)
-    {
-        if (scanf("%d", arr->nums + i) != 1)
-        {
-            status_code = INPUT_ERROR;
-            break;
-        }
-    }
-    return status_code;
-}
-
-
-int is_symmetrical(array_t *arr)
+int is_symmetrical(int main_matrix[][N], size_t len, size_t row_index)
 {
     int is_symmetrical = true;
-    for (size_t i = 0; i < arr->len / 2 + 1; ++i)
+    for (size_t i = 0; i < len / 2 + 1; ++i)
     {
-        if (*(arr->nums + i) != *(arr->nums + (arr->len - i - 1)))
+        if (main_matrix[row_index][i] != main_matrix[row_index][len - i - 1])
         {
             is_symmetrical = false;
             break;
@@ -102,20 +74,20 @@ int is_symmetrical(array_t *arr)
 }
 
 
-void form_result_array_from_matrix(array_t *result_arr, matrix_t *main_matrix, int (*check)(array_t *))
+void form_result_array_from_matrix(int *result_arr, size_t len, int main_matrix[][N], int (*check)(int [][N], size_t, size_t))
 {
-    for (size_t i = 0; i < result_arr->len; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
-        *(result_arr->nums + i) = check(main_matrix->rows + i);
+        result_arr[i] = check(main_matrix, len, i);
     }
 }
 
 
-void print_array(array_t *arr)
+void print_array(int *arr, size_t len)
 {
-    for (size_t i = 0; i < arr->len; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
-        printf("%d ", *(arr->nums + i));
+        printf("%d ", arr[i]);
     }
     printf("\n");
 }

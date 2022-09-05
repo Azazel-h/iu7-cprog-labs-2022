@@ -12,103 +12,77 @@
 #define SIZE_INPUT_ERROR -14
 
 
-typedef struct
-{
-    size_t len;
-    int nums[N];
-} array_t;
+int read_matrix(int matrix[][N], size_t *n, size_t *m);
 
-
-typedef struct
-{
-    size_t rows_count;
-    size_t columns_count;
-    array_t rows[N];
-} matrix_t;
-
-
-int read_array(array_t *arr);
-int read_matrix(matrix_t *matrix);
-
-
-void print_array(array_t *arr);
-void print_matrix(matrix_t *matrix);
-void get_errors(int status_code);
-void task_swap_process(matrix_t *main_matrix);
+void print_matrix(int matrix[][N], size_t n, size_t m);
+void task_swap_process(int main_matrix[][N], size_t n, size_t m);
 void swap_elements(int *first, int *second);
-void swap_elements_in_range(size_t start, size_t end, array_t *first, array_t *second);
+void swap_elements_in_range(size_t start, size_t end, int *first, int *second);
+void get_errors(int status_code);
 
 
 int main()
 {
     int status_code = OK;
-    matrix_t matrix;
-    if ((status_code = read_matrix(&matrix)))
+    int matrix[N][N];
+    size_t n, m;
+
+    if ((status_code = read_matrix(matrix, &n, &m)))
         get_errors(status_code);
     else
     {
-        task_swap_process(&matrix);
-        print_matrix(&matrix);
+        task_swap_process(matrix, n, m);
+        print_matrix(matrix, n, m);
     }
     return status_code;
 }
 
 
-int read_matrix(matrix_t *matrix)
+int read_matrix(int matrix[][N], size_t *n, size_t *m)
 {
     int status_code = OK;
-    if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
+    if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 1 || matrix->rows_count > N) ||
-        (matrix->columns_count < 1 || matrix->columns_count > N) ||
-        (matrix->rows_count != matrix->columns_count))
+    else if ((*n < 1 || *n > N) ||
+             (*m < 1 || *m > N) ||
+             (*n != *m))
         status_code = SIZE_ERROR;
     else
     {
-        for (size_t m = 0; m < matrix->rows_count; ++m)
+        for (size_t i = 0; i < *n; ++i)
         {
-            array_t *current_row = matrix->rows + m;
-            current_row->len = matrix->columns_count;
-            if ((status_code = read_array(current_row)))
-                break;
+            for (size_t j = 0; j < *m; ++j)
+            {
+                if (scanf("%d", &matrix[i][j]) != 1)
+                {
+                    status_code = INPUT_ERROR;
+                    break;
+                }
+            }
         }
     }
     return status_code;
 }
 
 
-int read_array(array_t *arr)
+void task_swap_process(int main_matrix[][N], size_t n, size_t m)
 {
-    int status_code = OK;
-    for (size_t i = 0; i < arr->len; ++i)
+    int *first, *second;
+    for (size_t i = 0; i < n / 2; ++i)
     {
-        if (scanf("%d", arr->nums + i) != 1)
-        {
-            status_code = INPUT_ERROR;
-            break;
-        }
-    }
-    return status_code;
-}
+        first = main_matrix[i];
+        second = main_matrix[n - i - 1];
 
-
-void task_swap_process(matrix_t *main_matrix)
-{
-    for (size_t i = 0; i < main_matrix->rows_count / 2; ++i)
-    {
-        array_t *first = main_matrix->rows + i;
-        array_t *second = main_matrix->rows + main_matrix->rows_count - i - 1;
-
-        swap_elements_in_range(i, main_matrix->columns_count - i, first, second);
+        swap_elements_in_range(i, m - i, first, second);
     }
 }
 
 
-void swap_elements_in_range(size_t start, size_t end, array_t *first, array_t *second)
+void swap_elements_in_range(size_t start, size_t end, int *first, int *second)
 {
     for (size_t i = start; i < end; ++i)
     {
-        swap_elements(first->nums + i, second->nums + i);
+        swap_elements(first + i, second + i);
     }
 }
 
@@ -121,21 +95,15 @@ void swap_elements(int *first, int *second)
 }
 
 
-void print_array(array_t *arr)
+void print_matrix(int matrix[][N], size_t n, size_t m)
 {
-    for (size_t i = 0; i < arr->len; ++i)
+    for (size_t i = 0; i < n; ++i)
     {
-        printf("%d ", *(arr->nums + i));
-    }
-    printf("\n");
-}
-
-
-void print_matrix(matrix_t *matrix)
-{
-    for (size_t m = 0; m < matrix->rows_count; ++m)
-    {
-        print_array(matrix->rows + m);
+        for (size_t j = 0; j < m; ++j)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
     }
 }
 

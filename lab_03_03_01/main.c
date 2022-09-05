@@ -12,127 +12,100 @@
 #define SIZE_INPUT_ERROR -14
 
 
-typedef struct
-{
-    size_t len;
-    int nums[N];
-} array_t;
+int read_matrix(int matrix[][N], size_t *n, size_t *m);
+int compare_two_arrays_by_max(int *first, int *second, size_t len);
+int maximum(int *arr, size_t len);
 
-
-typedef struct
-{
-    size_t rows_count;
-    size_t columns_count;
-    array_t rows[N];
-} matrix_t;
-
-
-int read_array(array_t *arr);
-int read_matrix(matrix_t *matrix);
-int compare_two_arrays_by_max(array_t *first, array_t *second);
-
-void matrix_bubble_sort(matrix_t *matrix, int (*compare)(array_t *, array_t *));
-void print_array(array_t *arr);
-void print_matrix(matrix_t *matrix);
+void matrix_bubble_sort(int matrix[][N], size_t n, size_t m, int (*compare)(int *, int *, size_t));
+void swap_rows(int matrix[][N], size_t first_index, size_t second_index, size_t m);
+void print_matrix(int matrix[][N], size_t n, size_t m);
 void get_errors(int status_code);
-void swap(array_t *first, array_t *second);
 
 
 int main()
 {
     int status_code = OK;
-    matrix_t matrix;
-    if ((status_code = read_matrix(&matrix)))
+    int matrix[N][N];
+    size_t n, m;
+
+    if ((status_code = read_matrix(matrix, &n, &m)))
         get_errors(status_code);
     else
     {
-        matrix_bubble_sort(&matrix, compare_two_arrays_by_max);
-        print_matrix(&matrix);
+        matrix_bubble_sort(matrix, n, m, compare_two_arrays_by_max);
+        print_matrix(matrix, n, m);
     }
     return status_code;
 }
 
 
-void matrix_bubble_sort(matrix_t *matrix, int (*compare)(array_t *, array_t *))
+void matrix_bubble_sort(int matrix[][N], size_t n, size_t m, int (*compare)(int *, int *, size_t))
 {
-    for (size_t n = 0; n < matrix->rows_count; ++n)
-        for (size_t m = 0; m < matrix->rows_count - n - 1; ++m)
+    for (size_t i = 0; i < n; ++i)
+        for (size_t j = 0; j < n - i - 1; ++j)
         {
-            if (!compare(matrix->rows + m, matrix->rows + m + 1))
-                swap(matrix->rows + m, matrix->rows + m + 1);
+            if (!compare(matrix[j], matrix[j + 1], m))
+                swap_rows(matrix, j, j + 1, m);
         }
 }
 
 
-int read_matrix(matrix_t *matrix)
+int read_matrix(int matrix[][N], size_t *n, size_t *m)
 {
     int status_code = OK;
-    if (scanf("%zu%zu", &(matrix->rows_count), &(matrix->columns_count)) != 2)
+    if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((matrix->rows_count < 1 || matrix->rows_count > N) || (matrix->columns_count < 1 || matrix->columns_count > N))
+    else if ((*n < 1 || *n > N) || (*m < 1 || *m > N))
         status_code = SIZE_ERROR;
     else
     {
-        for (size_t m = 0; m < matrix->rows_count; ++m)
+        for (size_t i = 0; i < *n; ++i)
         {
-            array_t *current_row = matrix->rows + m;
-            current_row->len = matrix->columns_count;
-            if ((status_code = read_array(current_row)))
-                break;
+            for (size_t j = 0; j < *m; ++j)
+            {
+                if (scanf("%d", &matrix[i][j]) != 1)
+                {
+                    status_code = INPUT_ERROR;
+                    break;
+                }
+            }
         }
     }
     return status_code;
 }
 
 
-int read_array(array_t *arr)
+void print_matrix(int matrix[][N], size_t n, size_t m)
 {
-    int status_code = OK;
-    for (size_t i = 0; i < arr->len; ++i)
+    for (size_t i = 0; i < n; ++i)
     {
-        if (scanf("%d", arr->nums + i) != 1)
+        for (size_t j = 0; j < m; ++j)
         {
-            status_code = INPUT_ERROR;
-            break;
+            printf("%d ", matrix[i][j]);
         }
-    }
-    return status_code;
-}
-
-
-void print_array(array_t *arr)
-{
-    for (size_t i = 0; i < arr->len; ++i)
-    {
-        printf("%d ", *(arr->nums + i));
-    }
-    printf("\n");
-}
-
-
-void print_matrix(matrix_t *matrix)
-{
-    for (size_t m = 0; m < matrix->rows_count; ++m)
-    {
-        print_array(matrix->rows + m);
+        printf("\n");
     }
 }
 
 
-void swap(array_t *first, array_t *second)
+void swap_rows(int matrix[][N], size_t first_index, size_t second_index, size_t m)
 {
-    array_t temp_ = *second;
-    *second = *first;
-    *first = temp_;
+    int temp;
+    for (size_t i = 0; i < m; ++i)
+    {
+        temp = matrix[first_index][i];
+        matrix[first_index][i] = matrix[second_index][i];
+        matrix[second_index][i] = temp;
+    }
 }
 
 
-int max(array_t *arr)
+int maximum(int *arr, size_t len)
 {
-    int max_n = *arr->nums, new;
-    for (size_t i = 0; i < arr->len; ++i)
+    int max_n = *arr, new;
+    for (size_t i = 0; i < len; ++i)
     {
-        new = *(arr->nums + i);
+        new = arr[i];
         if (new > max_n)
             max_n = new;
     }
@@ -140,10 +113,10 @@ int max(array_t *arr)
 }
 
 
-int compare_two_arrays_by_max(array_t *first, array_t *second)
+int compare_two_arrays_by_max(int *first, int *second, size_t len)
 {
-    int first_max = max(first);
-    int second_max = max(second);
+    int first_max = maximum(first, len);
+    int second_max = maximum(second, len);
     int is_greater = false;
 
     if (first_max > second_max)
