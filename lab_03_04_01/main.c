@@ -44,8 +44,8 @@ int read_matrix(int matrix[][N], size_t *n, size_t *m)
     if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
     else if ((*n < 1 || *n > N) ||
-             (*m < 1 || *m > N) ||
-             (*n != *m))
+        (*m < 1 || *m > N) ||
+        (*n != *m))
         status_code = SIZE_ERROR;
     else
     {

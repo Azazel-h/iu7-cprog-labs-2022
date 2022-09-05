@@ -41,8 +41,8 @@ int start_reading_matrix(int matrix[][N], size_t *n, size_t *m)
     if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
     else if ((*n < 1 || *n > N) ||
-             (*m < 1 || *m > N) ||
-             (*n != *m))
+        (*m < 1 || *m > N) ||
+        (*n != *m))
         status_code = SIZE_ERROR;
     else
     {
@@ -69,7 +69,7 @@ void read_by_spiral(int matrix[][N], size_t n, size_t m)
         if (s_row_index < e_row_index)
         {
             for (int i = e_column_index - 1; i >= s_column_index; --i)
-               matrix[e_row_index - 1][i] = value++;
+                matrix[e_row_index - 1][i] = value++;
             e_row_index--;
         }
         if (s_column_index < e_column_index)
