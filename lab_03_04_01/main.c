@@ -53,7 +53,7 @@ int read_matrix(int matrix[][N], size_t *n, size_t *m)
         {
             for (size_t j = 0; j < *m; ++j)
             {
-                if (scanf("%d", &matrix[i][j]) != 1)
+                if (scanf("%d", *(matrix + i) + j) != 1)
                 {
                     status_code = INPUT_ERROR;
                     break;
