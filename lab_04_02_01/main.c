@@ -29,6 +29,7 @@ typedef struct
 int split(char *raw_string, string_t *string_arr);
 int cmp(const void *first, const void *second);
 void print_words_array(string_t *string_arr);
+bool already_in(string_t *string_arr, char *it, size_t shift);
 
 int main()
 {
@@ -58,30 +59,35 @@ int main()
 }
 
 
+bool already_in(string_t *string_arr, char *it, size_t shift)
+{
+    bool already_in = false;
+    for (size_t i = 0; i < string_arr->len && !already_in; ++i)
+    {
+        if (!strncmp(it, string_arr->words[i].text, shift))
+            already_in = true;
+    }
+    return already_in;
+}
+
+
 int split(char *raw_string, string_t *string_arr)
 {
     int rc = 0;
     char *delim = "\t\n\r .,:;!?-";
     char *it = raw_string;
-    bool already_in;
 
     word_t new_word = { .len = 0 };
-    while (!rc && strcmp(it, ""))
+    size_t shift;
+    while (strcmp(it, "") && rc != OVERFLOW_ERROR)
     {
-        size_t x = strcspn(it, delim);
-        if (x)
+        shift = strcspn(it, delim);
+        if (shift)
         {
-            already_in = false;
-            for (size_t i = 0; i < string_arr->len && !already_in; ++i)
+            if (!already_in(string_arr, it, shift))
             {
-                if (!strncmp(it, string_arr->words[i].text, x))
-                    already_in = true;
-            }
-
-            if (!already_in)
-            {
-                strncpy(new_word.text, it, x);
-                new_word.len = x;
+                strncpy(new_word.text, it, shift);
+                new_word.len = shift;
                 new_word.text[new_word.len] = '\0';
                 string_arr->words[string_arr->len] = new_word;
                 string_arr->len++;
@@ -89,10 +95,11 @@ int split(char *raw_string, string_t *string_arr)
         }
         if (string_arr->len >= MAX_WORD_NUM - 1 || new_word.len >= MAX_WORD_LEN - 1)
             rc = OVERFLOW_ERROR;
-        it += (x + 1);
+        it += (shift + 1);
     }
     return rc;
 }
+
 
 int cmp(const void *first, const void *second)
 {
