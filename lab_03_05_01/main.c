@@ -97,10 +97,11 @@ int get_task_nums(int main_matrix[][N], size_t n, size_t m, int *res_nums, size_
             {
                 res_nums[*res_len] = new;
                 (*res_len)++;
-                status_code = OK;
             }
         }
     }
+    if (*res_len > 0)
+        status_code = OK;
 
     return status_code;
 }
