@@ -44,14 +44,13 @@ int read_matrix(int matrix[][N], size_t *n, size_t *m)
         status_code = SIZE_ERROR;
     else
     {
-        for (size_t i = 0; i < *n; ++i)
+        for (size_t i = 0; i < *n && status_code == OK; ++i)
         {
-            for (size_t j = 0; j < *m; ++j)
+            for (size_t j = 0; j < *m && status_code == OK; ++j)
             {
                 if (scanf("%d", *(matrix + i) + j) != 1)
                 {
                     status_code = INPUT_ERROR;
-                    break;
                 }
             }
         }

@@ -14,7 +14,7 @@
 
 int start_reading_matrix(int matrix[][N], size_t *n, size_t *m);
 
-void read_by_spiral(int matrix[][N], size_t n, size_t m);
+void set_spiral(int matrix[][N], size_t n, size_t m);
 void print_matrix(int matrix[][N], size_t n, size_t m);
 void get_errors(int status_code);
 
@@ -46,13 +46,13 @@ int start_reading_matrix(int matrix[][N], size_t *n, size_t *m)
         status_code = SIZE_ERROR;
     else
     {
-        read_by_spiral(matrix, *n, *m);
+        set_spiral(matrix, *n, *m);
     }
     return status_code;
 }
 
 
-void read_by_spiral(int matrix[][N], size_t n, size_t m)
+void set_spiral(int matrix[][N], size_t n, size_t m)
 {
     int s_row_index = 0, s_column_index = 0;
     int e_row_index = n, e_column_index = m;
@@ -63,15 +63,18 @@ void read_by_spiral(int matrix[][N], size_t n, size_t m)
         for (int i = s_column_index; i < e_column_index; ++i)
             matrix[s_row_index][i] = value++;
         s_row_index++;
+
         for (int i = s_row_index; i < e_row_index; ++i)
             matrix[i][e_column_index - 1] = value++;
         e_column_index--;
+
         if (s_row_index < e_row_index)
         {
             for (int i = e_column_index - 1; i >= s_column_index; --i)
                 matrix[e_row_index - 1][i] = value++;
             e_row_index--;
         }
+
         if (s_column_index < e_column_index)
         {
             for (int i = e_row_index - 1; i >= s_row_index; --i)
