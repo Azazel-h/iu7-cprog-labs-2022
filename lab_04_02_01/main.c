@@ -106,7 +106,6 @@ int cmp(const void *first, const void *second)
 
 void print_words_array(string_t *string_arr)
 {
-    printf("Result: ");
     for (size_t i = 0; i < string_arr->len; ++i)
     {
         printf("%s ", string_arr->words[i].text);
