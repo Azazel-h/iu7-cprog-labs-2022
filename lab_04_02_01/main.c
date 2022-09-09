@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define OK 0
-#define MAX_STR_LEN 257
+#define MAX_STR_LEN 258
 #define MAX_WORD_NUM 16
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
@@ -31,9 +31,11 @@ int main()
 {
     int rc = OK;
     char raw_string[MAX_STR_LEN];
+    raw_string[MAX_STR_LEN - 1] = '0';
+
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = EMPTY_STRING_ERROR;
-    else if (strlen(raw_string) >= MAX_STR_LEN - 1)
+    else if (raw_string[MAX_STR_LEN - 1] == '\0')
         rc = OVERFLOW_ERROR;
     else {
         string_t string_arr = {.len = 0};
