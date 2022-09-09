@@ -6,7 +6,7 @@
 
 #define OK 0
 #define MAX_STR_LEN 256
-#define MAX_WORD_NUM 18
+#define MAX_WORD_NUM 17
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
 
@@ -97,7 +97,7 @@ int cmp(const void *first, const void *second)
 {
     word_t *data_1 = (word_t *)first;
     word_t *data_2 = (word_t *)second;
-    return strcmp(data_2->text, data_1->text);
+    return strcmp(data_1->text, data_2->text);
 }
 
 
