@@ -79,7 +79,7 @@ int split(char *raw_string, string_t *string_arr)
 
     word_t new_word = { .len = 0 };
     size_t shift;
-    while (strcmp(it, "") && rc != OVERFLOW_ERROR)
+    while (rc != OVERFLOW_ERROR && strcmp(it, "") != 0)
     {
         shift = strcspn(it, delim);
         if (shift)
