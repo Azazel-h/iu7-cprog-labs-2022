@@ -5,13 +5,14 @@
 #include <string.h>
 
 #define OK 0
-#define MAX_STR_LEN 259
+#define MAX_STR_LEN 257
 #define MAX_WORD_NUM 16
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
 
 
-typedef struct {
+typedef struct
+{
     char text[MAX_STR_LEN];
     size_t len;
 } word_t;
@@ -37,8 +38,9 @@ int main()
         rc = EMPTY_STRING_ERROR;
     else if (strlen(raw_string) >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
-    else {
-        string_t string_arr = {.len = 0};
+    else
+    {
+        string_t string_arr = { .len = 0 };
 
         if (!(rc = split(raw_string, &string_arr)))
         {
