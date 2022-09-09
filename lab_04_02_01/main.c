@@ -6,7 +6,7 @@
 
 #define OK 0
 #define MAX_STR_LEN 256
-#define MAX_WORD_NUM 16
+#define MAX_WORD_NUM 18
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
 
@@ -64,7 +64,6 @@ int split(char *raw_string, string_t *string_arr)
     char *it = raw_string;
     bool already_in;
 
-
     word_t new_word = { .len = 0 };
     while (!rc && strcmp(it, ""))
     {
@@ -72,14 +71,12 @@ int split(char *raw_string, string_t *string_arr)
         if (x)
         {
             already_in = false;
-            for (size_t i = 0; i < string_arr->len; ++i)
+            for (size_t i = 0; i < string_arr->len && !already_in; ++i)
             {
                 if (!strncmp(it, string_arr->words[i].text, x))
-                {
                     already_in = true;
-                    break;
-                }
             }
+
             if (!already_in)
             {
                 strncpy(new_word.text, it, x);
@@ -89,7 +86,7 @@ int split(char *raw_string, string_t *string_arr)
                 string_arr->len++;
             }
         }
-        if (string_arr->len > MAX_WORD_NUM)
+        if (string_arr->len >= MAX_WORD_NUM - 1)
             rc = OVERFLOW_ERROR;
         it += (x + 1);
     }
