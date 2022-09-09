@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define OK 0
-#define MAX_STR_LEN 257
+#define MAX_STR_LEN 256
 #define MAX_WORD_NUM 16
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
@@ -25,7 +25,7 @@ typedef struct
 } string_t;
 
 
-int split(char *raw_string, string_t *words);
+int split(char *raw_string, string_t *string_arr);
 int cmp(const void *first, const void *second);
 void print_words_array(string_t *string_arr);
 
@@ -106,8 +106,10 @@ int cmp(const void *first, const void *second)
 
 void print_words_array(string_t *string_arr)
 {
+    printf("Result: ");
     for (size_t i = 0; i < string_arr->len; ++i)
     {
         printf("%s ", string_arr->words[i].text);
     }
+    printf("\n");
 }
