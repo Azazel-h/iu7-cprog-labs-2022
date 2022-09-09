@@ -10,6 +10,7 @@
 #define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
+#define NO_SUITABLE_ELEMENTS_ERROR -15
 
 
 int read_matrix(int matrix[][N], size_t *n, size_t *m);
@@ -84,7 +85,7 @@ int count_num_sum(int num)
 
 int get_task_nums(int main_matrix[][N], size_t n, size_t m, int *res_nums, size_t *res_len)
 {
-    int status_code = INPUT_ERROR;
+    int status_code = NO_SUITABLE_ELEMENTS_ERROR;
     int new;
 
     for (size_t i = 0; i < n; ++i)
@@ -184,6 +185,9 @@ void get_errors(int status_code)
             break;
         case SIZE_INPUT_ERROR:
             printf("ERROR: Bad input size\n");
+            break;
+        case NO_SUITABLE_ELEMENTS_ERROR:
+            printf("ERROR: No suitable elements\n");
             break;
         default:
             printf("ERROR: Unknown error\n");

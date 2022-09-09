@@ -102,7 +102,7 @@ void swap_rows(int matrix[][N], size_t first_index, size_t second_index, size_t 
 int maximum(int *arr, size_t len)
 {
     int max_n = *arr, new;
-    for (size_t i = 0; i < len; ++i)
+    for (size_t i = 1; i < len; ++i)
     {
         new = arr[i];
         if (new > max_n)

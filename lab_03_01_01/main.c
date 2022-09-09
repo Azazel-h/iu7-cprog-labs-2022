@@ -62,13 +62,10 @@ int read_matrix(int matrix[][N], size_t *n, size_t *m)
 int is_symmetrical(int *row, size_t m)
 {
     int is_symmetrical = true;
-    for (size_t i = 0; i < m / 2 + 1; ++i)
+    for (size_t i = 0; i < m / 2 && is_symmetrical; ++i)
     {
         if (row[i] != row[m - i - 1])
-        {
             is_symmetrical = false;
-            break;
-        }
     }
     return is_symmetrical;
 }

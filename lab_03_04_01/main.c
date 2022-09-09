@@ -10,9 +10,11 @@
 #define OUTPUT_ERROR -12
 #define SIZE_ERROR -13
 #define SIZE_INPUT_ERROR -14
+#define NOT_A_SQUARE_MATRIX_ERROR -15
 
 
 int read_matrix(int matrix[][N], size_t *n, size_t *m);
+int square_check(size_t n, size_t m);
 
 void print_matrix(int matrix[][N], size_t n, size_t m);
 void task_swap_process(int main_matrix[][N], size_t n, size_t m);
@@ -27,7 +29,7 @@ int main()
     int matrix[N][N];
     size_t n, m;
 
-    if ((status_code = read_matrix(matrix, &n, &m)))
+    if ((status_code = read_matrix(matrix, &n, &m)) || (status_code = square_check(n, m)))
         get_errors(status_code);
     else
     {
@@ -38,14 +40,21 @@ int main()
 }
 
 
+int square_check(size_t n, size_t m)
+{
+    int status_code = OK;
+    if (n != m)
+        status_code = NOT_A_SQUARE_MATRIX_ERROR;
+    return status_code;
+}
+
+
 int read_matrix(int matrix[][N], size_t *n, size_t *m)
 {
     int status_code = OK;
     if (scanf("%zu%zu", n, m) != 2)
         status_code = SIZE_INPUT_ERROR;
-    else if ((*n < 1 || *n > N) ||
-        (*m < 1 || *m > N) ||
-        (*n != *m))
+    else if ((*n < 1 || *n > N) || (*m < 1 || *m > N))
         status_code = SIZE_ERROR;
     else
     {
@@ -122,6 +131,9 @@ void get_errors(int status_code)
             break;
         case SIZE_INPUT_ERROR:
             printf("ERROR: Bad input size\n");
+            break;
+        case NOT_A_SQUARE_MATRIX_ERROR:
+            printf("ERROR: Not a square matrix\n");
             break;
         default:
             printf("ERROR: Unknown error\n");
