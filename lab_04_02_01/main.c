@@ -7,6 +7,7 @@
 #define OK 0
 #define MAX_STR_LEN 256
 #define MAX_WORD_NUM 17
+#define MAX_WORD_LEN 17
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
 
@@ -86,7 +87,7 @@ int split(char *raw_string, string_t *string_arr)
                 string_arr->len++;
             }
         }
-        if (string_arr->len >= MAX_WORD_NUM - 1)
+        if (string_arr->len >= MAX_WORD_NUM - 1 || new_word.len >= MAX_WORD_LEN - 1)
             rc = OVERFLOW_ERROR;
         it += (x + 1);
     }
