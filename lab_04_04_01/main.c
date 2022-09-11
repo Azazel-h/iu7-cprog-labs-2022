@@ -55,6 +55,7 @@ int check_regular(char *raw_string)
     }
     else
         rc = REG_EXP_COMPILATION_ERROR;
+    regfree(&reg_exp);
     return rc;
 }
 
