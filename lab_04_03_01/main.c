@@ -91,7 +91,6 @@ void delete_word(string_t *string_arr, size_t index)
     for (size_t i = index; i < string_arr->len - 1; ++i)
         strcpy(string_arr->words[i].text, string_arr->words[i + 1].text);
     string_arr->len--;
-
 }
 
 
@@ -113,16 +112,16 @@ void clear_array(string_t *string_arr, char *last)
 
 void remove_dups_from_word(word_t *word)
 {
-    bool is_in[SMT_LIKE_HASH_ARR_LEN] = {false};
+    bool was_in[SMT_LIKE_HASH_ARR_LEN] = { false };
     int cur_index = 0, result_index = 0;
     char tmp;
 
     while (*(word->text + cur_index))
     {
         tmp = *(word->text + cur_index);
-        if (is_in[tmp] == false)
+        if (was_in[(unsigned) tmp] == false)
         {
-            is_in[tmp] = true;
+            was_in[(unsigned) tmp] = true;
             *(word->text + result_index) = *(word->text + cur_index);
             result_index++;
         }
@@ -135,7 +134,7 @@ void remove_dups_from_word(word_t *word)
 
 void form_string(char *new_string, string_t *string_arr)
 {
-    for (size_t i = string_arr->len; i-->0;)
+    for (size_t i = string_arr->len; i-- > 0;)
     {
         strcat(new_string, string_arr->words[i].text);
         if (i != 0)
