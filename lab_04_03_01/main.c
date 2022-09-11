@@ -5,12 +5,13 @@
 #include <string.h>
 
 #define OK 0
-#define MAX_STR_LEN 256
+#define MAX_STR_LEN 258
 #define SMT_LIKE_HASH_ARR_LEN 256
-#define MAX_WORD_NUM 17
-#define MAX_WORD_LEN 17
+#define MAX_WORD_NUM 18
+#define MAX_WORD_LEN 18
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
+#define EMPTY_STRING_AFTER_FORMAT -3
 
 
 typedef struct
@@ -29,7 +30,7 @@ typedef struct
 
 int split(char *raw_string, string_t *string_arr);
 void form_string(char *new_string, string_t *string_arr);
-void clear_array(string_t *string_arr, char *last);
+int clear_array(string_t *string_arr, char *last);
 void remove_dups_from_word(word_t *word);
 void delete_word(string_t *string_arr, size_t index);
 void get_errors(int rc);
@@ -42,16 +43,14 @@ int main()
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = EMPTY_STRING_ERROR;
-    else if (strlen(raw_string) >= MAX_STR_LEN - 1)
+    else if (strlen(raw_string) > MAX_STR_LEN - 2)
         rc = OVERFLOW_ERROR;
     else
     {
         string_t string_arr = { .len = 0 };
         char new_string[MAX_STR_LEN] = "";
-        if (!(rc = split(raw_string, &string_arr)))
+        if (!(rc = split(raw_string, &string_arr)) && !(rc = clear_array(&string_arr, string_arr.words[string_arr.len - 1].text)))
         {
-            char *last = string_arr.words[string_arr.len - 1].text;
-            clear_array(&string_arr, last);
             form_string(new_string, &string_arr);
             printf("Result: %s\n", new_string);
         }
@@ -76,7 +75,7 @@ int split(char *raw_string, string_t *string_arr)
         new_word.len = strlen(token);
         string_arr->words[string_arr->len] = new_word;
         string_arr->len++;
-        if (string_arr->len >= MAX_WORD_NUM - 1 || new_word.len >= MAX_WORD_LEN - 1)
+        if (string_arr->len > MAX_WORD_NUM - 2 || new_word.len > MAX_WORD_LEN - 2)
             rc = OVERFLOW_ERROR;
         token = strtok(NULL, delim);
     }
@@ -94,19 +93,21 @@ void delete_word(string_t *string_arr, size_t index)
 }
 
 
-void clear_array(string_t *string_arr, char *last)
+int clear_array(string_t *string_arr, char *last)
 {
+    int rc = OK;
     size_t i = 0;
     while (i < string_arr->len)
     {
         if (!strcmp(string_arr->words[i].text, last))
-        {
             delete_word(string_arr, i--);
-        }
         else
             remove_dups_from_word(string_arr->words + i);
         i++;
     }
+    if (string_arr->len == 0)
+        rc = EMPTY_STRING_AFTER_FORMAT;
+    return rc;
 }
 
 
@@ -152,6 +153,9 @@ void get_errors(int rc)
             break;
         case EMPTY_STRING_ERROR:
             printf("ERROR: Empty string error\n");
+            break;
+        case EMPTY_STRING_AFTER_FORMAT:
+            printf("ERROR: Empty string after task format\n");
             break;
         default:
             printf("ERROR: Unknown error\n");

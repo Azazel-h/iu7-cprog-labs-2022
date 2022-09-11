@@ -5,9 +5,9 @@
 #include <string.h>
 
 #define OK 0
-#define MAX_STR_LEN 256
-#define MAX_WORD_NUM 17
-#define MAX_WORD_LEN 17
+#define MAX_STR_LEN 258
+#define MAX_WORD_NUM 18
+#define MAX_WORD_LEN 18
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
 
@@ -40,7 +40,7 @@ int main()
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = EMPTY_STRING_ERROR;
-    else if (strlen(raw_string) >= MAX_STR_LEN - 1)
+    else if (strlen(raw_string) > MAX_STR_LEN - 2)
         rc = OVERFLOW_ERROR;
     else
     {
@@ -93,7 +93,7 @@ int split(char *raw_string, string_t *string_arr)
                 string_arr->len++;
             }
         }
-        if (string_arr->len >= MAX_WORD_NUM - 1 || new_word.len >= MAX_WORD_LEN - 1)
+        if (string_arr->len > MAX_WORD_NUM - 2 || new_word.len > MAX_WORD_LEN - 2)
             rc = OVERFLOW_ERROR;
         it += (shift + 1);
     }
