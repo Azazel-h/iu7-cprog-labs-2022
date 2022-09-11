@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define OK 0
-#define MAX_STR_LEN 258
+#define MAX_STR_LEN 257
 #define MAX_WORD_NUM 18
 #define MAX_WORD_LEN 18
 #define OVERFLOW_ERROR -1
@@ -41,7 +41,7 @@ int main()
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = READ_ERROR;
-    else if (strlen(raw_string) > MAX_STR_LEN - 2)
+    else if (strlen(raw_string) >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
     else
     {

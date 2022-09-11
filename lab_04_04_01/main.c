@@ -5,7 +5,7 @@
 #include <regex.h>
 
 #define OK 0
-#define MAX_STR_LEN 258
+#define MAX_STR_LEN 257
 #define REG_EXP "[+-]?([0-9]+([.][0-9]*)?([eE][+-]?[0-9]+)?|[.][0-9]+([eE][+-]?[0-9]+)?)"
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
@@ -27,7 +27,7 @@ int main()
         rc = READ_ERROR;
     else if ((length = strlen(raw_string)) == 1)
         rc = EMPTY_STRING_ERROR;
-    else if (length > MAX_STR_LEN - 2)
+    else if (length >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
     else
         check_regular(raw_string);
