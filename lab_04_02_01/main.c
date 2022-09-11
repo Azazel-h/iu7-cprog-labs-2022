@@ -46,13 +46,8 @@ int main()
 
         if (!(rc = split(raw_string, &string_arr)))
         {
-            if (string_arr.len > 0)
-            {
-                qsort(string_arr.words, string_arr.len, sizeof(word_t), cmp);
-                print_words_array(&string_arr);
-            }
-            else
-                rc = EMPTY_STRING_ERROR;
+            qsort(string_arr.words, string_arr.len, sizeof(word_t), cmp);
+            print_words_array(&string_arr);
         }
     }
     return rc;
@@ -97,6 +92,8 @@ int split(char *raw_string, string_t *string_arr)
             rc = OVERFLOW_ERROR;
         it += (shift + 1);
     }
+    if (!string_arr->len)
+        rc = EMPTY_STRING_ERROR;
     return rc;
 }
 
