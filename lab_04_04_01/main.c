@@ -6,7 +6,7 @@
 
 #define OK 0
 #define MAX_STR_LEN 257
-#define REG_EXP "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"
+#define REG_EXP "[-+]?[0-9]*[.]?[0-9]+([eE][-+]?[0-9]+)?"
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
 #define REG_EXP_COMPILATION_ERROR -3
