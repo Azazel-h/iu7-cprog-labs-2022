@@ -6,6 +6,7 @@
 
 #define OK 0
 #define MAX_STR_LEN 256
+#define SMT_LIKE_HASH_ARR_LEN 256
 #define MAX_WORD_NUM 17
 #define MAX_WORD_LEN 17
 #define OVERFLOW_ERROR -1
@@ -29,7 +30,10 @@ typedef struct
 int split(char *raw_string, string_t *string_arr);
 void form_string(char *new_string, string_t *string_arr);
 void clear_array(string_t *string_arr, char *last);
+void remove_dups_from_word(word_t *word);
 void delete_word(string_t *string_arr, size_t index);
+void get_errors(int rc);
+
 
 int main()
 {
@@ -52,6 +56,9 @@ int main()
             printf("Result: %s\n", new_string);
         }
     }
+
+    if (rc)
+        get_errors(rc);
     return rc;
 }
 
@@ -96,10 +103,33 @@ void clear_array(string_t *string_arr, char *last)
         if (!strcmp(string_arr->words[i].text, last))
         {
             delete_word(string_arr, i--);
-            i--;
         }
+        else
+            remove_dups_from_word(string_arr->words + i);
         i++;
     }
+}
+
+
+void remove_dups_from_word(word_t *word)
+{
+    bool is_in[SMT_LIKE_HASH_ARR_LEN] = {false};
+    int cur_index = 0, result_index = 0;
+    char tmp;
+
+    while (*(word->text + cur_index))
+    {
+        tmp = *(word->text + cur_index);
+        if (is_in[tmp] == false)
+        {
+            is_in[tmp] = true;
+            *(word->text + result_index) = *(word->text + cur_index);
+            result_index++;
+        }
+        cur_index++;
+    }
+    word->len = result_index;
+    word->text[word->len] = '\0';
 }
 
 
@@ -112,3 +142,21 @@ void form_string(char *new_string, string_t *string_arr)
             strcat(new_string, " ");
     }
 }
+
+
+void get_errors(int rc)
+{
+    switch (rc)
+    {
+        case OVERFLOW_ERROR:
+            printf("ERROR: Overflow error\n");
+            break;
+        case EMPTY_STRING_ERROR:
+            printf("ERROR: Empty string error\n");
+            break;
+        default:
+            printf("ERROR: Unknown error\n");
+            break;
+    }
+}
+

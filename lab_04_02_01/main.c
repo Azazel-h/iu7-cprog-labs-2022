@@ -29,7 +29,9 @@ typedef struct
 int split(char *raw_string, string_t *string_arr);
 int cmp(const void *first, const void *second);
 void print_words_array(string_t *string_arr);
+void get_errors(int rc);
 bool already_in(string_t *string_arr, char *it, size_t shift);
+
 
 int main()
 {
@@ -50,6 +52,9 @@ int main()
             print_words_array(&string_arr);
         }
     }
+
+    if (rc)
+        get_errors(rc);
     return rc;
 }
 
@@ -114,4 +119,21 @@ void print_words_array(string_t *string_arr)
         printf("%s ", string_arr->words[i].text);
     }
     printf("\n");
+}
+
+
+void get_errors(int rc)
+{
+    switch (rc)
+    {
+        case OVERFLOW_ERROR:
+            printf("ERROR: Overflow error\n");
+            break;
+        case EMPTY_STRING_ERROR:
+            printf("ERROR: Empty string error\n");
+            break;
+        default:
+            printf("ERROR: Unknown error\n");
+            break;
+    }
 }
