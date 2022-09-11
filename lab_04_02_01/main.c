@@ -10,6 +10,7 @@
 #define MAX_WORD_LEN 18
 #define OVERFLOW_ERROR -1
 #define EMPTY_STRING_ERROR -2
+#define READ_ERROR -3
 
 
 typedef struct
@@ -39,7 +40,7 @@ int main()
     char raw_string[MAX_STR_LEN];
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
-        rc = EMPTY_STRING_ERROR;
+        rc = READ_ERROR;
     else if (strlen(raw_string) > MAX_STR_LEN - 2)
         rc = OVERFLOW_ERROR;
     else
@@ -131,6 +132,9 @@ void get_errors(int rc)
             break;
         case EMPTY_STRING_ERROR:
             printf("ERROR: Empty string error\n");
+            break;
+        case READ_ERROR:
+            printf("ERROR: Read error\n");
             break;
         default:
             printf("ERROR: Unknown error\n");
