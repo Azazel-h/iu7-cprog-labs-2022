@@ -3,18 +3,21 @@
 #include <stddef.h>
 #include <string.h>
 #include <regex.h>
+#include <ctype.h>
+#include <stdbool.h>
 
 #define OK 0
 #define MAX_STR_LEN 257
 #define REG_EXP "^[ ]*[+-]?([0-9]+([.][0-9]+)?([eE][+-]?[0-9]+)|[0-9]+[.][0-9]+)[ ]*$"
-#define OVERFLOW_ERROR 1
-#define READ_ERROR 2
-#define REG_EXP_COMPILATION_ERROR 3
-#define EMPTY_STRING_ERROR 4
+#define OVERFLOW_ERROR -1
+#define READ_ERROR -2
+#define REG_EXP_COMPILATION_ERROR -3
+#define EMPTY_STRING_ERROR -4
 
 
 void get_errors(int rc);
 int check_regular(char *raw_string);
+bool is_empty(char *s);
 
 
 int main()
@@ -24,7 +27,7 @@ int main()
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = READ_ERROR;
-    else if (raw_string[0] == '\0' || raw_string[0] == '\n')
+    else if (is_empty(raw_string))
         rc = EMPTY_STRING_ERROR;
     else if (strlen(raw_string) >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
@@ -34,6 +37,16 @@ int main()
     if (rc)
         get_errors(rc);
     return rc;
+}
+
+
+bool is_empty(char *s) {
+    while (*s != '\0') {
+        if (!isspace((unsigned char)*s))
+            return false;
+        s++;
+    }
+    return true;
 }
 
 
@@ -71,6 +84,9 @@ void get_errors(int rc)
             break;
         case REG_EXP_COMPILATION_ERROR:
             printf("ERROR: Regular expression wasn\'t compiled\n");
+            break;
+        case EMPTY_STRING_ERROR:
+            printf("ERROR: Empty string error\n");
             break;
         default:
             printf("ERROR: Unknown error\n");
