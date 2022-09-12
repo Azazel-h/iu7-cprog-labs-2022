@@ -7,10 +7,10 @@
 #define OK 0
 #define MAX_STR_LEN 257
 #define REG_EXP "^[ ]*[+-]?([0-9]+([.][0-9]+)?([eE][+-]?[0-9]+)|[0-9]+[.][0-9]+)[ ]*$"
-#define OVERFLOW_ERROR -1
-#define READ_ERROR -2
-#define REG_EXP_COMPILATION_ERROR -3
-#define EMPTY_STRING_ERROR -4
+#define OVERFLOW_ERROR 1
+#define READ_ERROR 2
+#define REG_EXP_COMPILATION_ERROR 3
+#define EMPTY_STRING_ERROR 4
 
 
 void get_errors(int rc);
@@ -21,13 +21,12 @@ int main()
 {
     int rc = OK;
     char raw_string[MAX_STR_LEN];
-    size_t length;
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = READ_ERROR;
-    else if ((length = strlen(raw_string)) == 1)
+    else if (raw_string[0] == '\0' || raw_string[0] == '\n')
         rc = EMPTY_STRING_ERROR;
-    else if (length >= MAX_STR_LEN - 1)
+    else if (strlen(raw_string) >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
     else
         check_regular(raw_string);
