@@ -6,7 +6,7 @@
 
 #define OK 0
 #define MAX_STR_LEN 257
-#define REG_EXP "[-+]?[0-9]*[.]?[0-9]+([eE][-+]?[0-9]+)?"
+#define REG_EXP "^ *[+-]?([0-9]+([.][0-9]*)?([eE][+-]?[0-9]+)?|[.][0-9]+([eE][+-]?[0-9]+)?) *$"
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
 #define REG_EXP_COMPILATION_ERROR -3
@@ -30,7 +30,7 @@ int main()
     else if (length >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
     else
-        rc = check_regular(raw_string);
+        check_regular(raw_string);
 
     if (rc)
         get_errors(rc);
@@ -43,7 +43,7 @@ int check_regular(char *raw_string)
     int rc = OK;
     regex_t reg_exp;
     int value;
-    int compilation_rc = regcomp(&reg_exp, REG_EXP, REG_EXTENDED);
+    int compilation_rc = regcomp(&reg_exp, REG_EXP, REG_EXTENDED|REG_NEWLINE);
 
     if (!compilation_rc)
     {
