@@ -8,7 +8,7 @@
 
 #define OK 0
 #define MAX_STR_LEN 257
-#define REG_EXP "^[ ]*[+-]?([0-9]+([.][0-9]+)?([eE][+-]?[0-9]+)|[0-9]+[.][0-9]+)[ ]*$"
+#define REG_EXP "^ *[+-]?([0-9]+([.][0-9]*)?([eE][+-]?[0-9]+)?|[.][0-9]+([eE][+-]?[0-9]+)?) *$"
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
 #define REG_EXP_COMPILATION_ERROR -3
@@ -42,7 +42,7 @@ int main()
 
 bool is_empty(char *s) {
     while (*s != '\0') {
-        if (!isspace((unsigned char)*s))
+        if (!isspace((unsigned char) *s))
             return false;
         s++;
     }
