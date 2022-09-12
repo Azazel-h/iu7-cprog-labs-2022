@@ -15,7 +15,7 @@
 
 typedef struct
 {
-    char text[MAX_STR_LEN];
+    char text[MAX_WORD_LEN];
     size_t len;
 } word_t;
 
