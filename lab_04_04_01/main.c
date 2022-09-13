@@ -45,17 +45,17 @@ int main()
 }
 
 
-int validate_line(char line[], char *n)
+int validate_line(char string[], char *num_starts)
 {
     int rc = OK;
-    char *num = strtok(line, " \t\n\v\f\r");
-    char *x = strtok(NULL, " \t\n\v\f\r");
+    char *num = strtok(string, " \t\n\v\f\r");
+    char *end = strtok(NULL, " \t\n\v\f\r");
 
-    if (x != NULL || num == NULL)
+    if (end != NULL || num == NULL)
         rc = EMPTY_STRING_ERROR;
 
     if (!rc)
-        strcpy(n, num);
+        strcpy(num_starts, num);
     return rc;
 }
 
@@ -71,13 +71,14 @@ char *get_end_of_nums(char *n_beg)
 bool validate_number(char *s)
 {
     bool correct = true;
+    char *number_end;
 
     if (*s == '+' || *s == '-')
         s++;
     if (*s == '.')
     {
         s++;
-        char *number_end = get_end_of_nums(s);
+        number_end = get_end_of_nums(s);
         if (number_end - s > 0)
             s = number_end;
         else
@@ -100,7 +101,7 @@ bool validate_number(char *s)
         s++;
         if (*s == '+' || *s == '-')
             s++;
-        char *number_end = get_end_of_nums(s);
+        number_end = get_end_of_nums(s);
         if (number_end - s > 0)
             s = number_end;
         else
