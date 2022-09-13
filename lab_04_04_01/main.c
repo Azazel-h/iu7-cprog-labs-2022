@@ -10,7 +10,7 @@
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
 #define REG_EXP_COMPILATION_ERROR -3
-#define EMPTY_STRING_ERROR -4
+#define INPUT_STRING_ERROR -4
 
 
 void get_errors(int rc);
@@ -28,7 +28,7 @@ int main()
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = READ_ERROR;
     else if (validate_line(raw_string, string_starts_num))
-        rc = EMPTY_STRING_ERROR;
+        rc = INPUT_STRING_ERROR;
     else if (strlen(raw_string) >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
     else
@@ -52,7 +52,7 @@ int validate_line(char string[], char *num_starts)
     char *end = strtok(NULL, " \t\n\v\f\r");
 
     if (end != NULL || num == NULL)
-        rc = EMPTY_STRING_ERROR;
+        rc = INPUT_STRING_ERROR;
 
     if (!rc)
         strcpy(num_starts, num);
@@ -122,11 +122,8 @@ void get_errors(int rc)
         case READ_ERROR:
             printf("ERROR: Read error\n");
             break;
-        case REG_EXP_COMPILATION_ERROR:
-            printf("ERROR: Regular expression wasn\'t compiled\n");
-            break;
-        case EMPTY_STRING_ERROR:
-            printf("ERROR: Empty string error\n");
+        case INPUT_STRING_ERROR:
+            printf("ERROR: Input string error\n");
             break;
         default:
             printf("ERROR: Unknown error\n");
