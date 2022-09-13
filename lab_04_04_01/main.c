@@ -2,13 +2,11 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
-#include <regex.h>
 #include <ctype.h>
 #include <stdbool.h>
 
 #define OK 0
 #define MAX_STR_LEN 257
-#define REG_EXP "^ *[+-]?([0-9]+([.][0-9]*)?([eE][+-]?[0-9]+)?|[.][0-9]+([eE][+-]?[0-9]+)?) *$"
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
 #define REG_EXP_COMPILATION_ERROR -3
@@ -16,23 +14,30 @@
 
 
 void get_errors(int rc);
-int check_regular(char *raw_string);
-bool is_empty(char *s);
+bool validate_number(char *s);
+char *get_end_of_nums(char *n_beg);
+int validate_line(char line[], char *n);
 
 
 int main()
 {
     int rc = OK;
     char raw_string[MAX_STR_LEN];
+    char string_starts_num[MAX_STR_LEN] = "";
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = READ_ERROR;
-    else if (is_empty(raw_string))
+    else if (validate_line(raw_string, string_starts_num))
         rc = EMPTY_STRING_ERROR;
     else if (strlen(raw_string) >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;
     else
-        check_regular(raw_string);
+    {
+        if (validate_number(string_starts_num))
+            printf("YES");
+        else
+            printf("NO");
+    }
 
     if (rc)
         get_errors(rc);
@@ -40,35 +45,69 @@ int main()
 }
 
 
-bool is_empty(char *s) {
-    while (*s != '\0') {
-        if (!isspace((unsigned char) *s))
-            return false;
-        s++;
-    }
-    return true;
+int validate_line(char line[], char *n)
+{
+    int rc = OK;
+    char *num = strtok(line, " \t\n\v\f\r");
+    char *x = strtok(NULL, " \t\n\v\f\r");
+
+    if (x != NULL || num == NULL)
+        rc = EMPTY_STRING_ERROR;
+
+    if (!rc)
+        strcpy(n, num);
+    return rc;
 }
 
 
-int check_regular(char *raw_string)
+char *get_end_of_nums(char *n_beg)
 {
-    int rc = OK;
-    regex_t reg_exp;
-    int value;
-    int compilation_rc = regcomp(&reg_exp, REG_EXP, REG_EXTENDED|REG_NEWLINE);
+    while (isdigit(*n_beg))
+        n_beg++;
+    return n_beg;
+}
 
-    if (!compilation_rc)
+
+bool validate_number(char *s)
+{
+    bool correct = true;
+
+    if (*s == '+' || *s == '-')
+        s++;
+    if (*s == '.')
     {
-        value = regexec(&reg_exp, raw_string, 0, NULL, 0);
-        if (!value)
-            printf("YES");
+        s++;
+        char *number_end = get_end_of_nums(s);
+        if (number_end - s > 0)
+            s = number_end;
         else
-            printf("NO");
+            correct = false;
+    }
+    else if (isdigit(*s))
+    {
+        s = get_end_of_nums(s);
+        if (*s == '.')
+        {
+            s++;
+            s = get_end_of_nums(s);
+        }
     }
     else
-        rc = REG_EXP_COMPILATION_ERROR;
-    regfree(&reg_exp);
-    return rc;
+        correct = false;
+
+    if (correct && (*s == 'e' || *s == 'E'))
+    {
+        s++;
+        if (*s == '+' || *s == '-')
+            s++;
+        char *number_end = get_end_of_nums(s);
+        if (number_end - s > 0)
+            s = number_end;
+        else
+            correct = false;
+    }
+    correct = correct && (*s == '\0' || *s == '\n');
+    return correct;
 }
 
 
