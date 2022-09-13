@@ -16,7 +16,7 @@
 void get_errors(int rc);
 bool validate_number(char *s);
 char *get_end_of_nums(char *n_beg);
-int validate_line(char line[], char *n);
+int validate_line(char string[], char *n);
 
 
 int main()
