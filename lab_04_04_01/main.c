@@ -43,7 +43,7 @@ int main()
 int validate_string(char *str, size_t *string_len)
 {
     *string_len = strlen(str);
-    if (str[*string_len - 1] != '\n' || *string_len == 0)
+    if ((*string_len) >= MAX_STR_LEN - 1)
         return OVERFLOW_ERROR;
 
     if (!(*string_len) || str[0] == '\n')
