@@ -26,21 +26,16 @@ int main()
     char raw_string[MAX_STR_LEN];
     size_t string_len = 0;
 
-    if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
-        rc = READ_ERROR;
-    else if (validate_string(raw_string, &string_len))
-        rc = INPUT_STRING_ERROR;
+    fgets(raw_string, sizeof(raw_string), stdin);
+    if ((rc = validate_string(raw_string, &string_len)))
+        get_errors(rc);
     else
     {
-
-        if (validate_number(raw_string))
+        if (validate_number(raw_string) && string_len > 0)
             printf("YES");
         else
             printf("NO");
     }
-
-    if (rc)
-        get_errors(rc);
     return rc;
 }
 
@@ -50,11 +45,13 @@ int validate_string(char *str, size_t *string_len)
     *string_len = strlen(str);
     if ((*string_len) >= MAX_STR_LEN - 1)
         return OVERFLOW_ERROR;
+
     if (!(*string_len) || str[0] == '\n')
-        return EMPTY_STRING_ERROR;
+        *string_len = 0;
 
     if (str[*string_len - 1] == '\n')
         str[--(*string_len)] = '\0';
+
     return OK;
 }
 
@@ -75,7 +72,7 @@ void skip_spaces(char *str, size_t *i)
 {
     do
         (*i)++;
-    while(isspace(str[*i]));
+    while (isspace(str[*i]));
 }
 
 
