@@ -64,10 +64,8 @@ bool already_in(string_t *string_arr, char *it, size_t shift)
 {
     bool already_in = false;
     for (size_t i = 0; i < string_arr->len && !already_in; ++i)
-    {
         if (!strncmp(it, string_arr->words[i].text, shift))
             already_in = true;
-    }
     return already_in;
 }
 
@@ -116,9 +114,7 @@ void print_words_array(string_t *string_arr)
 {
     printf("Result: ");
     for (size_t i = 0; i < string_arr->len; ++i)
-    {
         printf("%s ", string_arr->words[i].text);
-    }
     printf("\n");
 }
 

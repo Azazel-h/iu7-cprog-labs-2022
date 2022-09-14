@@ -118,13 +118,13 @@ void remove_dups_from_word(word_t *word)
     int cur_index = 0, result_index = 0;
     char tmp;
 
-    while (*(word->text + cur_index))
+    while (word->text[cur_index])
     {
-        tmp = *(word->text + cur_index);
+        tmp = word->text[cur_index];
         if (was_in[(unsigned) tmp] == false)
         {
             was_in[(unsigned) tmp] = true;
-            *(word->text + result_index) = *(word->text + cur_index);
+            word->text[result_index] = word->text[cur_index];
             result_index++;
         }
         cur_index++;
