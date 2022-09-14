@@ -28,7 +28,7 @@ int main()
 
     fgets(raw_string, MAX_STR_LEN, stdin);
     if ((rc = validate_string(raw_string, &string_len)))
-        get_errors(rc);
+        return rc;
     else
     {
         if (validate_number(raw_string) && string_len > 0)
