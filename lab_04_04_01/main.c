@@ -6,11 +6,10 @@
 #include <stdbool.h>
 
 #define OK 0
-#define MAX_STR_LEN 258
+#define MAX_STR_LEN 257
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
 #define INPUT_STRING_ERROR -4
-#define EMPTY_STRING_ERROR -5
 
 
 void get_errors(int rc);
@@ -44,10 +43,8 @@ int main()
 int validate_string(char *str, size_t *string_len)
 {
     *string_len = strlen(str);
-    if ((*string_len) >= MAX_STR_LEN - 2)
-    {
+    if (str[*string_len - 1] != '\n' || *string_len == 0)
         return OVERFLOW_ERROR;
-    }
 
     if (!(*string_len) || str[0] == '\n')
         *string_len = 0;
