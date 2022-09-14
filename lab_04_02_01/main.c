@@ -39,7 +39,7 @@ int main()
     int rc = OK;
     char raw_string[MAX_STR_LEN];
 
-    if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
+    if (fgets(raw_string, MAX_STR_LEN, stdin) == NULL)
         rc = READ_ERROR;
     else if (strlen(raw_string) >= MAX_STR_LEN - 1)
         rc = OVERFLOW_ERROR;

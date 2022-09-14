@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #define OK 0
-#define MAX_STR_LEN 257
+#define MAX_STR_LEN 258
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
 #define INPUT_STRING_ERROR -4
@@ -20,13 +20,14 @@ bool check_if_only_spaces(char *str, size_t start);
 bool e_check(char *str, size_t *i);
 bool validate_number(char *str);
 
+
 int main()
 {
     int rc = OK;
     char raw_string[MAX_STR_LEN];
     size_t string_len = 0;
 
-    fgets(raw_string, sizeof(raw_string), stdin);
+    fgets(raw_string, MAX_STR_LEN, stdin);
     if ((rc = validate_string(raw_string, &string_len)))
         get_errors(rc);
     else
@@ -43,8 +44,10 @@ int main()
 int validate_string(char *str, size_t *string_len)
 {
     *string_len = strlen(str);
-    if ((*string_len) >= MAX_STR_LEN - 1)
+    if ((*string_len) >= MAX_STR_LEN - 2)
+    {
         return OVERFLOW_ERROR;
+    }
 
     if (!(*string_len) || str[0] == '\n')
         *string_len = 0;
