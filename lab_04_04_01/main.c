@@ -9,31 +9,31 @@
 #define MAX_STR_LEN 257
 #define OVERFLOW_ERROR -1
 #define READ_ERROR -2
-#define REG_EXP_COMPILATION_ERROR -3
 #define INPUT_STRING_ERROR -4
+#define EMPTY_STRING_ERROR -5
 
 
 void get_errors(int rc);
-bool validate_number(char *s);
-char *get_end_of_nums(char *n_beg);
-int validate_line(char string[], char *n);
-
+void skip_spaces(char *str, size_t *i);
+int validate_string(char *str, size_t *string_len);
+bool check_if_only_spaces(char *str, size_t start);
+bool e_check(char *str, size_t *i);
+bool validate_number(char *str);
 
 int main()
 {
     int rc = OK;
     char raw_string[MAX_STR_LEN];
-    char string_starts_num[MAX_STR_LEN] = "";
+    size_t string_len = 0;
 
     if (fgets(raw_string, sizeof(raw_string), stdin) == NULL)
         rc = READ_ERROR;
-    else if (validate_line(raw_string, string_starts_num))
+    else if (validate_string(raw_string, &string_len))
         rc = INPUT_STRING_ERROR;
-    else if (strlen(raw_string) >= MAX_STR_LEN - 1)
-        rc = OVERFLOW_ERROR;
     else
     {
-        if (validate_number(string_starts_num))
+
+        if (validate_number(raw_string))
             printf("YES");
         else
             printf("NO");
@@ -45,70 +45,96 @@ int main()
 }
 
 
-int validate_line(char string[], char *num_starts)
+int validate_string(char *str, size_t *string_len)
 {
-    int rc = OK;
-    char *num = strtok(string, " \t\n\v\f\r");
-    char *end = strtok(NULL, " \t\n\v\f\r");
+    *string_len = strlen(str);
+    if ((*string_len) >= MAX_STR_LEN - 1)
+        return OVERFLOW_ERROR;
+    if (!(*string_len) || str[0] == '\n')
+        return EMPTY_STRING_ERROR;
 
-    if (end != NULL || num == NULL)
-        rc = INPUT_STRING_ERROR;
-
-    if (!rc)
-        strcpy(num_starts, num);
-    return rc;
+    if (str[*string_len - 1] == '\n')
+        str[--(*string_len)] = '\0';
+    return OK;
 }
 
 
-char *get_end_of_nums(char *n_beg)
+bool check_if_only_spaces(char *str, size_t start)
 {
-    while (isdigit(*n_beg))
-        n_beg++;
-    return n_beg;
+    size_t i = start;
+    while (isspace(str[i]) && str[i] != '\0')
+        i++;
+    if (str[i] == '\0')
+        return true;
+
+    return false;
 }
 
 
-bool validate_number(char *s)
+void skip_spaces(char *str, size_t *i)
 {
-    bool correct = true;
-    char *number_end;
+    do
+        (*i)++;
+    while(isspace(str[*i]));
+}
 
-    if (*s == '+' || *s == '-')
-        s++;
-    if (*s == '.')
+
+bool e_check(char *str, size_t *i)
+{
+    if ((str[*i] == 'e') || (str[*i] == 'E'))
     {
-        s++;
-        number_end = get_end_of_nums(s);
-        if (number_end - s > 0)
-            s = number_end;
+        (*i)++;
+        if (str[*i] == '+' || str[*i] == '-')
+            (*i)++;
+
+        if (!(isdigit(str[*i])))
+            return false;
         else
-            correct = false;
+            while (isdigit(str[*i]))
+                (*i)++;
     }
-    else if (isdigit(*s))
+    return true;
+}
+
+
+bool validate_number(char *str)
+{
+    size_t i = 0;
+    if (isspace(str[0]))
+        skip_spaces(str, &i);
+    if (str[i] == '+' || str[i] == '-')
+        i++;
+    if (isdigit(str[i]))
     {
-        s = get_end_of_nums(s);
-        if (*s == '.')
+        while (isdigit(str[i]))
+            i++;
+        if (check_if_only_spaces(str, i))
+            return true;
+        if (str[i] == '.')
         {
-            s++;
-            s = get_end_of_nums(s);
+            i++;
+            if (isdigit(str[i]))
+                while (isdigit(str[i]))
+                    i++;
         }
+        if (check_if_only_spaces(str, i))
+            return true;
+        if (!e_check(str, &i))
+            return false;
+        if (check_if_only_spaces(str, i))
+            return true;
     }
-    else
-        correct = false;
-
-    if (correct && (*s == 'e' || *s == 'E'))
+    else if ((str[i] == '.') && (isdigit(str[i + 1])))
     {
-        s++;
-        if (*s == '+' || *s == '-')
-            s++;
-        number_end = get_end_of_nums(s);
-        if (number_end - s > 0)
-            s = number_end;
-        else
-            correct = false;
+        i++;
+        while (isdigit(str[i]))
+            i++;
+        if (!e_check(str, &i))
+            return false;
+        if (check_if_only_spaces(str, i))
+            return true;
     }
-    correct = correct && (*s == '\0' || *s == '\n');
-    return correct;
+    return false;
 }
 
 
