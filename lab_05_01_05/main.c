@@ -4,7 +4,7 @@
 int main()
 {
     int rc = OK;
-    size_t max_len = 0;
+    size_t max_len = 1;
 
     if (process(stdin, &max_len) != 0)
         rc = INPUT_ERROR;
