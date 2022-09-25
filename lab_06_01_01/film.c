@@ -4,7 +4,7 @@
 
 int read_buf(FILE *f, char *buf)
 {
-    if (!fgets(buf, sizeof(buf), f))
+    if (!fgets(buf, MAX_LEN, f))
         return ERR_IO;
 
     size_t len = strlen(buf);
@@ -13,7 +13,7 @@ int read_buf(FILE *f, char *buf)
         buf[len - 1] = '\0';
         len--;
     }
-    if (!len || len > TITLE_LEN)
+    if (!len || len > MAX_LEN)
         return ERR_DATA;
 
     return OK;
@@ -22,7 +22,7 @@ int read_buf(FILE *f, char *buf)
 
 int film_read(FILE *f, film_t *film_pointer)
 {
-    char buf_title[TITLE_LEN + 3], buf_name[SURNAME_LEN + 3];
+    char buf_title[MAX_LEN + 3], buf_name[MAX_LEN + 3];
     char tmp[2];
     int year;
 

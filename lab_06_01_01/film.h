@@ -12,13 +12,12 @@
 #include <stdio.h>
 #include "errors.h"
 
-#define TITLE_LEN 25
-#define SURNAME_LEN 25
+#define MAX_LEN 25
 
 typedef struct
 {
-    char title[TITLE_LEN + 1];
-    char name[SURNAME_LEN + 1];
+    char title[MAX_LEN + 1];
+    char name[MAX_LEN + 1];
     int year;
 } film_t;
 
