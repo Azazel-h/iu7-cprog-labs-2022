@@ -45,7 +45,7 @@ int film_read(FILE *f, film_t *film_pointer)
 
 void film_print(film_t *film_pointer)
 {
-    printf("%s %s %d\n", film_pointer->title, film_pointer->name, film_pointer->year);
+    printf("%s\n%s\n%d\n", film_pointer->title, film_pointer->name, film_pointer->year);
 }
 
 

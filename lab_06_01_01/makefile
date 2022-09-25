@@ -10,6 +10,7 @@ gcov: LDFLAGS += -fprofile-arcs -ftest-coverage
 gcov: tests
 gcov: $(EXECUTABLE)
 		gcov *.gcno
+		make clean
 
 debug: CFLAGS += -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -Wvla -g
 debug: $(EXECUTABLE)
@@ -31,8 +32,8 @@ include $(SOURCES:.c=.d)
 tests: $(EXECUTABLE)
 	cd func_tests/scripts; ./func_tests.sh
 
-.PHONY : debug release clean gcov_build
+.PHONY : debug release clean gcov
 clean:
-	$(RM) *.o *.exe *.d *.gcno *.gcda
+	$(RM) *.o *.exe *.d *.gcno *.gcda *.c.gcov
 
 

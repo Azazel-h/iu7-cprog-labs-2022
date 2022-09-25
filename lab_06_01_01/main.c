@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     {
         film_t arr[N_MAX];
         size_t len = 0;
-        film_t key_element = { .title = "", .name = "", .year = -1};
+        film_t key_element = { .title = "", .name = "", .year = -1 };
 
         if (!strcmp(argv[FIELD_POSITION], "year"))
         {
@@ -64,6 +64,7 @@ int main(int argc, char **argv)
             rc = ERR_PROCESS;
     }
 
-    fclose(f);
+    if (rc != ERR_FILE)
+        fclose(f);
     return rc;
 }
