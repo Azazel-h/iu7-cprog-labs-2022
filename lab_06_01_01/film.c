@@ -1,4 +1,3 @@
-#include <string.h>
 #include "film.h"
 
 
@@ -23,18 +22,16 @@ int read_buf(FILE *f, char *buf)
 int film_read(FILE *f, film_t *film_pointer)
 {
     char buf_title[MAX_LEN + 3], buf_name[MAX_LEN + 3];
-    char tmp[2];
+    char year_c[MAX_LEN];
     int year;
 
-    if (read_buf(f, buf_title) != OK || read_buf(f, buf_name) != OK)
+    if (read_buf(f, buf_title) != OK || read_buf(f, buf_name) != OK || read_buf(f, year_c) != OK)
         return ERR_DATA;
 
-    if (fscanf(f, "%d", &year) != 1)
-        return ERR_IO;
-    else if (year <= 0)
+    year = atoi(year_c);
+    if (year <= 0)
         return ERR_DATA;
 
-    fgets(tmp, sizeof(tmp), f);
     strcpy(film_pointer->title, buf_title);
     strcpy(film_pointer->name, buf_name);
     film_pointer->year = year;
