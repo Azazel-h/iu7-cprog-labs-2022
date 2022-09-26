@@ -10,5 +10,6 @@ lab_06_01_01/CMakeLists.txt
 *.gcov
 *.gcda
 *.gcno
+films.txt
 real_out.txt
 .DS_Store
