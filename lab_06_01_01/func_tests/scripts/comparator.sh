@@ -10,9 +10,9 @@ fi
 output="$(<"$file_in")"
 new_output="$(<"$file_out")"
 
-diff <(echo "$output") <(echo "$new_output")
-if [ "$output" = "$new_output" ]; then
+if [ -z "$(diff "$file_in" "$file_out")" ]; then
   exit 0
 else
+  diff -y "$file_in" "$file_out"
   exit 1
 fi

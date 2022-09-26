@@ -10,7 +10,6 @@ gcov: LDFLAGS += -fprofile-arcs -ftest-coverage
 gcov: tests
 gcov: $(EXECUTABLE)
 		gcov *.gcno
-		make clean
 
 debug: CFLAGS += -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -Wvla -g
 debug: $(EXECUTABLE)

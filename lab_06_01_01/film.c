@@ -22,14 +22,14 @@ int read_buf(FILE *f, char *buf)
 int film_read(FILE *f, film_t *film_pointer)
 {
     char buf_title[MAX_LEN + 3], buf_name[MAX_LEN + 3];
-    char year_c[MAX_LEN];
     int year;
 
-    if (read_buf(f, buf_title) != OK || read_buf(f, buf_name) != OK || read_buf(f, year_c) != OK)
+    if (read_buf(f, buf_title) != OK || read_buf(f, buf_name) != OK)
         return ERR_DATA;
 
-    year = atoi(year_c);
-    if (year <= 0)
+    if (fscanf(f, "%d\n", &year) != 1)
+        return ERR_IO;
+    else if (year <= 0)
         return ERR_DATA;
 
     strcpy(film_pointer->title, buf_title);
@@ -42,7 +42,7 @@ int film_read(FILE *f, film_t *film_pointer)
 
 void film_print(film_t *film_pointer)
 {
-    printf("%s\n%s\n%d", film_pointer->title, film_pointer->name, film_pointer->year);
+    printf("%s\n%s\n%d\n", film_pointer->title, film_pointer->name, film_pointer->year);
 }
 
 
