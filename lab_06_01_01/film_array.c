@@ -63,9 +63,10 @@ void fa_bin_search(film_t *fa_pointer, size_t n, int (*cmp)(const void *, const 
 
 void fa_print(film_t *fa_pointer, size_t n)
 {
-    for (size_t i = 0; i < n; ++i)
+    for (size_t i = 0; i < n - 1; ++i)
     {
         film_print(fa_pointer + i);
         printf("\n");
     }
+    film_print(fa_pointer + n - 1);
 }
