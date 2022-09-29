@@ -3,7 +3,7 @@
 
 int read_buf(FILE *f, char *buf)
 {
-    if (fgets(buf, MAX_LEN, f) == NULL)
+    if (fgets(buf, MAX_LEN + 3, f) == NULL)
         return ERR_IO;
 
     size_t len = strlen(buf);
