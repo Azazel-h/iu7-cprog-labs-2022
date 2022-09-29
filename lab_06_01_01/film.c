@@ -1,6 +1,16 @@
 #include "film.h"
 
 
+int is_only_space(char *target)
+{
+    for (size_t i = 0; i < strlen(target); ++i)
+        if (target[i] != ' ')
+            return 0;
+
+    return 1;
+}
+
+
 int read_buf(FILE *f, char *buf)
 {
     if (fgets(buf, MAX_LEN + 1, f) == NULL)
@@ -12,7 +22,7 @@ int read_buf(FILE *f, char *buf)
         buf[len - 1] = '\0';
         len--;
     }
-    if (!len || len > MAX_LEN)
+    if (!len || len > MAX_LEN || is_only_space(buf))
         return ERR_DATA;
 
     return OK;
@@ -29,7 +39,7 @@ int film_read(FILE *f, film_t *film_pointer)
 
     if (fscanf(f, "%d\n", &year) != 1)
         return ERR_IO;
-    else if (year <= 0)
+    else if (year < 1)
         return ERR_DATA;
 
     strcpy(film_pointer->title, buf_title);
