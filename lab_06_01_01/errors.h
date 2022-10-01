@@ -16,6 +16,5 @@
 #define ERR_INVALID_ARGC_N 4
 #define ERR_FILE 5
 #define ERR_PROCESS 6
-#define ERR_NOT_FOUND 7
 
 #endif //ERRORS_H

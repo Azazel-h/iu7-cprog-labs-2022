@@ -33,7 +33,7 @@ int main(int argc, char **argv)
                 if (!(rc = fa_read(f, arr, &len, film_cmp_year)) && argc == ARGC_COUNTER)
                 {
                     key_element.year = atoi(argv[KEY_POSITION]);
-                    rc = fa_bin_search(arr, len, film_cmp_year, &key_element);
+                    fa_bin_search(arr, len, film_cmp_year, &key_element);
                 }
                 else if (!rc)
                     fa_print(arr, len);
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
                 if (!(rc = fa_read(f, arr, &len, film_cmp_title)) && argc == ARGC_COUNTER)
                 {
                     strcpy(key_element.title, argv[KEY_POSITION]);
-                    rc = fa_bin_search(arr, len, film_cmp_title, &key_element);
+                    fa_bin_search(arr, len, film_cmp_title, &key_element);
                 }
                 else if (!rc)
                     fa_print(arr, len);
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
                 if (!(rc = fa_read(f, arr, &len, film_cmp_name)) && argc == ARGC_COUNTER)
                 {
                     strcpy(key_element.name, argv[KEY_POSITION]);
-                    rc = fa_bin_search(arr, len, film_cmp_name, &key_element);
+                    fa_bin_search(arr, len, film_cmp_name, &key_element);
                 }
                 else if (!rc)
                     fa_print(arr, len);
