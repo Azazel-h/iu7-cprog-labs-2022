@@ -53,8 +53,8 @@ void fa_insert(film_t *fa_pointer, size_t *n, film_t *item, int (*cmp)(const voi
 
 void fa_bin_search(film_t *fa_pointer, size_t n, int (*cmp)(const void *, const void *), film_t *key)
 {
-    size_t l = 0, r = n - 1;
-    size_t mid;
+    int l = 0, r = (int) n - 1;
+    int mid;
     int cmp_result;
 
     while (l <= r)
