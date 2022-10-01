@@ -1,9 +1,8 @@
 /** @file film.h
- *  @brief Struct and function prototypes for the film_t object
  *
- *  This contains the prototypes for the film_t objects
+ *  Описание объектов типа film_t
  *
- *  @author Arseniy Bulgakov (yasuhiro)
+ *  @author Булгаков Арсений
  */
 
 #ifndef FILMS_H
@@ -25,43 +24,38 @@ typedef struct
 
 
 /**
- * @brief Reads film data from file to struct variable of film_t
- * @param f - Pointer to file
- * @param film_pointer - Pointer to struct variable of film_t to store new data
- * @return Return code OK if no errors, otherwise ERR_DATA / ERR_IO
+ * @param f - Указатель на файловую переменную
+ * @param film_pointer - Указатель на структурную переменную типа film_t для хранения новых данных
+ * @return Код возврата "OK" при успешном выполнении, иначе "ERR_DATA" / "ERR_IO"
  */
 int film_read(FILE *f, film_t *film_pointer);
 
 
 /**
- * @brief Prints film data to terminal
- * @param film_pointer - Pointer to struct variable of film_t with film data
+ * @param film_pointer - Указатель на структурную переменную с данными фильма
  */
 void film_print(film_t *film_pointer);
 
 
 /**
- * @brief Compares two films by title
- * @param l - First film pointer to compare
- * @param r - Second film pointer to compare
- * @return strcmp of two titles
+ * @param l - Указатель на первую структурную переменну для сравнения
+ * @param r - Указатель на вторую структурную переменную для сравнения
+ * @return strcmp для двух полей title
  */
 int film_cmp_title(const void *l, const void *r);
 
 
 /**
- * @brief Compares two films by name
- * @param l - First film pointer to compare
- * @param r - Second film pointer to compare
- * @return strcmp of two names
+ * @param l - Указатель на первую структурную переменну для сравнения
+ * @param r - Указатель на вторую структурную переменную для сравнения
+ * @return strcmp для двух полей names
  */
 int film_cmp_name(const void *l, const void *r);
 
 
 /**
- * @brief Compares two films by year
- * @param l - First film pointer to compare
- * @param r - Second film pointer to compare
+ * @param l - Указатель на первую структурную переменну для сравнения
+ * @param r - Указатель на вторую структурную переменную для сравнения
  * @return l.year - r.year
  */
 int film_cmp_year(const void *l, const void *r);

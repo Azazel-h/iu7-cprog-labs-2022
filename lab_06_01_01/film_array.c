@@ -53,11 +53,25 @@ void fa_insert(film_t *fa_pointer, size_t *n, film_t *item, int (*cmp)(const voi
 
 void fa_bin_search(film_t *fa_pointer, size_t n, int (*cmp)(const void *, const void *), film_t *key)
 {
-    film_t *result = bsearch(key, fa_pointer, n, sizeof(film_t), cmp);
-    if (result == NULL)
-        printf("Not found\n");
-    else
-        film_print(result);
+    size_t l = 0, r = n - 1;
+    size_t mid;
+    int cmp_result;
+
+    while (l <= r)
+    {
+        mid = l + (r - l) / 2;
+        cmp_result = cmp(fa_pointer + mid, key);
+        if (cmp_result == 0)
+        {
+            film_print(fa_pointer + mid);
+            return;
+        }
+        else if (cmp_result < 0)
+            l = mid + 1;
+        else
+            r = mid - 1;
+    }
+    printf("Not found\n");
 }
 
 

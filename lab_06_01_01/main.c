@@ -4,18 +4,44 @@
 #include "film.h"
 #include "film_array.h"
 
-
-#define ARGC_COUNTER 4
+#define MAX_ARGC_COUNTER 4
+#define MIN_ARGC_COUNTER 3
 #define KEY_POSITION 3
 #define FIELD_POSITION 2
 #define FILE_POSITION 1
 
 
+int handle_args(int argc, char **argv, int (**cmp)(const void *, const void *), film_t *key_element)
+{
+    int rc = OK;
+    if (!strcmp(argv[FIELD_POSITION], "year"))
+    {
+        *cmp = film_cmp_year;
+        if (argc == MAX_ARGC_COUNTER && sscanf(argv[KEY_POSITION], "%d", &key_element->year) != 1)
+            rc = ERR_DATA;
+    }
+    else if (!strcmp(argv[FIELD_POSITION], "title"))
+    {
+        *cmp = film_cmp_title;
+        if (argc == MAX_ARGC_COUNTER)
+            strcpy(key_element->title, argv[KEY_POSITION]);
+    }
+    else if (!strcmp(argv[FIELD_POSITION], "name"))
+    {
+        *cmp = film_cmp_name;
+        if (argc == MAX_ARGC_COUNTER)
+            strcpy(key_element->name, argv[KEY_POSITION]);
+    }
+    else
+        rc = ERR_PROCESS;
+    return rc;
+}
+
+
 int main(int argc, char **argv)
 {
     int rc = OK;
-
-    if (argc != ARGC_COUNTER && argc != ARGC_COUNTER - 1)
+    if (argc != MAX_ARGC_COUNTER && argc != MIN_ARGC_COUNTER)
         rc = ERR_INVALID_ARGC_N;
     else
     {
@@ -27,43 +53,17 @@ int main(int argc, char **argv)
             film_t arr[N_MAX];
             size_t len = 0;
             film_t key_element = { .title = "", .name = "", .year = -1 };
+            int (*cmp)(const void *, const void *);
 
-            if (!strcmp(argv[FIELD_POSITION], "year"))
-            {
-                if (!(rc = fa_read(f, arr, &len, film_cmp_year)) && argc == ARGC_COUNTER)
+            if ((rc = handle_args(argc, argv, &cmp, &key_element)) == OK)
+                if ((rc = fa_read(f, arr, &len, cmp)) == OK)
                 {
-                    if (sscanf(argv[KEY_POSITION], "%d", &key_element.year) != 1)
-                        rc = ERR_DATA;
+                    if (argc == MIN_ARGC_COUNTER)
+                        fa_print(arr, len);
                     else
-                        fa_bin_search(arr, len, film_cmp_year, &key_element);
+                        fa_bin_search(arr, len, cmp, &key_element);
                 }
-                else if (!rc)
-                    fa_print(arr, len);
-            }
-            else if (!strcmp(argv[FIELD_POSITION], "title"))
-            {
-                if (!(rc = fa_read(f, arr, &len, film_cmp_title)) && argc == ARGC_COUNTER)
-                {
-                    strcpy(key_element.title, argv[KEY_POSITION]);
-                    fa_bin_search(arr, len, film_cmp_title, &key_element);
-                }
-                else if (!rc)
-                    fa_print(arr, len);
-            }
-            else if (!strcmp(argv[FIELD_POSITION], "name"))
-            {
-                if (!(rc = fa_read(f, arr, &len, film_cmp_name)) && argc == ARGC_COUNTER)
-                {
-                    strcpy(key_element.name, argv[KEY_POSITION]);
-                    fa_bin_search(arr, len, film_cmp_name, &key_element);
-                }
-                else if (!rc)
-                    fa_print(arr, len);
-            }
-            else
-                rc = ERR_PROCESS;
         }
-
         if (rc != ERR_FILE)
             fclose(f);
     }

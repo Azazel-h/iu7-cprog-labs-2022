@@ -11,9 +11,9 @@ int is_only_space(char *target)
 }
 
 
-int read_buf(FILE *f, char *buf)
+int read_buf(FILE *f, char *buf, size_t buf_size)
 {
-    if (fgets(buf, MAX_LEN + 1, f) == NULL)
+    if (fgets(buf, buf_size + 1, f) == NULL)
         return ERR_IO;
 
     size_t len = strlen(buf);
@@ -34,7 +34,7 @@ int film_read(FILE *f, film_t *film_pointer)
     char buf_title[MAX_LEN + 3], buf_name[MAX_LEN + 3];
     int year;
 
-    if (read_buf(f, buf_title) != OK || read_buf(f, buf_name) != OK)
+    if (read_buf(f, buf_title, MAX_LEN) != OK || read_buf(f, buf_name, MAX_LEN) != OK)
         return ERR_DATA;
 
     if (fscanf(f, "%d\n", &year) != 1)
