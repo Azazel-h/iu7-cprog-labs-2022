@@ -32,7 +32,7 @@ int main(int argc, char **argv)
             {
                 if (!(rc = fa_read(f, arr, &len, film_cmp_year)) && argc == ARGC_COUNTER)
                 {
-                    if (sscanf(argv[KEY_POSITION], "%u", &key_element.year) != 1)
+                    if (sscanf(argv[KEY_POSITION], "%d", &key_element.year) != 1)
                         rc = ERR_DATA;
                     else
                         fa_bin_search(arr, len, film_cmp_year, &key_element);
