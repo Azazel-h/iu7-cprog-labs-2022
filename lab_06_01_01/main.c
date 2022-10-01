@@ -32,8 +32,10 @@ int main(int argc, char **argv)
             {
                 if (!(rc = fa_read(f, arr, &len, film_cmp_year)) && argc == ARGC_COUNTER)
                 {
-                    key_element.year = atoi(argv[KEY_POSITION]);
-                    fa_bin_search(arr, len, film_cmp_year, &key_element);
+                    if (sscanf(argv[KEY_POSITION], "%u", &key_element.year) != 1)
+                        rc = ERR_DATA;
+                    else
+                        fa_bin_search(arr, len, film_cmp_year, &key_element);
                 }
                 else if (!rc)
                     fa_print(arr, len);
