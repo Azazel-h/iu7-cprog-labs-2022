@@ -53,8 +53,9 @@ void fa_print(film_t *fa_pointer, size_t n);
  * @param n - Len variable of array
  * @param cmp - Function pointer which describe "how to compare films"
  * @param key - Pointer to an empty struct with key values
+ * @return Return code OK if no errors, otherwise ERR_NOT_FOUND
  */
-void fa_bin_search(film_t *fa_pointer, size_t n, int (*cmp)(const void *, const void *), film_t *key);
+int fa_bin_search(film_t *fa_pointer, size_t n, int (*cmp)(const void *, const void *), film_t *key);
 
 
 #endif //FILM_ARRAY_H
