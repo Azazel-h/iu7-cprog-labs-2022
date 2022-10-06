@@ -1,13 +1,15 @@
 .idea
 cmake-build-debug
-CMakeLists.txt
+lab_06_01_01/CMakeLists.txt
 *.exe
 *.out
 *.o
+*.d
 *.pch
 *.gch
 *.gcov
 *.gcda
 *.gcno
+films.txt
 real_out.txt
 .DS_Store
