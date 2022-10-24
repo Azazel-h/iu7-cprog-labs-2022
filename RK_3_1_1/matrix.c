@@ -30,7 +30,7 @@ void find_min_under_maind(int arr[][N], size_t n, int *result)
     for (size_t i = 0; i < n; ++i)
         for (size_t j = 0; j < i; ++j)
         {
-            if (arr[i][j] < *result)
+            if (j % 2 != 0 && arr[i][j] < *result)
                 *result = arr[i][j];
         }
 }
