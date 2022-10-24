@@ -17,15 +17,6 @@ int main(int argc, char *argv[])
 
             if ((rc = read_sq_matrix_file(f_i, matrix, &n, &m)) == OK)
             {
-                for (size_t i = 0; i < n; ++i)
-                {
-                    for (size_t j = 0; j < m; ++j)
-                    {
-                        printf("%d ", matrix[i][j]);
-                    }
-                    printf("\n");
-                }
-
                 find_min_under_maind(matrix, n, &min);
                 printf("%d", min);
             }
