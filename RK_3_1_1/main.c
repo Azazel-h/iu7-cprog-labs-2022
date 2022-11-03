@@ -11,15 +11,23 @@ int main(int argc, char *argv[])
     {
         if ((f_i = fopen(argv[PATH_POS], "r")) != NULL)
         {
-            int matrix[N][N];
-            size_t n, m;
+            int **matrix = NULL;
             int min;
+            size_t n, m;
 
-            if ((rc = read_sq_matrix_file(f_i, matrix, &n, &m)) == OK)
+            if ((rc = read_matrix_file(f_i, &matrix, &n, &m)) == OK)
             {
-                find_min_under_maind(matrix, n, &min);
-                printf("%d", min);
+                if (is_matrix_sq(n, m))
+                {
+                    if ((rc = find_min_odd_under_maind_sq(matrix, n, &min)) == OK)
+                        printf("%d\n", min);
+                }
+                else
+                    rc = NOT_SQ_ERR;
             }
+
+            free_matrix(matrix, n);
+            fclose(f_i);
         }
         else
             rc = FILE_ERR;

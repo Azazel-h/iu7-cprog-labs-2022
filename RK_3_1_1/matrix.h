@@ -3,10 +3,15 @@
 
 #include "errors.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 #define N 10
 
-int read_sq_matrix_file(FILE *f_i, int arr[][N], size_t *n, size_t *m);
-void find_min_under_maind(int arr[][N], size_t n, int *result);
+bool is_matrix_sq(size_t n, size_t m);
+void free_matrix(int **matrix_ptrs, size_t n);
+int allocate_matrix(size_t n, size_t m, int ***matrix_ptrs);
+int read_matrix_file(FILE *f_i, int ***matrix, size_t *n, size_t *m);
+int find_min_odd_under_maind_sq(int **matrix, size_t n, int *result);
 
 #endif // MATRIX_H
