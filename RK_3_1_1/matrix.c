@@ -37,7 +37,7 @@ int allocate_matrix(size_t n, size_t m, int ***matrix_ptrs)
 
 void free_matrix(int **matrix_ptrs, size_t n)
 {
-    for (int i = 0; i < n; i++)
+    for (size_t i = 0; i < n; i++)
         free(matrix_ptrs[i]);
 
     free(matrix_ptrs);
