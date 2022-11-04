@@ -24,9 +24,8 @@ int main(int argc, char *argv[])
                 }
                 else
                     rc = NOT_SQ_ERR;
+                free_matrix(matrix, n);
             }
-
-            free_matrix(matrix, n);
             fclose(f_i);
         }
         else
