@@ -1,53 +1,83 @@
 EXECUTABLE := app.exe
+UNIT_EXECUTABLE := unit_tests.exe
 
-INC_DIRS := ./inc
-OUT_DIRS := ./out
-SRC_DIRS := ./src
-UNIT_DIRS := ./unit_tests
-BUILD_DIRS := .
-
-SOURCES := $(shell find $(SRC_DIRS) $(UNIT_DIRS) -name '*.c' -exec basename {} \;)
-
-OBJECTS := $(SOURCES:%.c=$(OUT_DIRS)/%.o)
-DEPS := $(OBJECTS:.o=.d)
+INC_DIR := ./inc
+OUT_DIR := ./out
+SRC_DIR := ./src
+UNIT_DIR := ./unit_tests
+BUILD_DIR := .
 
 CC := gcc
-CFLAGS :=-I $(INC_DIRS) -std=c99 -c
+CFLAGS := -I $(INC_DIR) -std=c99 -c
 LDFLAGS :=
 
-unit: LDFLAGS += -lcheck -lpthread -lrt
-unit: $(EXECUTABLE)
+vpath %.c $(SRC_DIR) $(UNIT_DIR)
+vpath %.h $(INC_DIR)
 
+SOURCES := $(wildcard $(SRC_DIR)/*.c)
+OBJECTS := $(SOURCES:$(SRC_DIR)/%.c=$(OUT_DIR)/%.o)
+
+UNIT_SOURCES := $(wildcard $(UNIT_DIR)/*.c)
+UNIT_OBJECTS := $(OBJECTS) $(UNIT_SOURCES:$(UNIT_DIR)/%.c=$(OUT_DIR)/%.o)
+ALL_DEPS := $(UNIT_OBJECTS:.o=.d)
+
+UNIT_OBJECTS := $(filter-out ./out/main.o, $(UNIT_OBJECTS))
+
+
+OS := $(shell uname -s)
+
+.PHONY : unit
+ifeq ($(OS), Darwin)
+unit: CFLAGS += -I /opt/homebrew/opt/check/include
+unit: LDFLAGS += -L /opt/homebrew/opt/check/lib -lcheck -lpthread
+unit: $(UNIT_EXECUTABLE)
+unit:
+	./$(UNIT_EXECUTABLE)
+else
+unit: LDFLAGS += -lcheck -lsubunit -lpthread -lrt
+unit: $(UNIT_EXECUTABLE)
+unit:
+	valgrind -q --leak-check=full --track-origins=yes ./$(UNIT_EXECUTABLE)
+endif
+
+.PHONY : debug
 debug: CFLAGS += -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -g
 debug: $(EXECUTABLE)
 
+.PHONY : release
 release: CFLAGS += -DNDEBUG -g0
 release: $(EXECUTABLE)
 
+.PHONY : gcov
 gcov: CFLAGS += -fprofile-arcs -ftest-coverage
-gcov: LDFLAGS += -fprofile-arcs -ftest-coverage
-gcov: tests
+gcov: LDFLAGS += -fprofile-arcs
+gcov: func
 gcov: $(EXECUTABLE)
-	gcov $(OUT_DIRS)/*.gcno
+	gcov $(OUT_DIR)/*.gcno; mv *.gcov $(OUT_DIR)
 
-$(BUILD_DIRS)/$(EXECUTABLE): ${OBJECTS}
-	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
-$(OUT_DIRS)/%.o : $(SRC_DIRS)/%.c
+
+$(BUILD_DIR)/$(EXECUTABLE):	$(OBJECTS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+$(BUILD_DIR)/$(UNIT_EXECUTABLE): $(UNIT_OBJECTS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+$(OUT_DIR)/%.o : %.c
 	$(CC) $(CFLAGS) $< -o $@
 
-$(OUT_DIRS)/%.o : $(UNIT_DIRS)/%.c
-	$(CC) $(CFLAGS) $< -o $@
+$(OUT_DIR)/%.d : %.c
+	$(CC) -I $(INC_DIR) -M $< > $@
+-include $(ALL_DEPS)
 
-$(OUT_DIRS)/%.d : $(SRC_DIRS)/%.c
-	$(CC) -I $(INC_DIRS) -M $< > $@
-
--include $(DEPS)
-
-func: $(EXECUTABLE)
+.PHONY : func
+func: debug
+ifeq ($(OS), Darwin)
 	cd func_tests/scripts; ./func_tests.sh
+else
+	cd func_tests/scripts; export USE_VALGRIND=1; ./func_tests.sh
+endif
 
-.PHONY : debug release clean gcov func unit
+.PHONY : clean
 clean:
-	$(RM) -r out/*
-
+	$(RM) *.exe out/*

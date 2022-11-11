@@ -10,6 +10,32 @@ int int_cmp(const void *l, const void *r)
 }
 
 
+int allocate_int_array(const size_t len, int **pb, int **pe)
+{
+    int rc = OK;
+    if (len > 0)
+    {
+        *pb = malloc(len * sizeof(int));
+        if (*pb == NULL)
+            rc = ERR_ALLOCATION;
+        else
+            *pe = *pb + (int) len;
+    }
+    else
+        rc = ERR_ARR_LEN;
+
+    return rc;
+}
+
+
+void free_int_array(int **pb, int **pe)
+{
+    free(*pb);
+    *pb = NULL;
+    *pe = NULL;
+}
+
+
 double count_avg_array(const int *pb_src, const int *pe_src)
 {
     double sum = 0;
@@ -20,31 +46,6 @@ double count_avg_array(const int *pb_src, const int *pe_src)
         len++;
     }
     return sum / (double) len;
-}
-
-
-int allocate_int_array(const size_t len, int **pb, int **pe)
-{
-    int rc = OK;
-    if (len > 0)
-    {
-        *pb = malloc(len * sizeof(int));
-        if (*pb == NULL)
-            rc = ERR_ALLOCATION;
-        else
-            *pe = *pb + len;
-    }
-    else
-        rc = ERR_ARR_LEN;
-
-    return rc;
-}
-
-
-void free_int_array(int **pb)
-{
-    free(*pb);
-    *pb = NULL;
 }
 
 

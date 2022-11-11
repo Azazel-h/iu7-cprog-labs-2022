@@ -9,19 +9,21 @@ if [[ (! -f "$file_in") ]]; then
 fi
 
 if [[ -n "$USE_VALGRIND" ]]; then
-    valgrind --log-file=../data/valgrind_pos.temp -q "../../app.exe" < "$file_in" > "real_out.txt" "$_args"
-    status_code=$?
-    if [[ -s "valgrind_pos.temp" ]]; then
+    (cd "../.." ; valgrind -q --leak-check=full --track-origins=yes --log-file="out/valgrind_neg.temp" "./app.exe" $_args > "func_tests/scripts/real_out.txt")
+    main_status_code=$?
+
+    if [[ -s "../../out/valgrind_neg.temp" ]]; then
         memory_error=1
+        cat "../../out/valgrind_neg.temp"
     fi
 else
     # shellcheck disable=SC2086
-    (cd "../.." ; ./app.exe $_args > "func_tests/scripts/real_out.txt");
-    status_code=$?
+    (cd "../.." ; ./app.exe $_args > "func_tests/scripts/real_out.txt")
+    main_status_code=$?
 fi
 
 
-if [[ $status_code == 0 ]]; then
+if [[ $main_status_code == 0 ]]; then
     if [[ $memory_error == 0 ]]; then
         exit 0
     else

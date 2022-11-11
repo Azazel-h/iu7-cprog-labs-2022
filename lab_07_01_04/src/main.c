@@ -52,8 +52,8 @@ int main(int argc, char **argv)
             }
         }
 
-        free_int_array(&pb_src);
-        free_int_array(&pb_dst);
+        free_int_array(&pb_src, &pe_src);
+        free_int_array(&pb_dst, &pe_dst);
         fclose(f_i);
         fclose(f_o);
     }

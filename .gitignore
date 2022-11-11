@@ -11,3 +11,5 @@ CMakeLists.txt
 *.gcno
 real_out.txt
 .DS_Store
+
+lab_07_01_04/out/

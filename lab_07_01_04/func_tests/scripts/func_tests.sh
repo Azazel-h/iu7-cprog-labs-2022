@@ -20,15 +20,18 @@ while [[ -f "../data/pos_$(printf "%02d" $num)_in.txt" ]]; do
 
   if [[ $status_code == 0 ]]; then
     printf "SUCCESS | Test №%s | MEMORY OK\n" $num
-  elif [[ $status_code == 1 ]]; then
+  elif [[ $status_code == 101 ]]; then
     printf "SUCCESS | Test №%s | MEMORY ERROR\n" $num
     fails=$((fails + 1))
-  elif [[ $status_code == 2 ]]; then
+  elif [[ $status_code == 102 ]]; then
     printf "FAILED  | Test №%s | MEMORY OK\n" $num
     fails=$((fails + 1))
-  elif [[ $status_code == 3 ]]; then
+  elif [[ $status_code == 103 ]]; then
     printf "FAILED  | Test №%s | MEMORY ERROR\n" $num
     fails=$((fails + 1))
+  else
+      printf "FAILED  | Test №%s | WRONG RETURN CODE: %s\n" $num $status_code
+      fails=$((fails + 1))
   fi
 
   num=$((num + 1))

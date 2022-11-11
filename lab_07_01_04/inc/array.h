@@ -6,7 +6,7 @@
 
 int int_cmp(const void *l, const void *r);
 int allocate_int_array(size_t len, int **pb, int **pe);
-void free_int_array(int **pb);
+void free_int_array(int **pb, int **pe);
 
 int file_count_int_array_elements(FILE *f_i, size_t *len);
 int file_read_int_array(FILE *f_i, const int *pb, const int *pe);
