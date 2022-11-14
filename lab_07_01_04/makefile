@@ -8,7 +8,7 @@ UNIT_DIR := ./unit_tests
 
 CC := gcc
 CFLAGS := -I $(INC_DIR) -std=c99 -Wall -Werror -Wpedantic -Wextra
-UNIT_FLAGS := -lcheck 
+UNIT_FLAGS := -lcheck
 
 vpath %.c $(SRC_DIR) $(UNIT_DIR)
 vpath %.h $(INC_DIR)
@@ -27,15 +27,17 @@ OS := $(shell uname -s)
 
 .PHONY : unit
 ifeq ($(OS), Darwin)
+unit: CFLAGS := $(filter-out -Werror, $(CFLAGS))
 unit: CFLAGS += -I /opt/homebrew/opt/check/include
 unit: UNIT_FLAGS += -L /opt/homebrew/opt/check/lib
 unit: $(UNIT_EXECUTABLE)
 unit:
 	./$(UNIT_EXECUTABLE)
 else
+unit: UNIT_FLAGS += -lpthread -lsubunit -lm
 unit: $(UNIT_EXECUTABLE)
 unit:
-	 ./$(UNIT_EXECUTABLE)
+	valgrind -q --leak-check=full --track-origins=yes ./$(UNIT_EXECUTABLE)
 endif
 
 .PHONY : debug
