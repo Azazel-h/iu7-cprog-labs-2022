@@ -2,6 +2,7 @@
 #define CHECK_FILTER_H
 
 #include <check.h>
+#include "errors.h"
 #include "filter.h"
 
 Suite* filter_suite(void);

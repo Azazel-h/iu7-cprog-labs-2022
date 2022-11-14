@@ -12,4 +12,4 @@ CMakeLists.txt
 real_out.txt
 .DS_Store
 
-lab_07_01_04/out/
+lab_07_01_04/out/*

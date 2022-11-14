@@ -12,7 +12,7 @@
 #define F_KEY_POSITION 3
 
 
-int validate_args(int argc, char **argv, FILE **f_i, FILE **f_o);
+static int validate_args(int argc, char **argv, FILE **f_i, FILE **f_o);
 
 
 int main(int argc, char **argv)
@@ -36,18 +36,15 @@ int main(int argc, char **argv)
                 rewind(f_i);
                 pb_main = pb_src;
                 pe_main = pe_src;
-
                 if (argc == MAX_ARGC_COUNTER)
                 {
                     if ((rc = key(pb_src, pe_src, &pb_dst, &pe_dst)) == OK)
                     {
                         pb_main = pb_dst;
                         pe_main = pe_dst;
-                        len = (pe_dst - pb_dst) / sizeof(int);
                     }
                 }
-
-                mysort(pb_main, len, sizeof(int), int_cmp);
+                mysort(pb_main, pe_main - pb_main, sizeof(int), int_cmp);
                 file_write_int_array(f_o, pb_main, pe_main);
             }
         }
@@ -62,7 +59,7 @@ int main(int argc, char **argv)
 }
 
 
-int validate_args(int argc, char **argv, FILE **f_i, FILE **f_o)
+static int validate_args(int argc, char **argv, FILE **f_i, FILE **f_o)
 {
     int rc = OK;
     if (argc != MAX_ARGC_COUNTER && argc != MIN_ARGC_COUNTER)

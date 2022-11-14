@@ -42,20 +42,23 @@ endif
 
 .PHONY : debug
 debug: CFLAGS += -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -g
-debug: $(EXECUTABLE)
+debug: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
+
 
 .PHONY : release
 release: CFLAGS += -DNDEBUG -g0
-release: $(EXECUTABLE)
+release: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
+
 
 .PHONY : gcov
 gcov: CFLAGS += -fprofile-arcs -ftest-coverage
 gcov: LDFLAGS += -fprofile-arcs
 gcov: func
-gcov: $(EXECUTABLE)
+gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
 	gcov $(OUT_DIR)/*.gcno; mv *.gcov $(OUT_DIR)
 
-
+$(OUT_DIR):
+	@mkdir -p $(OUT_DIR)
 
 $(BUILD_DIR)/$(EXECUTABLE):	$(OBJECTS)
 	$(CC) $^ -o $@ $(LDFLAGS)
@@ -68,12 +71,11 @@ $(OUT_DIR)/%.o : %.c
 
 $(OUT_DIR)/%.d : %.c
 	$(CC) -I $(INC_DIR) -M $< > $@
--include $(ALL_DEPS)
 
 .PHONY : func
 func: debug
 ifeq ($(OS), Darwin)
-	cd func_tests/scripts; ./func_tests.sh
+	@printf "\e[0;33mDARWIN DOES NOT SUPPORT MEMLEAKS TESTS!\n\e[0m"; cd func_tests/scripts; ./func_tests.sh
 else
 	cd func_tests/scripts; export USE_VALGRIND=1; ./func_tests.sh
 endif

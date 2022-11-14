@@ -2,6 +2,8 @@
 #include <check.h>
 #include "check_array.h"
 #include "check_filter.h"
+#include "check_sort.h"
+
 
 int main(void)
 {
@@ -12,6 +14,7 @@ int main(void)
     s = array_suite();
     runner = srunner_create(s);
     srunner_add_suite(runner, filter_suite());
+    srunner_add_suite(runner, sort_suite());
 
     srunner_run_all(runner, CK_VERBOSE);
     no_failed = srunner_ntests_failed(runner);

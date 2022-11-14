@@ -1,14 +1,13 @@
-#include "errors.h"
 #include "sort.h"
 
 
-int bin_search(void *ptr, size_t size, void *key, int l, int r, int (*comp)(const void *, const void *))
+static int bin_search(void *ptr, size_t size, void *key, int l, int r, int (*cmp)(const void *, const void *))
 {
     int mid = r / 2, cmp_result;
 
     while (l <= r)
     {
-        cmp_result = comp(key, (char *) ptr + (mid * size));
+        cmp_result = cmp(key, (char *) ptr + (mid * size));
         if (cmp_result > 0)
             l = mid + 1;
         else if (cmp_result < 0)

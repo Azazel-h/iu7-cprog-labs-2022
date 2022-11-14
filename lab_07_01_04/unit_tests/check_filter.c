@@ -1,8 +1,7 @@
 #include <check_filter.h>
-#include "errors.h"
 
 
-START_TEST(test_filter_pb_src_null)
+START_TEST(test_filter_null_pb_src)
 {
     int arr[] = {0, 1, 2, 3};
     int *pb_dst, *pe_dst;
@@ -13,7 +12,7 @@ START_TEST(test_filter_pb_src_null)
 END_TEST
 
 
-START_TEST(test_filter_pe_src_null)
+START_TEST(test_filter_null_pe_src)
 {
     int arr[] = {0, 1, 2, 3};
     int *pb_dst, *pe_dst;
@@ -24,7 +23,7 @@ START_TEST(test_filter_pe_src_null)
 END_TEST
 
 
-START_TEST(test_filter_pb_dst_null)
+START_TEST(test_filter_null_pb_dst)
 {
     int *pe_dst;
     int arr[] = {0, 1, 2, 3};
@@ -35,7 +34,7 @@ START_TEST(test_filter_pb_dst_null)
 END_TEST
 
 
-START_TEST(test_filter_pe_dst_null)
+START_TEST(test_filter_null_pe_dst)
 {
     int *pb_dst;
     int arr[] = {0, 1, 2, 3};
@@ -73,7 +72,7 @@ START_TEST(test_filter_some_remain)
 END_TEST
 
 
-START_TEST(test_filter_no_remain)
+START_TEST(test_filter_nothing_remain)
 {
     int *pb_dst;
     int *pe_dst;
@@ -95,16 +94,16 @@ Suite* filter_suite(void)
     s = suite_create("filter");
 
     tc_neg = tcase_create("negative");
-    tcase_add_test(tc_neg, test_filter_pb_src_null);
-    tcase_add_test(tc_neg, test_filter_pe_src_null);
-    tcase_add_test(tc_neg, test_filter_pb_dst_null);
-    tcase_add_test(tc_neg, test_filter_pe_dst_null);
+    tcase_add_test(tc_neg, test_filter_null_pb_src);
+    tcase_add_test(tc_neg, test_filter_null_pe_src);
+    tcase_add_test(tc_neg, test_filter_null_pb_dst);
+    tcase_add_test(tc_neg, test_filter_null_pe_dst);
     tcase_add_test(tc_neg, test_filter_pb_src_gt_pe_src);
     suite_add_tcase(s, tc_neg);
 
     tc_pos = tcase_create("positives");
     tcase_add_test(tc_pos, test_filter_some_remain);
-    tcase_add_test(tc_pos, test_filter_no_remain);
+    tcase_add_test(tc_pos, test_filter_nothing_remain);
     suite_add_tcase(s, tc_pos);
 
     return s;

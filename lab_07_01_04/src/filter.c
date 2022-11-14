@@ -3,13 +3,13 @@
 #include "array.h"
 
 
-bool validate_key_pointers(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
+static bool validate_key_pointers(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
 {
     return (pb_src != NULL && pe_src != NULL && pb_dst != NULL && pe_dst != NULL) && (pb_src < pe_src);
 }
 
 
-void get_number_of_filter_elements(const int *pb_src, const int *pe_src, size_t *result)
+static void get_number_of_filter_elements(const int *pb_src, const int *pe_src, size_t *result)
 {
     double avg = count_avg_array(pb_src, pe_src);
     const int *pa = pb_src;
@@ -25,7 +25,7 @@ void get_number_of_filter_elements(const int *pb_src, const int *pe_src, size_t 
 }
 
 
-int copy_filter_elements(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst, size_t res_len)
+static int copy_filter_elements(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst, size_t res_len)
 {
     int rc = OK;
     double avg = count_avg_array(pb_src, pe_src);
@@ -35,8 +35,8 @@ int copy_filter_elements(const int *pb_src, const int *pe_src, int **pb_dst, int
         const int *pa = pb_src;
         int *pd = *pb_dst;
 
-        while (pa < pe_src && pd < *pe_dst) {
-
+        while (pa < pe_src && pd < *pe_dst)
+        {
             if (*pa > avg)
             {
                 *pd = *pa;
