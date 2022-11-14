@@ -36,7 +36,7 @@ else
 unit: LDFLAGS += -lcheck -lsubunit -lpthread -lrt
 unit: $(UNIT_EXECUTABLE)
 unit:
-	valgrind -q --leak-check=full --track-origins=yes ./$(UNIT_EXECUTABLE)
+	 ./$(UNIT_EXECUTABLE)
 endif
 
 .PHONY : debug
@@ -51,6 +51,7 @@ release: $(EXECUTABLE) $(ALL_DEPS)
 
 .PHONY : gcov
 gcov: CFLAGS += -fprofile-arcs -ftest-coverage
+gcov: LDFLAGS += --coverage
 gcov: func
 gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
 	gcov $(OUT_DIR)/*.gcno; mv *.gcov $(OUT_DIR)
