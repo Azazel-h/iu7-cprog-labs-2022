@@ -33,7 +33,7 @@ unit: $(UNIT_EXECUTABLE)
 unit:
 	./$(UNIT_EXECUTABLE)
 else
-unit: LDFLAGS += -lcheck -lsubunit -lpthread -lrt
+unit: LDFLAGS += -lcheck -lpthread -lrt
 unit: $(UNIT_EXECUTABLE)
 unit:
 	 ./$(UNIT_EXECUTABLE)
