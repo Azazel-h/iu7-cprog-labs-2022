@@ -68,7 +68,7 @@ static int validate_args(int argc, char **argv, FILE **f_i, FILE **f_o)
     {
         if ((*f_i = fopen(argv[FILE_I_POSITION], "r")) == NULL)
             rc = ERR_FILE_I;
-        else if ((*f_o = fopen(argv[FILE_O_POSITION], "w")) == NULL)
+        else if ((*f_o = fopen(argv[FILE_O_POSITION], "r+")) == NULL)
             rc = ERR_FILE_O;
 
         if (argc == MAX_ARGC_COUNTER && strcmp(argv[F_KEY_POSITION], "f") != 0)

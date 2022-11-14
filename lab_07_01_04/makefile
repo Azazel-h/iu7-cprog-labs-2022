@@ -56,6 +56,7 @@ gcov: LDFLAGS += --coverage
 gcov: func
 gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
 	gcov $(OUT_DIR)/*.gcno; mv *.gcov $(OUT_DIR)
+	cd $(OUT_DIR); lcov --directory . –zerocounters; lcov --directory . --capture --output-file app.info; genhtml app.info
 
 
 $(EXECUTABLE): $(OUT_DIR) $(OBJECTS)
@@ -84,4 +85,4 @@ endif
 
 .PHONY : clean
 clean:
-	$(RM) *.exe out/*
+	$(RM) -r *.exe out/* *.html *.info *.png *.css
