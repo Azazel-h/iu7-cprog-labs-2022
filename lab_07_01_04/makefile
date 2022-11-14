@@ -41,28 +41,28 @@ endif
 
 .PHONY : debug
 debug: CFLAGS += -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -g
-debug: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
+debug: $(ALL_DEPS) $(EXECUTABLE)
 
 
 .PHONY : release
 release: CFLAGS += -DNDEBUG -g0
-release: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
+release: $(ALL_DEPS) $(EXECUTABLE)
 
 
 .PHONY : gcov
 gcov: CFLAGS += -fprofile-arcs -ftest-coverage
 gcov: LDFLAGS += -fprofile-arcs
 gcov: func
-gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
+gcov: $(ALL_DEPS) $(EXECUTABLE)
 	gcov $(OUT_DIR)/*.gcno; mv *.gcov $(OUT_DIR)
 
 $(OUT_DIR):
 	@mkdir -p $(OUT_DIR)
 
-$(EXECUTABLE):	$(OBJECTS)
+$(EXECUTABLE): $(OUT_DIR) $(OBJECTS)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
-$(UNIT_EXECUTABLE): $(UNIT_OBJECTS)
+$(UNIT_EXECUTABLE): $(OUT_DIR) $(UNIT_OBJECTS)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 $(OUT_DIR)/%.o : %.c
