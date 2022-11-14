@@ -7,8 +7,8 @@ SRC_DIR := ./src
 UNIT_DIR := ./unit_tests
 
 CC := gcc
-CFLAGS := -I $(INC_DIR) -std=c99
-LDFLAGS :=
+CFLAGS := -I $(INC_DIR) -std=c99 -Wall -Werror -Wpedantic -Wextra
+UNIT_FLAGS := -lcheck 
 
 vpath %.c $(SRC_DIR) $(UNIT_DIR)
 vpath %.h $(INC_DIR)
@@ -28,19 +28,18 @@ OS := $(shell uname -s)
 .PHONY : unit
 ifeq ($(OS), Darwin)
 unit: CFLAGS += -I /opt/homebrew/opt/check/include
-unit: LDFLAGS += -L /opt/homebrew/opt/check/lib -lcheck -lpthread
+unit: UNIT_FLAGS += -L /opt/homebrew/opt/check/lib
 unit: $(UNIT_EXECUTABLE)
 unit:
 	./$(UNIT_EXECUTABLE)
 else
-unit: LDFLAGS += -lcheck -lpthread -lsubunit -lrt -lm
 unit: $(UNIT_EXECUTABLE)
 unit:
 	 ./$(UNIT_EXECUTABLE)
 endif
 
 .PHONY : debug
-debug: CFLAGS += -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -g
+debug: CFLAGS += -g
 debug: $(EXECUTABLE) $(ALL_DEPS)
 
 
@@ -58,11 +57,11 @@ gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
 
 
 $(EXECUTABLE): $(OUT_DIR) $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
 
 $(UNIT_EXECUTABLE): $(OUT_DIR) $(UNIT_OBJECTS)
-	$(CC) $(CFLAGS) $(UNIT_OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(UNIT_OBJECTS) -o $@ $(UNIT_FLAGS)
 
 $(OUT_DIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
