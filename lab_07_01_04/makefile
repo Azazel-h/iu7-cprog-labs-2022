@@ -33,7 +33,7 @@ unit: $(UNIT_EXECUTABLE)
 unit:
 	./$(UNIT_EXECUTABLE)
 else
-unit: LDFLAGS += -lcheck -lpthread -lrt
+unit: LDFLAGS += -lcheck -lpthread -lsubunit -lrt -lm
 unit: $(UNIT_EXECUTABLE)
 unit:
 	 ./$(UNIT_EXECUTABLE)
@@ -58,11 +58,11 @@ gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
 
 
 $(EXECUTABLE): $(OUT_DIR) $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
 
 
 $(UNIT_EXECUTABLE): $(OUT_DIR) $(UNIT_OBJECTS)
-	$(CC) $(UNIT_OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(UNIT_OBJECTS) -o $@ $(LDFLAGS)
 
 $(OUT_DIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
