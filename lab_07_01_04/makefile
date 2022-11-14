@@ -5,7 +5,6 @@ INC_DIR := ./inc
 OUT_DIR := ./out
 SRC_DIR := ./src
 UNIT_DIR := ./unit_tests
-BUILD_DIR := .
 
 CC := gcc
 CFLAGS := -I $(INC_DIR) -std=c99 -c
@@ -60,10 +59,10 @@ gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
 $(OUT_DIR):
 	@mkdir -p $(OUT_DIR)
 
-$(BUILD_DIR)/$(EXECUTABLE):	$(OBJECTS)
+$(EXECUTABLE):	$(OBJECTS)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
-$(BUILD_DIR)/$(UNIT_EXECUTABLE): $(UNIT_OBJECTS)
+$(UNIT_EXECUTABLE): $(UNIT_OBJECTS)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 $(OUT_DIR)/%.o : %.c
