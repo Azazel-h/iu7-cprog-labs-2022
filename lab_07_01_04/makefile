@@ -7,7 +7,7 @@ SRC_DIR := ./src
 UNIT_DIR := ./unit_tests
 
 CC := gcc
-CFLAGS := -I $(INC_DIR) -std=c99 -c
+CFLAGS := -I $(INC_DIR) -std=c99
 LDFLAGS :=
 
 vpath %.c $(SRC_DIR) $(UNIT_DIR)
@@ -41,35 +41,36 @@ endif
 
 .PHONY : debug
 debug: CFLAGS += -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -g
-debug: $(ALL_DEPS) $(EXECUTABLE)
+debug: $(EXECUTABLE) $(ALL_DEPS)
 
 
 .PHONY : release
 release: CFLAGS += -DNDEBUG -g0
-release: $(ALL_DEPS) $(EXECUTABLE)
+release: $(EXECUTABLE) $(ALL_DEPS)
 
 
 .PHONY : gcov
 gcov: CFLAGS += -fprofile-arcs -ftest-coverage
-gcov: LDFLAGS += -fprofile-arcs
 gcov: func
-gcov: $(ALL_DEPS) $(EXECUTABLE)
+gcov: $(OUT_DIR) $(ALL_DEPS) $(EXECUTABLE)
 	gcov $(OUT_DIR)/*.gcno; mv *.gcov $(OUT_DIR)
 
-$(OUT_DIR):
-	@mkdir -p $(OUT_DIR)
 
 $(EXECUTABLE): $(OUT_DIR) $(OBJECTS)
-	$(CC) $^ -o $@ $(LDFLAGS)
+	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+
 
 $(UNIT_EXECUTABLE): $(OUT_DIR) $(UNIT_OBJECTS)
-	$(CC) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(UNIT_OBJECTS) -o $@ $(LDFLAGS)
 
 $(OUT_DIR)/%.o : %.c
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OUT_DIR)/%.d : %.c
 	$(CC) -I $(INC_DIR) -M $< > $@
+
+$(OUT_DIR):
+	@mkdir -p $(OUT_DIR)
 
 .PHONY : func
 func: debug
