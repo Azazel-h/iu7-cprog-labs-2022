@@ -61,7 +61,7 @@ $(EXECUTABLE): $(OUT_DIR) $(OBJECTS)
 
 
 $(UNIT_EXECUTABLE): $(OUT_DIR) $(UNIT_OBJECTS)
-	$(CC) $(CFLAGS) $(UNIT_OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(UNIT_OBJECTS) -o $@ $(LDFLAGS)
 
 $(OUT_DIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
