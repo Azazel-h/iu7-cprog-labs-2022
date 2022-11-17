@@ -66,10 +66,16 @@ static int validate_args(int argc, char **argv, FILE **f_i, FILE **f_o)
         rc = ERR_INVALID_ARGC_N;
     else
     {
-        if ((*f_i = fopen(argv[FILE_I_POSITION], "r")) == NULL)
-            rc = ERR_FILE_I;
-        else if ((*f_o = fopen(argv[FILE_O_POSITION], "r+")) == NULL)
-            rc = ERR_FILE_O;
+        *f_i = fopen(argv[FILE_I_POSITION], "r");
+        *f_o = fopen(argv[FILE_O_POSITION], "r");
+
+        if (*f_i == NULL || *f_o  == NULL)
+            rc = ERR_FILE_PATH;
+        else
+        {
+            fclose(*f_o);
+            *f_o = fopen(argv[FILE_O_POSITION], "w");
+        }
 
         if (argc == MAX_ARGC_COUNTER && strcmp(argv[F_KEY_POSITION], "f") != 0)
             rc = ERR_INVALID_ARGC;
