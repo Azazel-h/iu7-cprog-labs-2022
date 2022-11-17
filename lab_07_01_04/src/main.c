@@ -69,10 +69,11 @@ static int validate_args(int argc, char **argv, FILE **f_i, FILE **f_o)
         *f_i = fopen(argv[FILE_I_POSITION], "r");
         *f_o = fopen(argv[FILE_O_POSITION], "r");
 
-        if (*f_i == NULL || *f_o  == NULL)
+        if (*f_i == NULL || *f_o == NULL)
             rc = ERR_FILE_PATH;
         else
         {
+            rewind(*f_o);
             fclose(*f_o);
             *f_o = fopen(argv[FILE_O_POSITION], "w");
         }
