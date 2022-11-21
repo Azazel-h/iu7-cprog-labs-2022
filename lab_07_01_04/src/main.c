@@ -21,9 +21,7 @@ int main(int argc, char **argv)
     FILE *f_i = NULL, *f_o = NULL;
     int *pb_src = NULL, *pe_src = NULL;
     int *pb_dst = NULL, *pe_dst = NULL;
-
-    int *pb_main = NULL, *pe_main = NULL;
-
+    
     if ((rc = validate_args(argc, argv, &f_i, &f_o)) == OK)
     {
         size_t len = 0;
@@ -33,18 +31,20 @@ int main(int argc, char **argv)
             if ((rc = allocate_int_array(len, &pb_src, &pe_src)) == OK &&
                 (rc = file_read_int_array(f_i, pb_src, pe_src)) == OK)
             {
-                pb_main = pb_src;
-                pe_main = pe_src;
+
                 if (argc == MAX_ARGC_COUNTER)
                 {
                     if ((rc = key(pb_src, pe_src, &pb_dst, &pe_dst)) == OK)
                     {
-                        pb_main = pb_dst;
-                        pe_main = pe_dst;
+                        mysort(pb_dst, pe_dst - pb_dst, sizeof(int), int_cmp);
+                        file_write_int_array(f_o, pb_dst, pe_dst);
                     }
                 }
-                mysort(pb_main, pe_main - pb_main, sizeof(int), int_cmp);
-                file_write_int_array(f_o, pb_main, pe_main);
+                else
+                {
+                    mysort(pb_src, pe_src - pb_src, sizeof(int), int_cmp);
+                    file_write_int_array(f_o, pb_src, pe_src);
+                }
             }
         }
 
