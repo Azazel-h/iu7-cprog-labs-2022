@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     FILE *f_i = NULL, *f_o = NULL;
     int *pb_src = NULL, *pe_src = NULL;
     int *pb_dst = NULL, *pe_dst = NULL;
-    
+
     if ((rc = validate_args(argc, argv, &f_i, &f_o)) == OK)
     {
         size_t len = 0;
@@ -31,7 +31,6 @@ int main(int argc, char **argv)
             if ((rc = allocate_int_array(len, &pb_src, &pe_src)) == OK &&
                 (rc = file_read_int_array(f_i, pb_src, pe_src)) == OK)
             {
-
                 if (argc == MAX_ARGC_COUNTER)
                 {
                     if ((rc = key(pb_src, pe_src, &pb_dst, &pe_dst)) == OK)
