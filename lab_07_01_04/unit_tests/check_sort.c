@@ -121,7 +121,7 @@ Suite* sort_suite(void) {
     TCase *tc_pos;
 
     s = suite_create("sort");
-    tc_pos = tcase_create("positives");
+    tc_pos = tcase_create("positive");
     tcase_add_test(tc_pos, test_sort_for_descending_int);
     tcase_add_test(tc_pos, test_sort_for_ascending_int);
     tcase_add_test(tc_pos, test_sort_for_different_int);

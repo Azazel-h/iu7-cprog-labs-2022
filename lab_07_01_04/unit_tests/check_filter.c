@@ -101,7 +101,7 @@ Suite* filter_suite(void)
     tcase_add_test(tc_neg, test_filter_pb_src_gt_pe_src);
     suite_add_tcase(s, tc_neg);
 
-    tc_pos = tcase_create("positives");
+    tc_pos = tcase_create("positive");
     tcase_add_test(tc_pos, test_filter_some_remain);
     tcase_add_test(tc_pos, test_filter_nothing_remain);
     suite_add_tcase(s, tc_pos);
