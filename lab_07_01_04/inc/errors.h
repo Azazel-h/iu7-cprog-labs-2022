@@ -1,10 +1,10 @@
 /** @file errors.h
- *  @brief Error codes global defines
  *
- *  This contains all defines for return codes
+ *  Описание кодов возврата
  *
- *  @author Arseniy Bulgakov (yasuhiro)
+ *  @author Булгаков Арсений
  */
+
 
 #ifndef ERRORS_H
 #define ERRORS_H

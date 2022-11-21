@@ -57,7 +57,6 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
     {
         size_t number_of_elements = 0;
         get_number_of_filter_elements(pb_src, pe_src, &number_of_elements);
-
         rc = copy_filter_elements(pb_src, pe_src, pb_dst, pe_dst, number_of_elements);
     }
     else
